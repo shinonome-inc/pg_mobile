@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:pg_mobile/post_detail/post_detail_view.dart';
+import 'package:pg_mobile/user/user_view.dart';
+import 'package:pg_mobile/util.dart';
 
 class NotificationsView extends StatelessWidget {
   const NotificationsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         body: Center(
-      child: Text('notifications'),
+      child: Column(
+        children: [
+          const Text('Notifications'),
+          TextButton(
+              onPressed: () {
+                Util.showBottomSheetMenu(context, const UserView());
+              },
+              child: const Text('User')),
+          TextButton(
+              onPressed: () {
+                Util.showBottomSheetMenu(context, const PostDetailView());
+              },
+              child: const Text('Detail'))
+        ],
+      ),
     ));
   }
 }

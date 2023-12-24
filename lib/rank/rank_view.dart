@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:pg_mobile/user/user_view.dart';
+import 'package:pg_mobile/util.dart';
 
 class RankView extends StatelessWidget {
   const RankView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         body: Center(
-      child: Text('Rank'),
+      child: Column(
+        children: [
+          const Text('Rank'),
+          TextButton(
+              onPressed: () {
+                Util.showBottomSheetMenu(context, const UserView());
+              },
+              child: const Text('User'))
+        ],
+      ),
     ));
   }
 }
