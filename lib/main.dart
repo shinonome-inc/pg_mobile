@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 
 void main() {
+  debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
   runApp(const MyApp());
 }
 
@@ -16,7 +18,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const DebugPage(),
+      // TODO: Scaffoldを正規の画面に置き換える。
+      home: Env.useDebugMode ? const DebugPage() : const Scaffold(),
     );
   }
 }
