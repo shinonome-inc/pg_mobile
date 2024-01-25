@@ -17,7 +17,8 @@ jobs:
       flutter-version: '3.10.1'
     - name: Create .env file
       run: echo "USE_DEBUG_MODE=${{ secrets.USE_DEBUG_MODE }}" >> .env
-   #        && echo "FIREBASE_API_KEY_WEB=${{ secrets.FIREBASE_API_KEY_WEB }}" >> .env
+        && echo "PGN_API_BASE_URL=${{ secrets.PGN_API_BASE_URL }}" >> .env
+   #        && echo "FIREBASE_API_KEY_WEB=${{ secrets.FIREBASE_API_KEY_WEB }}" >> .env#
    #        && echo "FIREBASE_APP_ID_WEB=${{ secrets.FIREBASE_APP_ID_WEB }}" >> .env
    #        && echo "FIREBASE_API_KEY_ANDROID=${{ secrets.FIREBASE_API_KEY_ANDROID }}" >> .env
    #        && echo "FIREBASE_APP_ID_ANDROID=${{ secrets.FIREBASE_APP_ID_ANDROID }}" >> .env
