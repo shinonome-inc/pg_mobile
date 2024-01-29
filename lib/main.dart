@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/bottom_navigation.dart';
+import 'package:pg_mobile/debug/debug_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
