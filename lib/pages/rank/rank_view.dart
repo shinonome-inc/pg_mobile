@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/user/user_view.dart';
+import 'package:pg_mobile/pages/user/user_view.dart';
 import 'package:pg_mobile/util.dart';
 
 class RankView extends StatelessWidget {

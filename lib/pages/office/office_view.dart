@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/office_detail/office_detail_view.dart';
+import 'package:pg_mobile/pages/office_detail/office_detail_view.dart';
 import 'package:pg_mobile/util.dart';
 
 class OfficeView extends StatelessWidget {

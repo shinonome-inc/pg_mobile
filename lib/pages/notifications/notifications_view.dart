@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/post_detail/post_detail_view.dart';
-import 'package:pg_mobile/user/user_view.dart';
+import 'package:pg_mobile/pages/post_detail/post_detail_view.dart';
+import 'package:pg_mobile/pages/user/user_view.dart';
 import 'package:pg_mobile/util.dart';
 
 class NotificationsView extends StatelessWidget {

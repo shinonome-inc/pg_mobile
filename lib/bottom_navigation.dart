@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pg_mobile/home/home_view.dart';
-import 'package:pg_mobile/notifications/notifications_view.dart';
-import 'package:pg_mobile/office/office_view.dart';
-import 'package:pg_mobile/rank/rank_view.dart';
-import 'package:pg_mobile/user/user_view.dart';
+import 'package:pg_mobile/pages/home/home_view.dart';
+import 'package:pg_mobile/pages/notifications/notifications_view.dart';
+import 'package:pg_mobile/pages/office/office_view.dart';
+import 'package:pg_mobile/pages/rank/rank_view.dart';
+import 'package:pg_mobile/pages/user/user_view.dart';
 
 enum NavigationMenu { home, notifications, office, rank, user }
 

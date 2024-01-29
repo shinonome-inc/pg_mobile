@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pg_mobile/post/post.view.dart';
-import 'package:pg_mobile/user/user_view.dart';
+import 'package:pg_mobile/pages/post/post.view.dart';
+import 'package:pg_mobile/pages/user/user_view.dart';
 import 'package:pg_mobile/util.dart';
 
 class HomeView extends ConsumerWidget {
