@@ -18,5 +18,5 @@ fvm flutter pub run build_runner build --delete-conflicting-outputs
 1. [envied公式ドキュメント](https://pub.dev/packages/envied)等を参考に`lib/config/env.dart`を更新
 2. GitHubの[workflows/flutter.yml](https://github.com/shinonome-inc/pg_mobile/blob/develop/.github/workflows/flutter.yml)の`Create .env file`を更新
 3. GitHubの[Repository secrets](https://github.com/shinonome-inc/pg_mobile/settings/secrets/actions)を更新
-4. Google Driveに最新の`.env`をアップロード
+4. [Google Drive](https://drive.google.com/drive/u/2/folders/13gvikBmZyZ6N7OWngaowWR-pT6-DYST4)に最新の`.env`をアップロード
 5. `.env`の更新をSlackにて連絡
