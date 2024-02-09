@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({Key? key}) : super(key: key);
@@ -48,7 +49,13 @@ class DebugPage extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
-          _button("サインイン画面", onPressed: () {}),
+          _button("サインイン画面", onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const LoginSample(),
+                ));
+          }),
           _button("タイムライン画面", onPressed: () {}),
           _button("通知画面", onPressed: () {}),
         ],
