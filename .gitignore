@@ -43,9 +43,19 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-#add by ko_cha78
+# .env
+.env
+
+# FVM related
+/.fvm/flutter_sdk
+
+# Automatic generation related
+*.lock
+*.freezed.dart
+*.g.dart
+
+# Firebase related
 android/app/google-services.json
 lib/firebase_options.dart
 ios/firebase_app_id_file.json
 ios/Runner/GoogleService-Info.plist
-login_sample_key.dart

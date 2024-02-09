@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 
 void main() {
+  debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
   runApp(const MyApp());
 }
 
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: const DebugPage(),
+      child: Env.useDebugMode ? const DebugPage() : const Scaffold(),
     );
   }
 }
