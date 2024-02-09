@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
-import 'package:pg_mobile/login_sample/login_sample_key.dart';
-
+import 'package:pg_mobile/debug/util/env_mixin.dart';
 
 
 void main() {
-  runApp(LoginSample());
+  runApp(const LoginSample());
 }
 
-class LoginSample extends StatelessWidget {
+class LoginSample extends StatelessWidget{
+  const LoginSample({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Mastodon Login Example'),
+          title: const Text('Mastodon Login Example'),
         ),
-        body: Center(
+        body: const Center(
           child: LoginButton(),
         ),
       ),
@@ -26,7 +27,9 @@ class LoginSample extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
+class LoginButton extends StatelessWidget with EnvMixin{
+  const LoginButton({super.key});
+
   Future<void> signInWithMastodon() async {
     final url = Uri.parse('$instanceUrl/oauth/authorize?client_id=$clientId&response_type=code&redirect_uri=$redirectUri&scope=read');
 
@@ -51,7 +54,7 @@ class LoginButton extends StatelessWidget {
       final accessToken = json.decode(response.body)['access_token'];
       if (accessToken != null) {
         // アクセストークンを使用して、Mastodon APIの認証が必要な操作を行う
-        print('Access Token: $accessToken');
+        debugPrint('Access Token: $accessToken');
       }
     }
   }
@@ -62,7 +65,7 @@ class LoginButton extends StatelessWidget {
       onPressed: () {
         signInWithMastodon();
       },
-      child: Text('Sign in with Mastodon'),
+      child: const Text('Sign in with Mastodon'),
     );
   }
 }

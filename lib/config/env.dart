@@ -14,4 +14,12 @@ abstract class Env {
   static const bool useDebugMode = _Env.useDebugMode;
   @EnviedField(varName: 'PGN_API_BASE_URL', obfuscate: true)
   static String pgnAPIBaseUrl = _Env.pgnAPIBaseUrl;
+  @EnviedField(varName: 'CLIENT_ID', obfuscate: true)
+  static String clientId = _Env.clientId;
+  @EnviedField(varName: 'CLIENT_SECRET', obfuscate: true)
+  static String clientSecret = _Env.clientSecret;
+  @EnviedField(varName: 'REDIRECT_URI', obfuscate: true)
+  static String redirectUri = _Env.redirectUri;
+  @EnviedField(varName: 'INSTANCE_URL', obfuscate: true)
+  static String instanceUrl = _Env.instanceUrl;
 }
