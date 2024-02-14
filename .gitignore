@@ -47,7 +47,7 @@ app.*.map.json
 .env
 
 # FVM related
-/.fvm/flutter_sdk
+/.fvm/flutter_sdk/
 
 # Automatic generation related
 *.lock
