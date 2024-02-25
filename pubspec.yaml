@@ -39,6 +39,10 @@ dependencies:
   flutter_web_auth:
   http:
   envied: ^0.5.3
+  firebase_core: ^2.24.2
+  cloud_firestore: ^4.14.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +56,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.4.8
   envied_generator: ^0.5.3
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
