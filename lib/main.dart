@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/config/env.dart';
+import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/constants/font_families.dart';
-import 'package:pg_mobile/constants/styles.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 
 void main() {
@@ -22,48 +22,48 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'PG Mobile',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Styles.accent),
+            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.accent),
             useMaterial3: true,
-            scaffoldBackgroundColor: Styles.gray1,
+            scaffoldBackgroundColor: AppColors.gray1,
             fontFamily: FontFamilies.notoSansJP,
             textTheme: const TextTheme(
-              displayLarge: TextStyle(color: Styles.white),
-              displayMedium: TextStyle(color: Styles.white),
-              displaySmall: TextStyle(color: Styles.white),
-              headlineLarge: TextStyle(color: Styles.white),
-              headlineMedium: TextStyle(color: Styles.white),
-              headlineSmall: TextStyle(color: Styles.white),
-              titleLarge: TextStyle(color: Styles.white),
-              titleMedium: TextStyle(color: Styles.white),
-              titleSmall: TextStyle(color: Styles.white),
-              labelLarge: TextStyle(color: Styles.white),
-              labelMedium: TextStyle(color: Styles.white),
-              labelSmall: TextStyle(color: Styles.white),
-              bodyLarge: TextStyle(color: Styles.white),
-              bodyMedium: TextStyle(color: Styles.white),
-              bodySmall: TextStyle(color: Styles.white),
+              displayLarge: TextStyle(color: AppColors.white),
+              displayMedium: TextStyle(color: AppColors.white),
+              displaySmall: TextStyle(color: AppColors.white),
+              headlineLarge: TextStyle(color: AppColors.white),
+              headlineMedium: TextStyle(color: AppColors.white),
+              headlineSmall: TextStyle(color: AppColors.white),
+              titleLarge: TextStyle(color: AppColors.white),
+              titleMedium: TextStyle(color: AppColors.white),
+              titleSmall: TextStyle(color: AppColors.white),
+              labelLarge: TextStyle(color: AppColors.white),
+              labelMedium: TextStyle(color: AppColors.white),
+              labelSmall: TextStyle(color: AppColors.white),
+              bodyLarge: TextStyle(color: AppColors.white),
+              bodyMedium: TextStyle(color: AppColors.white),
+              bodySmall: TextStyle(color: AppColors.white),
             ),
             appBarTheme: const AppBarTheme(
-              backgroundColor: Styles.gray1,
-              foregroundColor: Styles.white,
+              backgroundColor: AppColors.gray1,
+              foregroundColor: AppColors.white,
               elevation: 1.0,
-              shadowColor: Styles.gray3,
-              surfaceTintColor: Styles.transparent,
+              shadowColor: AppColors.gray3,
+              surfaceTintColor: AppColors.transparent,
               centerTitle: true,
             ),
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                foregroundColor: Styles.white,
-                backgroundColor: Styles.accent,
-                disabledBackgroundColor: Styles.gray2,
+                foregroundColor: AppColors.white,
+                backgroundColor: AppColors.accent,
+                disabledBackgroundColor: AppColors.gray2,
                 textStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: Styles.accent,
-              foregroundColor: Styles.white,
+              backgroundColor: AppColors.accent,
+              foregroundColor: AppColors.white,
               shape: CircleBorder(),
             ),
           ),
