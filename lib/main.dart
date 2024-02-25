@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'PG Mobile',
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            colorScheme: ColorScheme.fromSeed(seedColor: Styles.accent),
             useMaterial3: true,
             scaffoldBackgroundColor: Styles.gray1,
             appBarTheme: const AppBarTheme(
