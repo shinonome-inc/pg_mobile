@@ -69,6 +69,9 @@ class MyApp extends StatelessWidget {
               foregroundColor: AppColors.white,
               shape: CircleBorder(),
             ),
+            dividerTheme: const DividerThemeData(
+              color: AppColors.gray3,
+            ),
           ),
           home: child,
         );
