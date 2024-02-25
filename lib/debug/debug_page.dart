@@ -12,20 +12,8 @@ class DebugPage extends StatelessWidget {
           height: 40.h,
           width: double.infinity,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.r),
-              ),
-            ),
             onPressed: onPressed,
-            child: Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child: Text(text),
           ),
         ),
       ],
@@ -38,12 +26,7 @@ class DebugPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "debugページ",
-          style: TextStyle(
-            color: Colors.white,
-          ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.green,
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
