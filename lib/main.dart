@@ -42,6 +42,11 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
+            floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: Styles.accent,
+              foregroundColor: Styles.white,
+              shape: CircleBorder(),
+            ),
           ),
           home: child,
         );
