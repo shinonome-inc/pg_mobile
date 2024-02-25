@@ -47,12 +47,6 @@ class MyApp extends StatelessWidget {
               foregroundColor: Styles.white,
               shape: CircleBorder(),
             ),
-            bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-              backgroundColor: Styles.gray2,
-              selectedItemColor: Styles.accent,
-              unselectedItemColor: Styles.white,
-              type: BottomNavigationBarType.fixed,
-            ),
           ),
           home: child,
         );
