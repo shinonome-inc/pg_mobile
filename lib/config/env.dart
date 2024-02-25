@@ -22,4 +22,14 @@ abstract class Env {
   static String mastodonRedirectUri = _Env.mastodonRedirectUri;
   @EnviedField(varName: 'MASTODON_INSTANCE_URL', obfuscate: true)
   static String mastodonInstanceUrl = _Env.mastodonInstanceUrl;
+  @EnviedField(varName: 'FIREBASE_API_KEY_ANDROID', obfuscate: true)
+  static String firebaseAPIKeyAndroid = _Env.firebaseAPIKeyAndroid;
+  @EnviedField(varName: 'FIREBASE_APP_ID_ANDROID', obfuscate: true)
+  static String firebaseAppIdAndroid = _Env.firebaseAppIdAndroid;
+  @EnviedField(varName: 'FIREBASE_API_KEY_IOS', obfuscate: true)
+  static String firebaseAPIKeyIOS = _Env.firebaseAPIKeyIOS;
+  @EnviedField(varName: 'FIREBASE_APP_ID_IOS', obfuscate: true)
+  static String firebaseAppIdIOS = _Env.firebaseAppIdIOS;
+  @EnviedField(varName: 'FIREBASE_MESSAGING_SENDER_ID', obfuscate: true)
+  static String firebaseMessagingSenderId = _Env.firebaseMessagingSenderId;
 }
