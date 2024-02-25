@@ -32,6 +32,16 @@ class MyApp extends StatelessWidget {
               surfaceTintColor: Styles.transparent,
               centerTitle: true,
             ),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Styles.white,
+                backgroundColor: Styles.accent,
+                disabledBackgroundColor: Styles.gray2,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
           home: child,
         );
