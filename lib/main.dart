@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/config/env.dart';
+import 'package:pg_mobile/constants/font_families.dart';
 import 'package:pg_mobile/constants/styles.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Styles.accent),
             useMaterial3: true,
             scaffoldBackgroundColor: Styles.gray1,
+            fontFamily: FontFamilies.notoSansJP,
             appBarTheme: const AppBarTheme(
               backgroundColor: Styles.gray1,
               foregroundColor: Styles.white,
