@@ -73,7 +73,7 @@ class DebugTextThemePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Theme'),
+        title: const Text('TextTheme'),
       ),
       body: Center(
         child: ListView.separated(

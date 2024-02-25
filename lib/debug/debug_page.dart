@@ -34,7 +34,7 @@ class DebugPage extends StatelessWidget {
           _button('タイムライン画面', onPressed: () {}),
           _button('通知画面', onPressed: () {}),
           _button(
-            'Theme',
+            'TextTheme',
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
