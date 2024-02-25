@@ -19,4 +19,5 @@ class Styles {
   static const Color blue = Color(0xFF0081B9);
   static const Color yellow = Color(0xFFF2C94C);
   static const Color red = Color(0xFFEB5757);
+  static const Color transparent = Color(0x00000000);
 }

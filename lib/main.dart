@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/config/env.dart';
+import 'package:pg_mobile/constants/styles.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 
 void main() {
@@ -22,6 +23,14 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Styles.gray1,
+              foregroundColor: Styles.white,
+              elevation: 1.0,
+              shadowColor: Styles.gray3,
+              surfaceTintColor: Styles.transparent,
+              centerTitle: true,
+            ),
           ),
           home: child,
         );
