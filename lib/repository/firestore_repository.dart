@@ -31,6 +31,17 @@ class FirestoreRepository {
     }
   }
 
+  static Future<void> updatePost({required Office office}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(Collections.office)
+          .doc(office.id)
+          .set(office.toJson());
+    } catch (e) {
+      throw Exception('Failed to update ${Collections.office}: $e');
+    }
+  }
+
   static Future<void> setOfficeUser(OfficeUser officeUser) async {
     try {
       await FirebaseFirestore.instance

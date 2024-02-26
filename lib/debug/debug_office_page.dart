@@ -13,12 +13,20 @@ class DebugOfficePage extends StatefulWidget {
 }
 
 class _DebugOfficePageState extends State<DebugOfficePage> {
+  bool _isLoading = false;
+
   late Stream<List<Office>> _officeStream;
   late Stream<List<OfficeUser>> _allOfficeUserStream;
   List<Office> _offices = [];
   List<OfficeUser> _allOfficeUsers = [];
 
   late PageController _pageViewController;
+
+  void _setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
 
   Future<void> _officeListener(List<Office> newOffices) async {
     setState(() {
@@ -30,6 +38,25 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
     setState(() {
       _allOfficeUsers = newOfficeUsers;
     });
+  }
+
+  Future<void> _checkInOffice(String officeId) async {
+    if (_isLoading) {
+      return;
+    }
+    _setLoading(true);
+    Office newOffice = _offices.firstWhere(
+      (element) => element.id == officeId,
+    );
+    final bool isAlreadySignedIn = newOffice.userIdList.contains(signInUser.id);
+    if (isAlreadySignedIn) {
+      return;
+    }
+    newOffice = newOffice.copyWith(
+      userIdList: [...newOffice.userIdList, signInUser.id],
+    );
+    await FirestoreRepository.updatePost(office: newOffice);
+    _setLoading(false);
   }
 
   @override
@@ -101,7 +128,11 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
                               },
                             ),
                     ),
-                  )
+                  ),
+                  TextButton(
+                    onPressed: () => _checkInOffice(office.id),
+                    child: const Text('チェックイン'),
+                  ),
                 ],
               ),
             );
