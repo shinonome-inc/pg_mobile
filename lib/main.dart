@@ -3,8 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/bottom_navigation.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/config/env.dart';
+import 'package:pg_mobile/debug/debug_page.dart';
+
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,34 +17,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      builder: (_, child) {
+        return MaterialApp(
+          title: 'PG Mobile',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: child,
+        );
+      },
+      child: Env.useDebugMode ? const DebugPage() : const Scaffold(),
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: BottomNavigation(),
     );
   }
 }
