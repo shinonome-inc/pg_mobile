@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 
 class DebugPage extends StatelessWidget {
@@ -13,20 +14,8 @@ class DebugPage extends StatelessWidget {
           height: 40.h,
           width: double.infinity,
           child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.r),
-              ),
-            ),
             onPressed: onPressed,
-            child: Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child: Text(text),
           ),
         ),
       ],
@@ -37,14 +26,7 @@ class DebugPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "debugページ",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.green,
+        title: const Text('debugページ'),
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -58,6 +40,19 @@ class DebugPage extends StatelessWidget {
           }),
           _button("タイムライン画面", onPressed: () {}),
           _button("通知画面", onPressed: () {}),
+          _button('サインイン画面', onPressed: () {}),
+          _button('タイムライン画面', onPressed: () {}),
+          _button('通知画面', onPressed: () {}),
+          _button(
+            'TextTheme',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DebugTextThemePage(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
