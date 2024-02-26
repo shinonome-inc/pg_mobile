@@ -51,7 +51,6 @@ class MastodonRepository {
       );
 
       final accessToken = json.decode(response.body)['access_token'];
-      print(accessToken);
       return accessToken;
     } else {
       throw Exception('code does not have');
