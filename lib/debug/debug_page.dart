@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 
 class DebugPage extends StatelessWidget {
   const DebugPage({Key? key}) : super(key: key);
@@ -51,6 +52,15 @@ class DebugPage extends StatelessWidget {
           _button("サインイン画面", onPressed: () {}),
           _button("タイムライン画面", onPressed: () {}),
           _button("通知画面", onPressed: () {}),
+          _button(
+            "searchBar",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DebugSearchBarPage()),
+              );
+            },
+          ),
         ],
       ),
     );
