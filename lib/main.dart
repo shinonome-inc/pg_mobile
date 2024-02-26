@@ -4,9 +4,12 @@ import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/constants/font_families.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 
 void main() {
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
+  MastodonRepository.instance.init();
+  MastodonRepository.instance.set();
   runApp(const MyApp());
 }
 
