@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/debug/util/env_mixin.dart';
 
 class MastdonRepository with EnvMixin {
@@ -10,7 +11,7 @@ class MastdonRepository with EnvMixin {
 
   static Future<void> signIn() async {
     final url = Uri.parse(
-        '$mastodonInstanceUrl/oauth/authorize?client_id=$mastodonClientId&response_type=code&redirect_uri=$mastodonRedirectUri&scope=read');
+        '${Env.mastodonInstanceUrl}/oauth/authorize?client_id=${Env.mastodonClientId}&response_type=code&redirect_uri=${Env.mastodonRedirectUri}&scope=read');
 
     final result = await FlutterWebAuth.authenticate(
         url: url.toString(), callbackUrlScheme: "pgmobile");
@@ -18,14 +19,14 @@ class MastdonRepository with EnvMixin {
     final code = Uri.parse(result).queryParameters['code'];
     if (code != null) {
       final response = await http.post(
-        Uri.parse('$mastodonInstanceUrl/oauth/token'),
+        Uri.parse('${Env.mastodonInstanceUrl}/oauth/token'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {
-          'client_id': mastodonClientId,
-          'client_secret': mastodonClientSecret,
+          'client_id': Env.mastodonClientId,
+          'client_secret': Env.mastodonClientSecret,
           'grant_type': 'authorization_code',
           'code': code,
-          'redirect_uri': mastodonRedirectUri,
+          'redirect_uri': Env.mastodonRedirectUri,
         },
       );
 
