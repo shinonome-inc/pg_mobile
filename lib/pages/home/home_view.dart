@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
-import 'package:pg_mobile/pages/post/post.view.dart';
+import 'package:pg_mobile/pages/post/post_view.dart';
 import 'package:pg_mobile/pages/user/user_view.dart';
 import 'package:pg_mobile/util.dart';
 
