@@ -15,11 +15,11 @@ abstract class Env {
   @EnviedField(varName: 'PGN_API_BASE_URL', obfuscate: true)
   static String pgnAPIBaseUrl = _Env.pgnAPIBaseUrl;
   @EnviedField(varName: 'MASTODON_CLIENT_ID', obfuscate: true)
-  static String mastodonClientId = _Env.clientId;
+  static String mastodonClientId = _Env.mastodonClientId;
   @EnviedField(varName: 'MASTODON_CLIENT_SECRET', obfuscate: true)
-  static String mastodonClientSecret = _Env.clientSecret;
+  static String mastodonClientSecret = _Env.mastodonClientSecret;
   @EnviedField(varName: 'MASTODON_REDIRECT_URI', obfuscate: true)
-  static String mastodonRedirectUri = _Env.redirectUri;
+  static String mastodonRedirectUri = _Env.mastodonRedirectUri;
   @EnviedField(varName: 'MASTODON_INSTANCE_URL', obfuscate: true)
-  static String mastodonInstanceUrl = _Env.instanceUrl;
+  static String mastodonInstanceUrl = _Env.mastodonInstanceUrl;
 }
