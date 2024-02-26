@@ -56,6 +56,11 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Debug Office Page'),
+          leading: BackButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: PageView.builder(
           controller: _pageViewController,
