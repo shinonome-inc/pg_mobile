@@ -11,6 +11,16 @@ fvm flutter pub get
 fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
+## ディレクトリ構造
+
+
+## ブランチ運用
+- main
+- develop
+- feature/xxx
+- fix/xxx
+- release/v1
+
 ## .env
 プロジェクト設定や秘匿情報を環境変数として`.env`で管理しています。
 `.env`は必ずプロジェクトのルートディレクトリ直下に配置してください。
