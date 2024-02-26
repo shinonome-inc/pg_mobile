@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/models/office_user.dart';
 
 class DebugOfficeUserItem extends StatelessWidget {
@@ -13,22 +12,17 @@ class DebugOfficeUserItem extends StatelessWidget {
     return Column(
       children: [
         Container(
+          height: 80.h,
           decoration: BoxDecoration(
+            color: Colors.grey[300],
             shape: BoxShape.circle,
-            color: Color(
-              (Random().nextDouble() * 0xFFFFFF).toInt() << 0,
-            ).withOpacity(1.0),
-          ),
-          padding: const EdgeInsets.all(24.0),
-          child: Text(
-            user.name[0],
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 24.0,
+            image: DecorationImage(
+              image: NetworkImage(user.imageUrl),
+              fit: BoxFit.contain,
             ),
           ),
         ),
+        SizedBox(height: 8.h),
         Text(
           '${user.name} \n@${user.id}',
           textAlign: TextAlign.center,
