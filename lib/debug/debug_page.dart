@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 
-class DebugPage extends StatelessWidget {
+class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
 
+  @override
+  State<DebugPage> createState() => _DebugPageState();
+}
+
+class _DebugPageState extends State<DebugPage> {
   Widget _button(String text, {required Function() onPressed}) {
     return Column(
       children: [
@@ -50,7 +56,12 @@ class DebugPage extends StatelessWidget {
         children: [
           _button("サインイン画面", onPressed: () {}),
           _button("タイムライン画面", onPressed: () {}),
-          _button("通知画面", onPressed: () {}),
+          _button("通知画面", onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInPage()),
+            );
+          }),
         ],
       ),
     );
