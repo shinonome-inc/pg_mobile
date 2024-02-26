@@ -31,7 +31,7 @@ class FirestoreRepository {
     }
   }
 
-  static Future<void> updatePost({required Office office}) async {
+  static Future<void> updateOffice({required Office office}) async {
     try {
       await FirebaseFirestore.instance
           .collection(Collections.office)

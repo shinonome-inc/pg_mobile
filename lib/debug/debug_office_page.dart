@@ -22,6 +22,17 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
 
   late PageController _pageViewController;
 
+  bool get _isAlreadySignedIn {
+    for (final office in _offices) {
+      if (office.userIdList.contains(signInUser.id)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get _isNotAlreadySignedIn => !_isAlreadySignedIn;
+
   void _setLoading(bool isLoading) {
     setState(() {
       _isLoading = isLoading;
@@ -40,22 +51,42 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
     });
   }
 
-  Future<void> _checkInOffice(String officeId) async {
+  Future<void> _checkIn(String officeId) async {
     if (_isLoading) {
       return;
     }
     _setLoading(true);
-    Office newOffice = _offices.firstWhere(
+    final office = _offices.firstWhere(
       (element) => element.id == officeId,
     );
-    final bool isAlreadySignedIn = newOffice.userIdList.contains(signInUser.id);
-    if (isAlreadySignedIn) {
+    if (_isAlreadySignedIn) {
       return;
     }
-    newOffice = newOffice.copyWith(
-      userIdList: [...newOffice.userIdList, signInUser.id],
+    final newOffice = office.copyWith(
+      userIdList: [...office.userIdList, signInUser.id],
     );
-    await FirestoreRepository.updatePost(office: newOffice);
+    await FirestoreRepository.updateOffice(office: newOffice);
+    _setLoading(false);
+  }
+
+  Future<void> _checkOut(String officeId) async {
+    print('isLoading: $_isLoading');
+    if (_isLoading) {
+      return;
+    }
+    _setLoading(true);
+    final Office office = _offices.firstWhere(
+      (element) => element.id == officeId,
+    );
+    if (_isNotAlreadySignedIn) {
+      return;
+    }
+    final newUserIdList = List<String>.from(office.userIdList)
+      ..remove(signInUser.id);
+    print('newUserIds: $newUserIdList');
+    final newOffice = office.copyWith(userIdList: newUserIdList);
+    print('newOfficeUserId: ${newOffice.userIdList}');
+    await FirestoreRepository.updateOffice(office: newOffice);
     _setLoading(false);
   }
 
@@ -129,10 +160,15 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
                             ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () => _checkInOffice(office.id),
-                    child: const Text('チェックイン'),
-                  ),
+                  _isAlreadySignedIn
+                      ? TextButton(
+                          onPressed: () => _checkOut(office.id),
+                          child: const Text('チェックアウト'),
+                        )
+                      : TextButton(
+                          onPressed: () => _checkIn(office.id),
+                          child: const Text('チェックイン'),
+                        ),
                 ],
               ),
             );
