@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/debug_office_user_item.dart';
 import 'package:pg_mobile/models/office.dart';
 import 'package:pg_mobile/models/office_user.dart';
 import 'package:pg_mobile/repository/firestore_repository.dart';
@@ -12,9 +14,9 @@ class DebugOfficePage extends StatefulWidget {
 
 class _DebugOfficePageState extends State<DebugOfficePage> {
   late Stream<List<Office>> _officeStream;
-  late Stream<List<OfficeUser>> _officeUserStream;
+  late Stream<List<OfficeUser>> _allOfficeUserStream;
   List<Office> _offices = [];
-  List<OfficeUser> _officeUsers = [];
+  List<OfficeUser> _allOfficeUsers = [];
 
   late PageController _pageViewController;
 
@@ -26,7 +28,7 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
 
   Future<void> _officeUserListener(List<OfficeUser> newOfficeUsers) async {
     setState(() {
-      _officeUsers = newOfficeUsers;
+      _allOfficeUsers = newOfficeUsers;
     });
   }
 
@@ -34,9 +36,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
   void initState() {
     super.initState();
     _officeStream = FirestoreRepository.getOfficeStream();
-    _officeUserStream = FirestoreRepository.getOfficeUsersStream();
+    _allOfficeUserStream = FirestoreRepository.getOfficeUsersStream();
     _officeStream.listen(_officeListener);
-    _officeUserStream.listen(_officeUserListener);
+    _allOfficeUserStream.listen(_officeUserListener);
 
     _pageViewController = PageController();
   }
@@ -64,24 +66,39 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
               );
             }
             final office = _offices[officeIndex % _offices.length];
-            return Column(
-              children: [
-                Text(office.toString()),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: office.userIdList.length,
-                  itemBuilder: (context, userIndex) {
-                    final user = _officeUsers.firstWhere(
-                      (user) => user.id == _officeUsers[userIndex].id,
-                    );
-                    return Column(
-                      children: [
-                        Text(user.toString()),
-                      ],
-                    );
-                  },
-                ),
-              ],
+            return Container(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                children: [
+                  Text(
+                    '${office.name}(@${office.id})',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  SizedBox(height: 8.h),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: office.userIdList.isEmpty
+                          ? const Text('今は誰もオフィスにいません')
+                          : GridView.builder(
+                              itemCount: office.userIdList.length,
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                              ),
+                              itemBuilder: (context, userIndex) {
+                                final user = _allOfficeUsers.firstWhere(
+                                  (user) =>
+                                      user.id == _allOfficeUsers[userIndex].id,
+                                );
+                                return DebugOfficeUserItem(user: user);
+                              },
+                            ),
+                    ),
+                  )
+                ],
+              ),
             );
           },
         ),
