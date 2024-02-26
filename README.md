@@ -11,6 +11,32 @@ fvm flutter pub get
 fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
+## ブランチ運用
+- main
+- develop
+- feature/xxx
+- fix/xxx
+- release/v1
+
+## ディレクトリ構造
+- root
+    - assets
+        - images
+        - fonts
+        - （その他の種類のデータを使用するようであれば適宜ディレクトリを追加する）
+    - lib
+        - debug（本実装前の技術検証用）
+        - pages（Figmaの画面遷移図に定義されている各ページ）
+            - 各page名のディレクトリ
+        - constants（全てのカラー・スタイルなどの定数をここに定義）
+        - widgets（UIコンポーネント）
+        - providers（riverpod関連）
+        - models（状態遷移の時に値渡しする時のクラスやRiverpodで状態管理する時のクラスを定義）
+        - repository（API通信, ローカル・リモートのデータのやり取りを行う）
+        - util（便利ツール類）
+        - extensions(string型やdouble型などの拡張したい時に編集する）
+        - main.dart
+
 ## .env
 プロジェクト設定や秘匿情報を環境変数として`.env`で管理しています。
 `.env`は必ずプロジェクトのルートディレクトリ直下に配置してください。
