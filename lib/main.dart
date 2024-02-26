@@ -9,7 +9,6 @@ import 'package:pg_mobile/repository/mastodon_repository.dart';
 void main() {
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
   MastodonRepository.instance.init();
-  MastodonRepository.instance.set();
   runApp(const MyApp());
 }
 

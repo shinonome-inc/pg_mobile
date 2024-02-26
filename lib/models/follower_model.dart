@@ -6,9 +6,9 @@ part 'follower_model.g.dart';
 @freezed
 class FollowerModel with _$FollowerModel {
   const factory FollowerModel({
-    required String displayName,
-    required String username,
-    required String avatarUrl,
+    @JsonKey(name: 'display_name') required String displayName,
+    @JsonKey(name: 'username') required String username,
+    @JsonKey(name: 'avatar') required String avatarUrl,
   }) = _FollowerModel;
 
   factory FollowerModel.fromJson(Map<String, dynamic> json) =>

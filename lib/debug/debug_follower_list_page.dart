@@ -24,8 +24,9 @@ class DebugFollowerListPage extends StatelessWidget {
                   CircleAvatar(
                     backgroundImage:
                         NetworkImage(followerModelList[index].avatarUrl),
-                    radius: 70,
+                    radius: 30,
                   ),
+                  const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
