@@ -36,6 +36,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.9.0
+  flutter_web_auth:
+  http:
   envied: ^0.5.3
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
