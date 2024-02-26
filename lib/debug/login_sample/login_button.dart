@@ -8,7 +8,7 @@ class LoginButton extends StatelessWidget with EnvMixin{
   const LoginButton({super.key});
 
   Future<void> signInWithMastodon() async {
-    final url = Uri.parse('$instanceUrl/oauth/authorize?client_id=$clientId&response_type=code&redirect_uri=$redirectUri&scope=read');
+    final url = Uri.parse('$mastodonInstanceUrl/oauth/authorize?client_id=$mastodonClientId&response_type=code&redirect_uri=$mastodonRedirectUri&scope=read');
 
     final result = await FlutterWebAuth.authenticate(
         url: url.toString(),
@@ -17,14 +17,14 @@ class LoginButton extends StatelessWidget with EnvMixin{
     final code = Uri.parse(result).queryParameters['code'];
     if (code != null) {
       final response = await http.post(
-        Uri.parse('$instanceUrl/oauth/token'),
+        Uri.parse('$mastodonInstanceUrl/oauth/token'),
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {
-          'client_id': clientId,
-          'client_secret': clientSecret,
+          'client_id': mastodonClientId,
+          'client_secret': mastodonClientSecret,
           'grant_type': 'authorization_code',
           'code': code,
-          'redirect_uri': redirectUri,
+          'redirect_uri': mastodonRedirectUri,
         },
       );
 
