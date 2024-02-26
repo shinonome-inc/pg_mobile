@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:pg_mobile/config/env.dart';
-import 'package:pg_mobile/debug/util/env_mixin.dart';
 
-class MastdonRepository with EnvMixin {
+class MastdonRepository {
   MastdonRepository._();
 
   static Future<void> signIn() async {
