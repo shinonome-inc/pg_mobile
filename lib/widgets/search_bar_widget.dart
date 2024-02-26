@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/constraints/app_color.dart';
-import 'package:pg_mobile/constraints/app_controller.dart';
+import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/constants/app_controllers.dart';
 
 class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({Key? key}) : super(key: key);
@@ -17,9 +17,9 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return SizedBox(
       height: textFormFieldHeight,
       child: TextFormField(
-        controller: AppController.searchController,
+        controller: AppControllers.searchController,
         style: const TextStyle(
-          color: AppColor.white,
+          color: AppColors.white,
         ),
         decoration: InputDecoration(
           hintText: 'Search',
@@ -27,27 +27,27 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             fontSize: 14,
             fontWeight: FontWeight.w400,
             letterSpacing: 0.035,
-            color: AppColor.gray3,
+            color: AppColors.gray3,
           ),
           prefixIcon: const Icon(
             Icons.search,
             size: 25,
-            color: AppColor.gray3,
+            color: AppColors.gray3,
           ),
           suffixIcon: IconButton(
             icon: const Icon(
               Icons.close,
-              color: AppColor.gray3,
+              color: AppColors.gray3,
               size: 20,
             ),
             onPressed: () {
               setState(() {
-                AppController.searchController.text = "";
+                AppControllers.searchController.text = "";
               });
             },
           ),
           filled: true,
-          fillColor: AppColor.gray2,
+          fillColor: AppColors.gray2,
           isDense: true,
           // hintTextのSearchが真ん中に来るように調整
           contentPadding: const EdgeInsets.symmetric(vertical: 6),

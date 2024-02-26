@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-class AppController {
+class AppControllers {
   static TextEditingController searchController = TextEditingController();
 }
