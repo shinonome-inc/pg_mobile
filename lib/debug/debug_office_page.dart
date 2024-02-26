@@ -33,6 +33,17 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
 
   bool get _isNotAlreadySignedIn => !_isAlreadySignedIn;
 
+  bool get _isRegisteredUser {
+    for (final user in _allOfficeUsers) {
+      if (user.id == signInUser.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool get _isNotRegisteredUser => !_isRegisteredUser;
+
   void _setLoading(bool isLoading) {
     setState(() {
       _isLoading = isLoading;
@@ -62,6 +73,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
     if (_isAlreadySignedIn) {
       return;
     }
+    if (_isNotRegisteredUser) {
+      await FirestoreRepository.setOfficeUser(signInUser);
+    }
     final newOffice = office.copyWith(
       userIdList: [...office.userIdList, signInUser.id],
     );
@@ -70,7 +84,6 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
   }
 
   Future<void> _checkOut(String officeId) async {
-    print('isLoading: $_isLoading');
     if (_isLoading) {
       return;
     }
@@ -83,9 +96,7 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
     }
     final newUserIdList = List<String>.from(office.userIdList)
       ..remove(signInUser.id);
-    print('newUserIds: $newUserIdList');
     final newOffice = office.copyWith(userIdList: newUserIdList);
-    print('newOfficeUserId: ${newOffice.userIdList}');
     await FirestoreRepository.updateOffice(office: newOffice);
     _setLoading(false);
   }
@@ -151,9 +162,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
                                 crossAxisCount: 2,
                               ),
                               itemBuilder: (context, userIndex) {
+                                final userId = office.userIdList[userIndex];
                                 final user = _allOfficeUsers.firstWhere(
-                                  (user) =>
-                                      user.id == _allOfficeUsers[userIndex].id,
+                                  (user) => user.id == userId,
                                 );
                                 return DebugOfficeUserItem(user: user);
                               },
