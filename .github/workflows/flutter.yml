@@ -18,10 +18,10 @@ jobs:
    - name: Create .env file
      run: echo "USE_DEBUG_MODE=${{ secrets.USE_DEBUG_MODE }}" >> .env
           && echo "PGN_API_BASE_URL=${{ secrets.PGN_API_BASE_URL }}" >> .env
-          && echo "CLIENT_ID=\${{ secrets.CLIENT_ID }}" >> .env
-          && echo "CLIENT_SECRET=\${{ secrets.CLIENT_SECRET }}" >> .env
-          && echo "REDIRECT_URI=\${{ secrets.REDIRECT_URI }}" >> .env
-          && echo "INSTANCE_URL=\${{ secrets.INSTANCE_URL }}" >> .env
+          && echo "MASTODON_CLIENT_ID=\${{ secrets.MASTODON_CLIENT_ID }}" >> .env
+          && echo "MASTODON_CLIENT_SECRET=\${{ secrets.MASTODON_CLIENT_SECRET }}" >> .env
+          && echo "MASTODON_REDIRECT_URI=\${{ secrets.MASTODON_REDIRECT_URI }}" >> .env
+          && echo "MASTODON_INSTANCE_URL=\${{ secrets.MASTODON_INSTANCE_URL }}" >> .env
 
    #   run: echo "FIREBASE_API_KEY_WEB=${{ secrets.FIREBASE_API_KEY_WEB }}" >> .env
    #        && echo "FIREBASE_APP_ID_WEB=${{ secrets.FIREBASE_APP_ID_WEB }}" >> .env
