@@ -18,9 +18,9 @@ jobs:
    - name: Create .env file
      run: echo "USE_DEBUG_MODE=${{ secrets.USE_DEBUG_MODE }}" >> .env
           && echo "PGN_API_BASE_URL=${{ secrets.PGN_API_BASE_URL }}" >> .env
-          && echo "CLIENT_ID=\${{ secrets.CLIENT_ID }}" >> .env && \
-          && echo "CLIENT_SECRET=\${{ secrets.CLIENT_SECRET }}" >> .env && \
-          && echo "REDIRECT_URI=\${{ secrets.REDIRECT_URI }}" >> .env && \
+          && echo "CLIENT_ID=\${{ secrets.CLIENT_ID }}" >> .env
+          && echo "CLIENT_SECRET=\${{ secrets.CLIENT_SECRET }}" >> .env
+          && echo "REDIRECT_URI=\${{ secrets.REDIRECT_URI }}" >> .env
           && echo "INSTANCE_URL=\${{ secrets.INSTANCE_URL }}" >> .env
 
    #   run: echo "FIREBASE_API_KEY_WEB=${{ secrets.FIREBASE_API_KEY_WEB }}" >> .env
