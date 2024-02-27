@@ -24,10 +24,10 @@ class DebugLocationPageState extends ConsumerState<DebugLocationPage> {
       appBar: AppBar(
         title: const Text('位置情報'),
       ),
-      body: !(state.status?.isGranted ?? false)
-          ? Stack(
-              children: [
-                Padding(
+      body: Stack(
+        children: [
+          (state.status?.isGranted ?? false)
+              ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -54,11 +54,11 @@ class DebugLocationPageState extends ConsumerState<DebugLocationPage> {
                       SizedBox(height: 32.h),
                     ],
                   ),
-                ),
-                if (state.isLoading) const DebugLoadingView(),
-              ],
-            )
-          : const DebugLocationPermissionView(),
+                )
+              : const DebugLocationPermissionView(),
+          if (state.isLoading) const DebugLoadingView(),
+        ],
+      ),
     );
   }
 }

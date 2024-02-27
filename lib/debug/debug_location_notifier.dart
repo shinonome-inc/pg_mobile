@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart' as location;
 import 'package:permission_handler/permission_handler.dart';
@@ -15,7 +16,9 @@ final debugLocationProvider =
 class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
   DebugLocationNotifier(this.ref) : super(defaultDebugLocationState) {
     _checkLocationPermission();
-    _setLocationListener();
+    if (state.status == PermissionStatus.granted) {
+      _setLocationListener();
+    }
   }
 
   final Ref ref;
@@ -42,10 +45,18 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
   }
 
   Future<void> _checkLocationPermission() async {
+    final status = await Permission.locationAlways.status;
+    _setLocationPermissionStatus(status);
+    debugPrint('check location permission: ${state.status}');
+  }
+
+  Future<void> reload() async {
     if (state.isLoading) return;
     _setLoading(true);
-    final status = await Permission.locationAlways.request();
-    _setLocationPermissionStatus(status);
+    print('reload');
+    // 再読み込みを行ったことをユーザーに伝えるために1秒待機
+    await Future.delayed(const Duration(seconds: 1));
+    await _checkLocationPermission();
     _setLoading(false);
   }
 
@@ -54,19 +65,6 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     _setLoading(true);
     await Future.delayed(const Duration(seconds: 1));
     _switchCheckingIn();
-    _setLoading(false);
-  }
-
-  Future<void> openSettings() async {
-    _setLoading(true);
-    final status = await Permission.locationAlways.status;
-    _setLocationPermissionStatus(status);
-    if (!status.isGranted) {
-      await openAppSettings();
-    } else {
-      _setLocationListener();
-    }
-    _checkLocationPermission();
     _setLoading(false);
   }
 
