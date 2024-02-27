@@ -40,6 +40,7 @@ dependencies:
   http:
   envied: ^0.5.3
   permission_handler: ^11.0.1
+  location: ^5.0.0-dev.8
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pg_mobile/debug/debug_loding_view.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
@@ -13,6 +14,9 @@ class DebugLocationPage extends StatefulWidget {
 class _DebugLocationPageState extends State<DebugLocationPage> {
   bool _isLoading = false;
   bool _isCheckingIn = false;
+  double _currentLat = 0.0;
+  double _currentLong = 0.0;
+  final _location = Location();
 
   void _setLoading(bool value) {
     setState(() {
@@ -24,6 +28,21 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
     setState(() {
       _isCheckingIn = !_isCheckingIn;
     });
+  }
+
+  void _setCurrentLatLong(double currentLat, double currentLong) {
+    setState(() {
+      _currentLat = currentLat;
+      _currentLong = currentLong;
+    });
+  }
+
+  void _locationListener(LocationData currentLocation) {
+    if (currentLocation.latitude == null || currentLocation.longitude == null) {
+      return;
+    }
+    _setCurrentLatLong(currentLocation.latitude!, currentLocation.longitude!);
+    print('lat: $_currentLat, long: $_currentLong');
   }
 
   void _onPressedCancel() {
@@ -64,6 +83,12 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
         onPressedCancel: _onPressedCancel,
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _location.onLocationChanged.listen(_locationListener);
   }
 
   @override
