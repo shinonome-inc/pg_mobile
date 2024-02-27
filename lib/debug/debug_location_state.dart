@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pg_mobile/constants/locations.dart';
 
 part 'debug_location_state.freezed.dart';
 
@@ -27,9 +28,7 @@ const DebugLocationState defaultDebugLocationState = DebugLocationState(
 );
 
 extension DebugLocationStateExtension on DebugLocationState {
-  // 現在地と目的地の距離が30メートル以内のみオフィスにいる判定となる
-  // TODO: 30メートルは仮の値なので適切な値に置き換える
-  bool get isInOffice => distanceInMeters <= 30.0;
+  bool get isInOffice => distanceInMeters <= Locations.officeAreaRadiusInMeters;
 
   bool get enableCheckInButton =>
       (isInOffice || isCheckingIn) && isInitializedCurrentLocation;
