@@ -6,6 +6,7 @@ import 'package:location/location.dart' as location;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pg_mobile/constants/locations.dart';
 import 'package:pg_mobile/debug/debug_location_state.dart';
+import 'package:pg_mobile/extensions/permission_status_extension.dart';
 import 'package:pg_mobile/util/location_util.dart';
 
 final debugLocationProvider =
@@ -49,7 +50,7 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     final status = await Permission.locationAlways.status;
     _setLocationPermissionStatus(status);
     debugPrint('check location permission: ${state.status}');
-    if (state.status == PermissionStatus.granted) {
+    if (state.status.isGranted) {
       _setLocationListener();
     }
   }
