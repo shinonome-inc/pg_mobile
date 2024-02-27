@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pg_mobile/debug/debug_location_notifier.dart';
-import 'package:pg_mobile/debug/debug_location_permission_view.dart';
-import 'package:pg_mobile/debug/debug_location_view.dart';
 import 'package:pg_mobile/debug/debug_loding_view.dart';
+import 'package:pg_mobile/debug/location/debug_location_notifier.dart';
+import 'package:pg_mobile/debug/location/debug_location_permission_view.dart';
+import 'package:pg_mobile/debug/location/debug_location_view.dart';
 import 'package:pg_mobile/extensions/permission_status_extension.dart';
 
 class DebugLocationPage extends ConsumerStatefulWidget {

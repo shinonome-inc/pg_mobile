@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart' as location;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pg_mobile/constants/locations.dart';
-import 'package:pg_mobile/debug/debug_location_state.dart';
+import 'package:pg_mobile/debug/location/debug_location_state.dart';
 import 'package:pg_mobile/extensions/permission_status_extension.dart';
 import 'package:pg_mobile/util/location_util.dart';
 

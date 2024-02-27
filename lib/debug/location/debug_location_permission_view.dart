@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/debug/debug_location_notifier.dart';
+import 'package:pg_mobile/debug/location/debug_location_notifier.dart';
 
 class DebugLocationPermissionView extends ConsumerWidget {
   const DebugLocationPermissionView({Key? key}) : super(key: key);

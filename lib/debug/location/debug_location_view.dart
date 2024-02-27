@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/locations.dart';
-import 'package:pg_mobile/debug/debug_location_notifier.dart';
-import 'package:pg_mobile/debug/debug_location_state.dart';
+import 'package:pg_mobile/debug/location/debug_location_notifier.dart';
+import 'package:pg_mobile/debug/location/debug_location_state.dart';
 
 class DebugLocationView extends ConsumerStatefulWidget {
   const DebugLocationView({super.key});
