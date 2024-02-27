@@ -64,7 +64,7 @@
     <!-- Deep Links　ここまで追加 -->
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>アプリが位置情報を使用することを許可する必要があります。</string>
-    <key>アプリが常に位置情報を使用することを許可する必要があります。</key>
-    <string>Because</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>アプリが常に位置情報を使用することを許可する必要があります。</string>
 </dict>
 </plist>
