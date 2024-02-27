@@ -34,6 +34,10 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     state = state.copyWith(isCheckingIn: !state.isCheckingIn);
   }
 
+  void _setIsInitializedCurrentLocation(bool value) {
+    state = state.copyWith(isInitializedCurrentLocation: value);
+  }
+
   void _setCurrentLatLong(double currentLat, double currentLong) {
     state = state.copyWith(
       currentLat: currentLat,
@@ -83,7 +87,7 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
       ),
     );
     if (!state.isInitializedCurrentLocation) {
-      state = state.copyWith(isInitializedCurrentLocation: true);
+      _setIsInitializedCurrentLocation(true);
     }
   }
 }
