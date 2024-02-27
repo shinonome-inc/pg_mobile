@@ -45,7 +45,7 @@ class DebugLocationPermissionView extends ConsumerWidget {
               child: const Text('再読み込み'),
             ),
           ),
-          SizedBox(height: 32.h),
+          SizedBox(height: 64.h),
         ],
       ),
     );

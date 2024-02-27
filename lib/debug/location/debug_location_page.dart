@@ -17,18 +17,18 @@ class DebugLocationPageState extends ConsumerState<DebugLocationPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(debugLocationProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('位置情報'),
-      ),
-      body: Stack(
-        children: [
-          (state.status.isGranted)
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: const Text('位置情報'),
+          ),
+          body: state.status.isGranted
               ? const DebugLocationView()
               : const DebugLocationPermissionView(),
-          if (state.isLoading) const DebugLoadingView(),
-        ],
-      ),
+        ),
+        if (state.isLoading) const DebugLoadingView()
+      ],
     );
   }
 }

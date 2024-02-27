@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/locations.dart';
+import 'package:pg_mobile/constants/styles.dart';
 import 'package:pg_mobile/debug/location/debug_location_notifier.dart';
 import 'package:pg_mobile/debug/location/debug_location_state.dart';
 
@@ -13,6 +14,14 @@ class DebugLocationView extends ConsumerStatefulWidget {
 }
 
 class DebugLocationViewState extends ConsumerState<DebugLocationView> {
+  void _onPressedInvalidCheckIn() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('オフィスに近づいてください。'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(debugLocationProvider);
@@ -35,12 +44,16 @@ class DebugLocationViewState extends ConsumerState<DebugLocationView> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed:
-                  state.enableCheckInButton ? notifier.checkInCheckOut : null,
+              onPressed: state.enableCheckInButton
+                  ? notifier.checkInCheckOut
+                  : _onPressedInvalidCheckIn,
+              style: state.enableCheckInButton
+                  ? null
+                  : Styles.disableElevatedButton,
               child: Text(state.isCheckingIn ? 'チェックアウト' : 'チェックイン'),
             ),
           ),
-          SizedBox(height: 32.h),
+          SizedBox(height: 64.h),
         ],
       ),
     );
