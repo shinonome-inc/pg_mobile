@@ -24,7 +24,7 @@ class DebugLocationPageState extends ConsumerState<DebugLocationPage> {
       appBar: AppBar(
         title: const Text('位置情報'),
       ),
-      body: state.status?.isGranted ?? false
+      body: !(state.status?.isGranted ?? false)
           ? Stack(
               children: [
                 Padding(
