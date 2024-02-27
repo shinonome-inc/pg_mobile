@@ -66,5 +66,11 @@
     <string>アプリが位置情報を使用することを許可する必要があります。</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>アプリが常に位置情報を使用することを許可する必要があります。</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>アプリが常に位置情報を使用することを許可する必要があります。</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>location</string>
+    </array>
 </dict>
 </plist>
