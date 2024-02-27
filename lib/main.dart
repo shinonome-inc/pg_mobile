@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
@@ -7,7 +8,11 @@ import 'package:pg_mobile/debug/debug_page.dart';
 
 void main() {
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
