@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:location/location.dart';
+import 'package:location/location.dart' as location;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pg_mobile/debug/debug_location_permission_view.dart';
 import 'package:pg_mobile/debug/debug_loding_view.dart';
 import 'package:pg_mobile/util/location_util.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
@@ -14,12 +15,13 @@ class DebugLocationPage extends StatefulWidget {
 }
 
 class _DebugLocationPageState extends State<DebugLocationPage> {
+  late PermissionStatus _locationPermissionStatus;
   bool _isLoading = false;
   bool _isCheckingIn = false;
   double _currentLat = 0.0;
   double _currentLong = 0.0;
   double _distanceInMeters = 0.0;
-  final _location = Location();
+  final _location = location.Location();
 
   // PlayGround東京オフィスの座標
   final _targetLocation = LocationUtil.convertToLocationData(
@@ -30,6 +32,12 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
   // 現在地と目的地の距離が30メートル以内のみオフィスにいる判定となる
   // TODO: 30メートルは仮の値なので適切な値に置き換える
   bool get _isInOffice => _distanceInMeters <= 30.0;
+
+  void _setLocationPermissionStatus(PermissionStatus status) {
+    setState(() {
+      _locationPermissionStatus = status;
+    });
+  }
 
   void _setLoading(bool value) {
     setState(() {
@@ -50,6 +58,14 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
     });
   }
 
+  Future<void> _checkLocationPermission() async {
+    if (_isLoading) return;
+    _setLoading(true);
+    final status = await Permission.locationAlways.request();
+    _setLocationPermissionStatus(status);
+    _setLoading(false);
+  }
+
   void _onPressedCancel() {
     Navigator.of(context).pop();
   }
@@ -57,8 +73,8 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
   Future<void> _onPressedOK() async {
     _setLoading(true);
     await openAppSettings();
-    final status = await Permission.locationAlways.status;
-    if (status.isGranted) {
+    await _checkLocationPermission();
+    if (_locationPermissionStatus.isGranted) {
       await _checkInCheckOut();
     }
     _setLoading(false);
@@ -75,8 +91,8 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
 
   Future<void> _onPressedCheckInCheckOut() async {
     if (_isLoading) return;
-    final status = await Permission.locationAlways.request();
-    if (status.isGranted) {
+    await _checkLocationPermission();
+    if (_locationPermissionStatus.isGranted) {
       await _checkInCheckOut();
     } else {
       if (!mounted) return;
@@ -90,7 +106,7 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
     }
   }
 
-  void _locationListener(LocationData currentLocation) {
+  void _locationListener(location.LocationData currentLocation) {
     if (currentLocation.latitude == null || currentLocation.longitude == null) {
       return;
     }
@@ -106,6 +122,7 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
   @override
   void initState() {
     super.initState();
+    _checkLocationPermission();
     _location.onLocationChanged.listen(_locationListener);
   }
 
@@ -115,37 +132,40 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
       appBar: AppBar(
         title: const Text('位置情報'),
       ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: _locationPermissionStatus.isGranted
+          ? Stack(
               children: [
-                const Spacer(),
-                Text(
-                    'オフィスの座標: ${_targetLocation.latitude!.toStringAsFixed(5)}, ${_targetLocation.longitude!.toStringAsFixed(5)}'),
-                Text(
-                    '　現在地の座標: ${_currentLat.toStringAsFixed(5)}, ${_currentLong.toStringAsFixed(5)}'),
-                const Divider(),
-                Text('オフィスまでの距離: ${_distanceInMeters.toStringAsFixed(2)}(m)'),
-                const Spacer(),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _isInOffice || _isCheckingIn
-                        ? _onPressedCheckInCheckOut
-                        : null,
-                    child: Text(_isCheckingIn ? 'チェックアウト' : 'チェックイン'),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      Text(
+                          'オフィスの座標: ${_targetLocation.latitude!.toStringAsFixed(5)}, ${_targetLocation.longitude!.toStringAsFixed(5)}'),
+                      Text(
+                          '　現在地の座標: ${_currentLat.toStringAsFixed(5)}, ${_currentLong.toStringAsFixed(5)}'),
+                      const Divider(),
+                      Text(
+                          'オフィスまでの距離: ${_distanceInMeters.toStringAsFixed(2)}(m)'),
+                      const Spacer(),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isInOffice || _isCheckingIn
+                              ? _onPressedCheckInCheckOut
+                              : null,
+                          child: Text(_isCheckingIn ? 'チェックアウト' : 'チェックイン'),
+                        ),
+                      ),
+                      SizedBox(height: 32.h),
+                    ],
                   ),
                 ),
-                SizedBox(height: 32.h),
+                if (_isLoading) const DebugLoadingView(),
               ],
-            ),
-          ),
-          if (_isLoading) const DebugLoadingView(),
-        ],
-      ),
+            )
+          : const DebugLocationPermissionView(),
     );
   }
 }
