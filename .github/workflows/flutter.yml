@@ -37,5 +37,5 @@ jobs:
      run: flutter pub run build_runner build
    - name: Linter
      run: flutter analyze
-   # - name: Test
-   #   run: flutter test test
+   - name: Test
+     run: flutter test test
