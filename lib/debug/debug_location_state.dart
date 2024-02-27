@@ -30,4 +30,7 @@ extension DebugLocationStateExtension on DebugLocationState {
   // 現在地と目的地の距離が30メートル以内のみオフィスにいる判定となる
   // TODO: 30メートルは仮の値なので適切な値に置き換える
   bool get isInOffice => distanceInMeters <= 30.0;
+
+  bool get enableCheckInButton =>
+      (isInOffice || isCheckingIn) && isInitializedCurrentLocation;
 }

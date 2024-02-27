@@ -44,7 +44,7 @@ class DebugLocationPageState extends ConsumerState<DebugLocationPage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: state.isInOffice || state.isCheckingIn
+                          onPressed: state.enableCheckInButton
                               ? notifier.checkInCheckOut
                               : null,
                           child:

@@ -16,9 +16,6 @@ final debugLocationProvider =
 class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
   DebugLocationNotifier(this.ref) : super(defaultDebugLocationState) {
     _checkLocationPermission();
-    if (state.status == PermissionStatus.granted) {
-      _setLocationListener();
-    }
   }
 
   final Ref ref;
@@ -48,12 +45,14 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     final status = await Permission.locationAlways.status;
     _setLocationPermissionStatus(status);
     debugPrint('check location permission: ${state.status}');
+    if (state.status == PermissionStatus.granted) {
+      _setLocationListener();
+    }
   }
 
   Future<void> reload() async {
     if (state.isLoading) return;
     _setLoading(true);
-    print('reload');
     // 再読み込みを行ったことをユーザーに伝えるために1秒待機
     await Future.delayed(const Duration(seconds: 1));
     await _checkLocationPermission();
@@ -83,5 +82,8 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
         Locations.debugTarget,
       ),
     );
+    if (!state.isInitializedCurrentLocation) {
+      state = state.copyWith(isInitializedCurrentLocation: true);
+    }
   }
 }
