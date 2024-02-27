@@ -27,7 +27,9 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
     139.7449061,
   );
 
-  bool get _isInOffice => _distanceInMeters <= 10.0;
+  // 現在地と目的地の距離が30メートル以内のみオフィスにいる判定となる
+  // TODO: 30メートルは仮の値なので適切な値に置き換える
+  bool get _isInOffice => _distanceInMeters <= 30.0;
 
   void _setLoading(bool value) {
     setState(() {
@@ -131,7 +133,9 @@ class _DebugLocationPageState extends State<DebugLocationPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _onPressedCheckInCheckOut,
+                    onPressed: _isInOffice || _isCheckingIn
+                        ? _onPressedCheckInCheckOut
+                        : null,
                     child: Text(_isCheckingIn ? 'チェックアウト' : 'チェックイン'),
                   ),
                 ),

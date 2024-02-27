@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
                 foregroundColor: AppColors.white,
                 backgroundColor: AppColors.accent,
                 disabledBackgroundColor: AppColors.gray2,
+                disabledForegroundColor: AppColors.gray4,
                 textStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
