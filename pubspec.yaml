@@ -39,6 +39,12 @@ dependencies:
   flutter_web_auth:
   http:
   envied: ^0.5.3
+  permission_handler: ^11.0.1
+  location: ^5.0.0-dev.8
+  geolocator: ^11.0.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  flutter_riverpod: ^2.4.10
   firebase_core: ^2.24.2
   cloud_firestore: ^4.14.0
   freezed_annotation: ^2.4.1

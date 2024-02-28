@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
@@ -13,7 +14,11 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -65,6 +70,7 @@ class MyApp extends StatelessWidget {
                 foregroundColor: AppColors.white,
                 backgroundColor: AppColors.accent,
                 disabledBackgroundColor: AppColors.gray2,
+                disabledForegroundColor: AppColors.gray4,
                 textStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
