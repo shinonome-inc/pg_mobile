@@ -18,6 +18,9 @@ class DebugAlertDialogPage extends StatelessWidget {
                 context,
                 titleText: 'titleText',
                 contentText: 'contentText',
+                onPressedCancel: () {
+                  Navigator.pop(context);
+                },
                 onPressedOK: () {
                   Navigator.pop(context);
                 },

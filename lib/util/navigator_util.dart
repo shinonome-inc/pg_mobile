@@ -5,13 +5,14 @@ import 'package:pg_mobile/widgets/common_cupertino_alert_dialog.dart';
 import 'package:pg_mobile/widgets/common_material_alert_dialog.dart';
 
 class NavigatorUtil {
+  /// OSに応じたAlertDialogを表示するメソッド
   static void showCommonAlertDialog(
     BuildContext context, {
     required String titleText,
     required String contentText,
     String cancelText = 'キャンセル',
     String okText = 'OK',
-    void Function()? onPressedCancel,
+    required void Function()? onPressedCancel,
     required void Function()? onPressedOK,
     bool hideCancel = false,
   }) {
