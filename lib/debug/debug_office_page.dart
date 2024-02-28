@@ -14,6 +14,8 @@ class DebugOfficePage extends StatefulWidget {
 
 class _DebugOfficePageState extends State<DebugOfficePage> {
   bool _isLoading = false;
+  bool _isInitializedOffices = false;
+  bool _isInitializedUsers = false;
 
   late Stream<List<Office>> _officeStream;
   late Stream<List<OfficeUser>> _allOfficeUserStream;
@@ -44,9 +46,21 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
 
   bool get _isNotRegisteredUser => !_isRegisteredUser;
 
-  void _setLoading(bool isLoading) {
+  void _setLoading(bool value) {
     setState(() {
-      _isLoading = isLoading;
+      _isLoading = value;
+    });
+  }
+
+  void _setIsInitializedOffices(bool value) {
+    setState(() {
+      _isInitializedOffices = value;
+    });
+  }
+
+  void _setIsInitializedUsers(bool value) {
+    setState(() {
+      _isInitializedUsers = value;
     });
   }
 
@@ -54,12 +68,24 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
     setState(() {
       _offices = newOffices;
     });
+    if (!_isInitializedOffices) {
+      _setIsInitializedOffices(true);
+      if (_isInitializedUsers) {
+        _setLoading(false);
+      }
+    }
   }
 
   Future<void> _officeUserListener(List<OfficeUser> newOfficeUsers) async {
     setState(() {
       _allOfficeUsers = newOfficeUsers;
     });
+    if (!_isInitializedUsers) {
+      _setIsInitializedUsers(true);
+      if (_isInitializedUsers) {
+        _setLoading(false);
+      }
+    }
   }
 
   Future<void> _checkIn(String officeId) async {
@@ -104,6 +130,7 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
   @override
   void initState() {
     super.initState();
+    _setLoading(true);
     _officeStream = FirestoreRepository.getOfficeStream();
     _allOfficeUserStream = FirestoreRepository.getOfficeUsersStream();
     _officeStream.listen(_officeListener);
@@ -131,60 +158,65 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
             },
           ),
         ),
-        body: PageView.builder(
-          controller: _pageViewController,
-          itemBuilder: (context, officeIndex) {
-            if (_offices.isEmpty) {
-              return const Center(
-                child: Text('オフィスがありません'),
-              );
-            }
-            final office = _offices[officeIndex % _offices.length];
-            return Container(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                children: [
-                  Text(
-                    '${office.name}(@${office.id})',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  SizedBox(height: 8.h),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: office.userIdList.isEmpty
-                          ? const Text('今は誰もオフィスにいません')
-                          : GridView.builder(
-                              itemCount: office.userIdList.length,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                              ),
-                              itemBuilder: (context, userIndex) {
-                                final userId = office.userIdList[userIndex];
-                                final user = _allOfficeUsers.firstWhere(
-                                  (user) => user.id == userId,
-                                );
-                                return DebugOfficeUserItem(user: user);
-                              },
-                            ),
-                    ),
-                  ),
-                  _isAlreadySignedIn
-                      ? TextButton(
-                          onPressed: () => _checkOut(office.id),
-                          child: const Text('チェックアウト'),
-                        )
-                      : TextButton(
-                          onPressed: () => _checkIn(office.id),
-                          child: const Text('チェックイン'),
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : PageView.builder(
+                controller: _pageViewController,
+                itemBuilder: (context, officeIndex) {
+                  if (_offices.isEmpty) {
+                    return const Center(
+                      child: Text('オフィスがありません'),
+                    );
+                  }
+                  final office = _offices[officeIndex % _offices.length];
+                  return Container(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      children: [
+                        Text(
+                          '${office.name}(@${office.id})',
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
-                ],
+                        SizedBox(height: 8.h),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: office.userIdList.isEmpty
+                                ? const Text('今は誰もオフィスにいません')
+                                : GridView.builder(
+                                    itemCount: office.userIdList.length,
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                    ),
+                                    itemBuilder: (context, userIndex) {
+                                      final userId =
+                                          office.userIdList[userIndex];
+                                      final user = _allOfficeUsers.firstWhere(
+                                        (user) => user.id == userId,
+                                      );
+                                      return DebugOfficeUserItem(user: user);
+                                    },
+                                  ),
+                          ),
+                        ),
+                        _isAlreadySignedIn
+                            ? TextButton(
+                                onPressed: () => _checkOut(office.id),
+                                child: const Text('チェックアウト'),
+                              )
+                            : TextButton(
+                                onPressed: () => _checkIn(office.id),
+                                child: const Text('チェックイン'),
+                              ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
       ),
     );
   }
