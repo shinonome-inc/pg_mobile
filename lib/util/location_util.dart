@@ -1,9 +1,11 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 
+/// 位置情報関連のユーティリティークラス
 class LocationUtil {
   LocationUtil._();
 
+  /// double型の緯度と経度の[LocationData]型への変換を行う。
   static LocationData convertToLocationData(double latitude, double longitude) {
     return LocationData.fromMap({
       'latitude': latitude,
@@ -11,6 +13,7 @@ class LocationUtil {
     });
   }
 
+  /// 2点間の座標の距離（メートル）の計算を実行する。
   static double distanceInMeters(
     LocationData startLocation,
     LocationData endLocation,

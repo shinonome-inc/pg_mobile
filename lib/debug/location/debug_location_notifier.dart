@@ -53,6 +53,7 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     }
   }
 
+  /// 現在の位置情報の権限を状態管理に反映させるために再読み込みを行う
   Future<void> reload() async {
     if (state.isLoading) return;
     _setLoading(true);
@@ -74,6 +75,7 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     _location.onLocationChanged.listen(_locationListener);
   }
 
+  /// 端末の位置情報が更新されるたびに呼び出されるListener
   void _locationListener(location.LocationData currentLocation) {
     if (currentLocation.latitude == null || currentLocation.longitude == null) {
       return;

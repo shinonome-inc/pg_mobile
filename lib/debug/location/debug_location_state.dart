@@ -28,8 +28,14 @@ const DebugLocationState defaultDebugLocationState = DebugLocationState(
 );
 
 extension DebugLocationStateExtension on DebugLocationState {
+  /// オフィス滞在判定
   bool get isInOffice => distanceInMeters <= Locations.officeAreaRadiusInMeters;
 
-  bool get enableCheckInButton =>
-      (isInOffice || isCheckingIn) && isInitializedCurrentLocation;
+  /// チェックイン・チェックアウトボタンがタップできるか判定
+  ///
+  /// 現在位置が初期化されている かつ オフィスにいる場合はタップできる。
+  /// 現在位置が初期化されている かつ チェックイン済みの場合は（チェックアウトボタンを）タップできる。
+  ///
+  bool get enableCheckInCheckOut =>
+      isInitializedCurrentLocation && (isInOffice || isCheckingIn);
 }

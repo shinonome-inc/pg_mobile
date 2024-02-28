@@ -1,5 +1,6 @@
 import 'package:pg_mobile/util/location_util.dart';
 
+/// 位置情報に関する値を定義したクラス
 class Locations {
   Locations._();
 

@@ -44,10 +44,10 @@ class DebugLocationViewState extends ConsumerState<DebugLocationView> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: state.enableCheckInButton
+              onPressed: state.enableCheckInCheckOut
                   ? notifier.checkInCheckOut
                   : _onPressedInvalidCheckIn,
-              style: state.enableCheckInButton
+              style: state.enableCheckInCheckOut
                   ? null
                   : Styles.disableElevatedButton,
               child: Text(state.isCheckingIn ? 'チェックアウト' : 'チェックイン'),
