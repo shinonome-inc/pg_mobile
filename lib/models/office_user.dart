@@ -20,3 +20,9 @@ const OfficeUser defaultOfficeUser = OfficeUser(
   name: '',
   imageUrl: '',
 );
+
+const OfficeUser signInUser = OfficeUser(
+  id: 'signInUser',
+  name: 'サインイン中のユーザー',
+  imageUrl: '',
+);
