@@ -5,9 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/constants/font_families.dart';
-import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:pg_mobile/firebase_options.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,7 +83,6 @@ class MyApp extends StatelessWidget {
         );
       },
       child: Env.useDebugMode ? const DebugPage() : const Scaffold(),
-
     );
   }
 }
