@@ -8,8 +8,6 @@ class NavigatorUtil {
     BuildContext context, {
     required String titleText,
     required String contentText,
-    String cancelText = 'キャンセル',
-    String okText = 'OK',
     void Function()? onPressedCancel,
     required void Function()? onPressedOK,
     bool hideCancel = false,
@@ -20,8 +18,6 @@ class NavigatorUtil {
         builder: (BuildContext context) => DebugCupertinoAlertDialog(
           titleText: titleText,
           contentText: contentText,
-          cancelText: cancelText,
-          okText: okText,
           onPressedCancel: onPressedCancel,
           onPressedOK: onPressedOK,
           hideCancel: hideCancel,
@@ -34,8 +30,6 @@ class NavigatorUtil {
           return DebugMaterialAlertDialog(
             titleText: titleText,
             contentText: contentText,
-            cancelText: cancelText,
-            okText: okText,
             onPressedCancel: onPressedCancel,
             onPressedOK: onPressedOK,
             hideCancel: hideCancel,

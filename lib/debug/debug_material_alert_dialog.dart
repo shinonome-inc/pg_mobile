@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/constants/app_colors.dart';
 
 class DebugMaterialAlertDialog extends StatelessWidget {
   const DebugMaterialAlertDialog({
     Key? key,
     required this.titleText,
     required this.contentText,
-    required this.cancelText,
-    required this.okText,
     required this.onPressedCancel,
     required this.onPressedOK,
     required this.hideCancel,
@@ -15,8 +12,6 @@ class DebugMaterialAlertDialog extends StatelessWidget {
 
   final String titleText;
   final String contentText;
-  final String cancelText;
-  final String okText;
   final void Function()? onPressedCancel;
   final void Function()? onPressedOK;
   final bool hideCancel;
@@ -26,23 +21,17 @@ class DebugMaterialAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        titleText,
-        style: const TextStyle(color: AppColors.black),
-      ),
-      content: Text(
-        contentText,
-        style: const TextStyle(color: AppColors.black),
-      ),
+      title: Text(titleText),
+      content: Text(contentText),
       actions: <Widget>[
         if (_showCancel)
           TextButton(
             onPressed: onPressedCancel,
-            child: Text(cancelText),
+            child: const Text('キャンセル'),
           ),
         TextButton(
           onPressed: onPressedOK,
-          child: Text(okText),
+          child: const Text('OK'),
         ),
       ],
     );

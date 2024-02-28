@@ -5,8 +5,6 @@ class DebugCupertinoAlertDialog extends StatelessWidget {
     Key? key,
     required this.titleText,
     required this.contentText,
-    required this.cancelText,
-    required this.okText,
     required this.onPressedCancel,
     required this.onPressedOK,
     required this.hideCancel,
@@ -14,15 +12,9 @@ class DebugCupertinoAlertDialog extends StatelessWidget {
 
   final String titleText;
   final String contentText;
-  final String cancelText;
-  final String okText;
   final void Function()? onPressedCancel;
   final void Function()? onPressedOK;
   final bool hideCancel;
-
-  static const TextStyle _actionsTextStyle = TextStyle(
-    color: CupertinoColors.systemBlue,
-  );
 
   bool get _showCancel => !hideCancel;
 
@@ -35,14 +27,14 @@ class DebugCupertinoAlertDialog extends StatelessWidget {
         if (_showCancel)
           CupertinoDialogAction(
             onPressed: onPressedCancel,
-            textStyle: _actionsTextStyle,
-            child: Text(cancelText),
+            textStyle: const TextStyle(color: CupertinoColors.systemBlue),
+            child: const Text('キャンセル'),
           ),
         CupertinoDialogAction(
           isDestructiveAction: true,
           onPressed: onPressedOK,
-          textStyle: _actionsTextStyle,
-          child: Text(okText),
+          textStyle: const TextStyle(color: CupertinoColors.systemBlue),
+          child: const Text('OK'),
         ),
       ],
     );
