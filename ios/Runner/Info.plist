@@ -47,5 +47,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+    <!-- Deep Links　ここから -->
+    <key>FlutterDeepLinkingEnabled</key>
+    <true/>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>pgmobile</string>
+        </array>
+        </dict>
+    </array>
+    <!-- Deep Links　ここまで追加 -->
 </dict>
 </plist>
