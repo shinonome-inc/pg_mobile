@@ -37,6 +37,9 @@ fvm flutter pub run build_runner build --delete-conflicting-outputs
         - extensions(string型やdouble型などの拡張したい時に編集する）
         - main.dart
 
+## Gitの管理下から外すファイル
+Gitの管理下から外すファイルを[Googleドライブ](https://drive.google.com/drive/u/2/folders/1xbG794F1gSeDXFKsD29WSB2wA7-_ekrj)からダウンロードし、.gitignoreを参考にそれぞれのファイルをプロジェクトに追加してください
+
 ## .env
 プロジェクト設定や秘匿情報を環境変数として`.env`で管理しています。
 `.env`は必ずプロジェクトのルートディレクトリ直下に配置してください。
