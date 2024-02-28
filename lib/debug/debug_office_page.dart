@@ -73,9 +73,6 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
     });
     if (!_isInitializedOffices) {
       _setIsInitializedOffices(true);
-      if (_isInitializedUsers) {
-        _setLoading(false);
-      }
     }
   }
 
@@ -85,23 +82,18 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
     });
     if (!_isInitializedUsers) {
       _setIsInitializedUsers(true);
-      if (_isInitializedUsers) {
-        _setLoading(false);
-      }
     }
   }
 
+  Office _officeFromId(String officeId) {
+    return _offices.firstWhere((element) => element.id == officeId);
+  }
+
   Future<void> _checkIn(String officeId) async {
-    if (_isLoading) {
-      return;
-    }
+    if (_isLoading) return;
     _setLoading(true);
-    final office = _offices.firstWhere(
-      (element) => element.id == officeId,
-    );
-    if (_isAlreadySignedIn) {
-      return;
-    }
+    final office = _officeFromId(officeId);
+    if (_isAlreadySignedIn) return;
     if (_isNotRegisteredUser) {
       await FirestoreRepository.setOfficeUser(signInUser);
     }
@@ -113,16 +105,10 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
   }
 
   Future<void> _checkOut(String officeId) async {
-    if (_isLoading) {
-      return;
-    }
+    if (_isLoading) return;
     _setLoading(true);
-    final Office office = _offices.firstWhere(
-      (element) => element.id == officeId,
-    );
-    if (_isNotAlreadySignedIn) {
-      return;
-    }
+    final office = _officeFromId(officeId);
+    if (_isNotAlreadySignedIn) return;
     final newUserIdList = List<String>.from(office.userIdList)
       ..remove(signInUser.id);
     final newOffice = office.copyWith(userIdList: newUserIdList);
@@ -133,12 +119,10 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
   @override
   void initState() {
     super.initState();
-    _setLoading(true);
     _officeStream = FirestoreRepository.getOfficeStream();
     _allOfficeUserStream = FirestoreRepository.getOfficeUsersStream();
     _officeStream.listen(_officeListener);
     _allOfficeUserStream.listen(_officeUserListener);
-
     _pageViewController = PageController();
   }
 
