@@ -1,16 +1,17 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'follower_model.freezed.dart';
-part 'follower_model.g.dart';
-
-@freezed
-class FollowerModel with _$FollowerModel {
-  const factory FollowerModel({
-    required String display_name,
-    required String username,
-    required String avatar,
-  }) = _FollowerModel;
-
-  factory FollowerModel.fromJson(Map<String, dynamic> json) =>
-      _$FollowerModelFromJson(json);
+class FollowerModel {
+  final String displayName;
+  final String username;
+  final String avatarUrl;
+  FollowerModel({
+    required this.displayName,
+    required this.username,
+    required this.avatarUrl,
+  });
+  factory FollowerModel.fromJson(Map<String, dynamic> json) {
+    return FollowerModel(
+      displayName: json['display_name'] as String,
+      username: json['username'] as String,
+      avatarUrl: json['avatar'] as String,
+    );
+  }
 }

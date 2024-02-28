@@ -23,7 +23,7 @@ class DebugFollowerListPage extends StatelessWidget {
                   const SizedBox(width: 16),
                   CircleAvatar(
                     backgroundImage:
-                        NetworkImage(followerModelList[index].avatar),
+                        NetworkImage(followerModelList[index].avatarUrl),
                     radius: 30,
                   ),
                   const SizedBox(width: 10),
@@ -31,7 +31,7 @@ class DebugFollowerListPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        followerModelList[index].display_name,
+                        followerModelList[index].displayName,
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,

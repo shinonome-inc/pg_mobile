@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/follower_model.dart';
 
@@ -24,6 +21,7 @@ class MastodonRepository {
 
   void set(String accessToken) {
     _headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
       "Authorization": "Bearer $accessToken",
     };
     _dio.options.headers.addAll(_headers!);
@@ -37,23 +35,19 @@ class MastodonRepository {
 
   Future<String?> signIn(Uri uri) async {
     final code = uri.queryParameters['code'];
-    if (code != null) {
-      final response = await http.post(
-        Uri.parse('${Env.mastodonInstanceUrl}/oauth/token'),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: {
-          'client_id': Env.mastodonClientId,
-          'client_secret': Env.mastodonClientSecret,
-          'grant_type': 'authorization_code',
-          'code': code,
-          'redirect_uri': Env.mastodonRedirectUri,
-        },
-      );
+    final response = await _dio.post(
+      '/oauth/token',
+      data: {
+        'client_id': Env.mastodonClientId,
+        'client_secret': Env.mastodonClientSecret,
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': Env.mastodonRedirectUri,
+      },
+    );
 
-      final accessToken = json.decode(response.body)['access_token'];
-      return accessToken;
-    } else {
-      throw Exception('code does not have');
-    }
+    final body = response.data;
+    final accessToken = body['access_token'];
+    return accessToken;
   }
 }
