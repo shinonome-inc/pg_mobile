@@ -147,6 +147,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
 
   @override
   Widget build(BuildContext context) {
+    // FIXME: WillPopScopeの代替案を導入する
+    // ignore: deprecated_member_use
+    // ignore: deprecated_member_use_new_syntax
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
