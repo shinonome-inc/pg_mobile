@@ -72,6 +72,7 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
   }
 
   void _setLocationListener() {
+    _setLoading(true);
     _location.onLocationChanged.listen(_locationListener);
   }
 
@@ -89,6 +90,7 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     );
     if (!state.isInitializedCurrentLocation) {
       _setIsInitializedCurrentLocation(true);
+      _setLoading(false);
     }
   }
 }
