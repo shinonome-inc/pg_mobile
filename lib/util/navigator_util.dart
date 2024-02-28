@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/debug/debug_cupertino_alert_dialog.dart';
-import 'package:pg_mobile/debug/debug_material_alert_dialog.dart';
+import 'package:pg_mobile/extensions/target_platform_extension.dart';
+import 'package:pg_mobile/widgets/common_cupertino_alert_dialog.dart';
+import 'package:pg_mobile/widgets/common_material_alert_dialog.dart';
 
 class NavigatorUtil {
   static void showCommonAlertDialog(
@@ -14,10 +15,10 @@ class NavigatorUtil {
     required void Function()? onPressedOK,
     bool hideCancel = false,
   }) {
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
+    if (Theme.of(context).platform.isIOS) {
       showCupertinoModalPopup<void>(
         context: context,
-        builder: (BuildContext context) => DebugCupertinoAlertDialog(
+        builder: (BuildContext context) => CommonCupertinoAlertDialog(
           titleText: titleText,
           contentText: contentText,
           cancelText: cancelText,
@@ -31,7 +32,7 @@ class NavigatorUtil {
       showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return DebugMaterialAlertDialog(
+          return CommonMaterialAlertDialog(
             titleText: titleText,
             contentText: contentText,
             cancelText: cancelText,

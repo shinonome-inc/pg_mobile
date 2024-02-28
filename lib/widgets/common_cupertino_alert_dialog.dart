@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 
-class DebugMaterialAlertDialog extends StatelessWidget {
-  const DebugMaterialAlertDialog({
+class CommonCupertinoAlertDialog extends StatelessWidget {
+  const CommonCupertinoAlertDialog({
     Key? key,
     required this.titleText,
     required this.contentText,
@@ -21,27 +20,28 @@ class DebugMaterialAlertDialog extends StatelessWidget {
   final void Function()? onPressedOK;
   final bool hideCancel;
 
+  static const TextStyle _actionsTextStyle = TextStyle(
+    color: CupertinoColors.systemBlue,
+  );
+
   bool get _showCancel => !hideCancel;
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        titleText,
-        style: const TextStyle(color: AppColors.black),
-      ),
-      content: Text(
-        contentText,
-        style: const TextStyle(color: AppColors.black),
-      ),
-      actions: <Widget>[
+    return CupertinoAlertDialog(
+      title: Text(titleText),
+      content: Text(contentText),
+      actions: <CupertinoDialogAction>[
         if (_showCancel)
-          TextButton(
+          CupertinoDialogAction(
             onPressed: onPressedCancel,
+            textStyle: _actionsTextStyle,
             child: Text(cancelText),
           ),
-        TextButton(
+        CupertinoDialogAction(
+          isDestructiveAction: true,
           onPressed: onPressedOK,
+          textStyle: _actionsTextStyle,
           child: Text(okText),
         ),
       ],
