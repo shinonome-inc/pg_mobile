@@ -24,6 +24,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
 
   late PageController _pageViewController;
 
+  bool get _isInitializedOfficesAndUsers =>
+      _isInitializedOffices && _isInitializedUsers;
+
   bool get _isAlreadySignedIn {
     for (final office in _offices) {
       if (office.userIdList.contains(signInUser.id)) {
@@ -161,11 +164,8 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
             },
           ),
         ),
-        body: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : PageView.builder(
+        body: _isInitializedOfficesAndUsers
+            ? PageView.builder(
                 controller: _pageViewController,
                 itemBuilder: (context, officeIndex) {
                   if (_offices.isEmpty) {
@@ -219,6 +219,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
                     ),
                   );
                 },
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
               ),
       ),
     );
