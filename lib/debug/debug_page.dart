@@ -31,7 +31,7 @@ class DebugPage extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
-          _button("サインイン画面", onPressed: () {}),
+          _button('サインイン画面', onPressed: () {}),
           _button("タイムライン画面", onPressed: () {}),
           _button("通知画面", onPressed: () {}),
           _button(
