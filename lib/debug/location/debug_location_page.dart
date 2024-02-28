@@ -23,7 +23,7 @@ class DebugLocationPageState extends ConsumerState<DebugLocationPage> {
           appBar: AppBar(
             title: const Text('位置情報'),
           ),
-          body: state.status.isGranted
+          body: state.locationPermissionStatus.isGranted
               ? const DebugLocationView()
               : const DebugLocationPermissionView(),
         ),

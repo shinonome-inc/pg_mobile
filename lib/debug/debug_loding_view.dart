@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/extensions/target_platform_extension.dart';
 
 class DebugLoadingView extends StatelessWidget {
   const DebugLoadingView({Key? key}) : super(key: key);
@@ -19,8 +20,8 @@ class DebugLoadingView extends StatelessWidget {
           sigmaY: _sigma,
         ),
         child: Center(
-          child: Theme.of(context).platform == TargetPlatform.iOS
-              ? const CupertinoActivityIndicator()
+          child: Theme.of(context).platform.isIOS
+              ? const CupertinoActivityIndicator(color: AppColors.gray5)
               : const CircularProgressIndicator(),
         ),
       ),

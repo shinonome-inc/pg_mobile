@@ -16,7 +16,7 @@ final debugLocationProvider =
 
 class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
   DebugLocationNotifier(this.ref) : super(defaultDebugLocationState) {
-    _checkLocationPermission();
+    _setLocationPermissionStatus();
   }
 
   final Ref ref;
@@ -25,10 +25,6 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
 
   void _setLoading(bool value) {
     state = state.copyWith(isLoading: value);
-  }
-
-  void _setLocationPermissionStatus(PermissionStatus status) {
-    state = state.copyWith(status: status);
   }
 
   void _switchCheckingIn() {
@@ -46,11 +42,13 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     );
   }
 
-  Future<void> _checkLocationPermission() async {
+  Future<void> _setLocationPermissionStatus() async {
     final status = await Permission.locationAlways.status;
-    _setLocationPermissionStatus(status);
-    debugPrint('check location permission: ${state.status}');
-    if (state.status.isGranted) {
+    state = state.copyWith(locationPermissionStatus: status);
+    debugPrint(
+      'Set location permission status: ${state.locationPermissionStatus}',
+    );
+    if (state.locationPermissionStatus.isGranted) {
       _setLocationListener();
     }
   }
@@ -60,7 +58,7 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     _setLoading(true);
     // 再読み込みを行ったことをユーザーに伝えるために1秒待機
     await Future.delayed(const Duration(seconds: 1));
-    await _checkLocationPermission();
+    await _setLocationPermissionStatus();
     _setLoading(false);
   }
 

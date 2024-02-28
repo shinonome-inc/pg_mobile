@@ -7,7 +7,7 @@ part 'debug_location_state.freezed.dart';
 @freezed
 class DebugLocationState with _$DebugLocationState {
   const factory DebugLocationState({
-    required PermissionStatus? status,
+    required PermissionStatus? locationPermissionStatus,
     required bool isLoading,
     required bool isCheckingIn,
     required bool isInitializedCurrentLocation,
@@ -18,7 +18,7 @@ class DebugLocationState with _$DebugLocationState {
 }
 
 const DebugLocationState defaultDebugLocationState = DebugLocationState(
-  status: null,
+  locationPermissionStatus: null,
   isLoading: false,
   isCheckingIn: false,
   isInitializedCurrentLocation: false,
