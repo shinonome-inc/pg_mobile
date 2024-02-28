@@ -16,7 +16,7 @@ final debugLocationProvider =
 
 class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
   DebugLocationNotifier(this.ref) : super(defaultDebugLocationState) {
-    _setLocationPermissionStatus();
+    _checkLocationPermission();
   }
 
   final Ref ref;
@@ -42,15 +42,17 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     );
   }
 
-  Future<void> _setLocationPermissionStatus() async {
-    final status = await Permission.locationAlways.status;
+  Future<void> _setLocationPermissionStatus(PermissionStatus status) async {
     state = state.copyWith(locationPermissionStatus: status);
-    debugPrint(
-      'Set location permission status: ${state.locationPermissionStatus}',
-    );
     if (state.locationPermissionStatus.isGranted) {
-      _setLocationListener();
+      _location.onLocationChanged.listen(_locationListener);
     }
+  }
+
+  Future<void> _checkLocationPermission() async {
+    final status = await Permission.locationAlways.status;
+    debugPrint('Location permission status: $status');
+    _setLocationPermissionStatus(status);
   }
 
   /// 現在の位置情報の権限を状態管理に反映させるために再読み込みを行う
@@ -59,7 +61,8 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     _setLoading(true);
     // 再読み込みを行ったことをユーザーに伝えるために1秒待機
     await Future.delayed(const Duration(seconds: 1));
-    await _setLocationPermissionStatus();
+    await _checkLocationPermission();
+    if (state.locationPermissionStatus.isGranted) return;
     _setLoading(false);
   }
 
@@ -69,11 +72,6 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
     await Future.delayed(const Duration(seconds: 1));
     _switchCheckingIn();
     _setLoading(false);
-  }
-
-  void _setLocationListener() {
-    _setLoading(true);
-    _location.onLocationChanged.listen(_locationListener);
   }
 
   /// 端末の位置情報が更新されるたびに呼び出されるListener
