@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
 class NetworkImagePreview extends StatelessWidget {
   const NetworkImagePreview({
@@ -19,7 +20,7 @@ class NetworkImagePreview extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              NavigatorUtil.popScreen(context);
             },
             style: IconButton.styleFrom(
               backgroundColor: AppColors.gray1A80,
