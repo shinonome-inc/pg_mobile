@@ -42,7 +42,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             ),
             onPressed: () {
               setState(() {
-                _searchController.text = "";
+                _searchController.text = '';
               });
             },
           ),

@@ -8,7 +8,7 @@ class DebugSearchBarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("searchBar"),
+        title: const Text('searchBar'),
         centerTitle: true,
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(50),

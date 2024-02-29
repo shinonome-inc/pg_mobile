@@ -43,10 +43,10 @@ class DebugPage extends StatelessWidget {
               );
             },
           ),
-          _button("タイムライン画面", onPressed: () {}),
-          _button("通知画面", onPressed: () {}),
+          _button('タイムライン画面', onPressed: () {}),
+          _button('通知画面', onPressed: () {}),
           _button(
-            "searchBar",
+            'searchBar',
             onPressed: () {
               Navigator.push(
                 context,
