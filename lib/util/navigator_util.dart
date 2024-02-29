@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:pg_mobile/widgets/image_preview.dart';
+import 'package:pg_mobile/widgets/metwork_image_preview.dart';
 
 class NavigatorUtil {
   NavigatorUtil._();
@@ -20,13 +20,17 @@ class NavigatorUtil {
     );
   }
 
-  static void showImagePreview(BuildContext context, String imageUrl) {
+  static void popScreen(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  static void showNetworkImagePreview(BuildContext context, String imageUrl) {
     showGeneralDialog(
       barrierDismissible: true,
       barrierLabel: '',
       context: context,
       pageBuilder: (context, animation1, animation2) {
-        return ImagePreview(imageUrl: imageUrl);
+        return NetworkImagePreview(imageUrl: imageUrl);
       },
     );
   }
