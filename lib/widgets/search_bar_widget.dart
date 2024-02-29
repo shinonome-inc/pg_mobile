@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/constants/app_controllers.dart';
 
 class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({Key? key}) : super(key: key);
@@ -10,6 +9,7 @@ class SearchBarWidget extends StatefulWidget {
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
+  final TextEditingController _searchController = TextEditingController();
   final double textFormFieldHeight = 36;
 
   @override
@@ -17,7 +17,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return SizedBox(
       height: textFormFieldHeight,
       child: TextFormField(
-        controller: AppControllers.searchController,
+        controller: _searchController,
         style: const TextStyle(
           color: AppColors.white,
         ),
@@ -42,7 +42,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             ),
             onPressed: () {
               setState(() {
-                AppControllers.searchController.text = "";
+                _searchController.text = "";
               });
             },
           ),
