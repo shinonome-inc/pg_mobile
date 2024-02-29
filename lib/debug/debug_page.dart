@@ -5,6 +5,7 @@ import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
 class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
@@ -39,49 +40,39 @@ class _DebugPageState extends State<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
-          _button('サインイン画面', onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const LoginSample(),
-                ));
-          }),
+          _button(
+            'サインイン画面',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const LoginSample());
+            },
+          ),
           _button('タイムライン画面', onPressed: () {}),
           _button('通知画面', onPressed: () {}),
           _button(
             'TextTheme',
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DebugTextThemePage(),
-                ),
-              );
+              NavigatorUtil.pushScreen(context, const DebugTextThemePage());
             },
           ),
           _button(
             "フォロワー一覧画面",
             onPressed: () {
-              MastodonRepository.instance
-                  .fetchFollowerList()
-                  .then((followerModelList) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => DebugFollowerListPage(
-                      followerModelList: followerModelList,
-                    ),
-                  ),
-                );
-              });
+              MastodonRepository.instance.fetchFollowerList().then(
+                (followerModelList) {
+                  NavigatorUtil.pushScreen(
+                    context,
+                    DebugFollowerListPage(followerModelList: followerModelList),
+                  );
+                },
+              );
             },
           ),
           _button(
             '画像のキャッシュ化',
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DebugCachedNetworkImagePage(),
-                ),
+              NavigatorUtil.pushScreen(
+                context,
+                const DebugCachedNetworkImagePage(),
               );
             },
           ),
