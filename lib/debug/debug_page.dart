@@ -59,18 +59,19 @@ class _DebugPageState extends State<DebugPage> {
           ),
           _button(
             "フォロワー一覧画面",
-            onPressed: () async {
-              final followerModelList =
-                  await MastodonRepository.instance.fetchFollowerList();
-              if (!mounted) return;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => DebugFollowerListPage(
-                    followerModelList: followerModelList,
+            onPressed: () {
+              MastodonRepository.instance
+                  .fetchFollowerList()
+                  .then((followerModelList) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DebugFollowerListPage(
+                      followerModelList: followerModelList,
+                    ),
                   ),
-                ),
-              );
+                );
+              });
             },
           )
         ],
