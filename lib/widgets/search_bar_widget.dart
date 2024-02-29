@@ -18,17 +18,13 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       height: textFormFieldHeight,
       child: TextFormField(
         controller: _searchController,
-        style: const TextStyle(
-          color: AppColors.white,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
           hintText: 'Search',
-          hintStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.035,
-            color: AppColors.gray3,
-          ),
+          hintStyle: Theme.of(context)
+              .textTheme
+              .bodyMedium!
+              .copyWith(color: AppColors.gray3),
           prefixIcon: const Icon(
             Icons.search,
             size: 25,
