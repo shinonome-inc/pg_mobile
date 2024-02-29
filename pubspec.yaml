@@ -45,7 +45,7 @@ dependencies:
   webview_flutter: ^4.7.0
   firebase_core: ^2.24.2
   cloud_firestore: ^4.14.0
-  analyzer: ^6.4.1
+  analyzer: ^6.3.0
 
 dev_dependencies:
   flutter_test:
