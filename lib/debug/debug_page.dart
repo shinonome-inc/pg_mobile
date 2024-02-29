@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 
-class DebugPage extends StatelessWidget {
+class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
 
+  @override
+  State<DebugPage> createState() => _DebugPageState();
+}
+
+class _DebugPageState extends State<DebugPage> {
   Widget _button(String text, {required Function() onPressed}) {
     return Column(
       children: [
@@ -50,6 +57,23 @@ class DebugPage extends StatelessWidget {
               );
             },
           ),
+          _button(
+            "フォロワー一覧画面",
+            onPressed: () {
+              MastodonRepository.instance
+                  .fetchFollowerList()
+                  .then((followerModelList) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DebugFollowerListPage(
+                      followerModelList: followerModelList,
+                    ),
+                  ),
+                );
+              });
+            },
+          )
         ],
       ),
     );

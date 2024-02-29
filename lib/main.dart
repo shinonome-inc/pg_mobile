@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/constants/font_families.dart';
+import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:pg_mobile/firebase_options.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
+  MastodonRepository.instance.init();
   runApp(const MyApp());
 }
 
