@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
+import 'package:pg_mobile/models/follow_model.dart';
 import 'package:pg_mobile/models/follower_model.dart';
 
 class MastodonRepository {
@@ -31,6 +32,12 @@ class MastodonRepository {
     final response = await _dio.get("/api/v1/accounts/219/followers?limit=80");
     final followerModel = List<dynamic>.from(response.data);
     return followerModel.map((e) => FollowerModel.fromJson(e)).toList();
+  }
+
+  Future<List<FollowModel>> fetchFollowList() async {
+    final response = await _dio.get('/api/v1/accounts/219/following?limit=80');
+    final followModel = List<dynamic>.from(response.data);
+    return followModel.map((follow) => FollowModel.fromJson(follow)).toList();
   }
 
   Future<String?> signIn(Uri uri) async {

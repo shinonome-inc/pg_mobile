@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/debug_follow_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
@@ -73,7 +74,24 @@ class _DebugPageState extends State<DebugPage> {
                 );
               });
             },
-          )
+          ),
+          _button(
+            "フォロ一覧画面",
+            onPressed: () {
+              MastodonRepository.instance
+                  .fetchFollowList()
+                  .then((followModelList) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DebugFollowListPage(
+                      followModelList: followModelList,
+                    ),
+                  ),
+                );
+              });
+            },
+          ),
         ],
       ),
     );
