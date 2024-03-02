@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_follow_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
+import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/util.dart';
 
 class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
@@ -90,6 +92,12 @@ class _DebugPageState extends State<DebugPage> {
                   ),
                 );
               });
+            },
+          ),
+          _button(
+            'Mastodonユーザー',
+            onPressed: () {
+              Util.pushScreen(context, const DebugMastodonUserPage());
             },
           ),
         ],
