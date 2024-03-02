@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
-import 'package:pg_mobile/models/follow_model.dart';
-import 'package:pg_mobile/models/follower_model.dart';
 import 'package:pg_mobile/models/mastodon_user.dart';
 
 class MastodonRepository {
@@ -29,16 +27,28 @@ class MastodonRepository {
     _dio.options.headers.addAll(_headers!);
   }
 
-  Future<List<FollowerModel>> fetchFollowerList() async {
+  Future<List<MastodonUser>> fetchFollowerList() async {
     final response = await _dio.get("/api/v1/accounts/219/followers?limit=80");
-    final followerModel = List<dynamic>.from(response.data);
-    return followerModel.map((e) => FollowerModel.fromJson(e)).toList();
+    if (response.statusCode == 200) {
+      final users = List<dynamic>.from(response.data);
+      return users.map((user) => MastodonUser.fromJson(user)).toList();
+    } else {
+      throw Exception(
+        'Failed to fetch followers with status code ${response.statusCode}',
+      );
+    }
   }
 
-  Future<List<FollowModel>> fetchFollowList() async {
+  Future<List<MastodonUser>> fetchFollowList() async {
     final response = await _dio.get('/api/v1/accounts/219/following?limit=80');
-    final followModel = List<dynamic>.from(response.data);
-    return followModel.map((follow) => FollowModel.fromJson(follow)).toList();
+    if (response.statusCode == 200) {
+      final users = List<dynamic>.from(response.data);
+      return users.map((user) => MastodonUser.fromJson(user)).toList();
+    } else {
+      throw Exception(
+        'Failed to fetch followings with status code ${response.statusCode}',
+      );
+    }
   }
 
   Future<MastodonUser> fetchUser(String userId) async {

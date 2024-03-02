@@ -70,7 +70,7 @@ class _DebugPageState extends State<DebugPage> {
                   context,
                   MaterialPageRoute(
                     builder: (_) => DebugFollowerListPage(
-                      followerModelList: followerModelList,
+                      followerList: followerModelList,
                     ),
                   ),
                 );
@@ -87,7 +87,7 @@ class _DebugPageState extends State<DebugPage> {
                   context,
                   MaterialPageRoute(
                     builder: (_) => DebugFollowListPage(
-                      followModelList: followModelList,
+                      followList: followModelList,
                     ),
                   ),
                 );
