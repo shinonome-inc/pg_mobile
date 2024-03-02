@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pg_mobile/util/pgn_util.dart';
 
 part 'pgn_user.freezed.dart';
 part 'pgn_user.g.dart';
@@ -16,6 +17,13 @@ class PGNUser with _$PGNUser {
 
   factory PGNUser.fromJson(Map<String, Object?> json) =>
       _$PGNUserFromJson(json);
+}
+
+extension PGNUserExtension on PGNUser {
+  PGNRank get _rank => PGNUtil.spixToRank(total);
+
+  String get rankImagePath => _rank.imagePath;
+  String get rankText => _rank.text;
 }
 
 const PGNUser defaultPGNUser = PGNUser(
