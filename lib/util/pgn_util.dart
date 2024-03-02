@@ -36,6 +36,7 @@ enum PGNRank {
 
   String get imagePath {
     switch (this) {
+      // TODO: 画像を入手したら差し替える。
       case PGNRank.dead:
         return '';
       case PGNRank.iron:

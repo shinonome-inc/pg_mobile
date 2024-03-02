@@ -18,6 +18,7 @@ class DebugPGNUserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h),
+      height: 136.h,
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -39,28 +40,37 @@ class DebugPGNUserItem extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Image(
-                  width: 32.w,
-                  height: 32.w,
-                  image: AssetImage(user.rankImagePath),
+                Expanded(
+                  child: Image(
+                    width: 32.w,
+                    height: 32.w,
+                    image: AssetImage(user.rankImagePath),
+                    errorBuilder: (context, object, stackTrace) =>
+                        const SizedBox.shrink(),
+                  ),
                 ),
                 Text(
                   user.rankText,
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
-                Text('#$ranking'),
+                Text(
+                  '#$ranking',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ],
             ),
           ),
-          SizedBox(width: 8.w),
+          SizedBox(width: 16.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 '@${user.id}',
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-              SizedBox(height: 8.h),
+              const Spacer(),
               DebugPIXText(
                 title: 'Total ',
                 pix: user.total,
