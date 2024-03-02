@@ -46,9 +46,6 @@ app.*.map.json
 # .env
 .env
 
-# FVM related
-/.fvm/flutter_sdk
-
 # Automatic generation related
 *.lock
 *.freezed.dart
@@ -58,3 +55,7 @@ app.*.map.json
 android/app/google-services.json
 ios/firebase_app_id_file.json
 ios/Runner/GoogleService-Info.plist
+
+# FVM Version Cache
+.fvm/
+.fvmrc
