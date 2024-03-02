@@ -39,8 +39,12 @@ class _DebugPGNPageState extends State<DebugPGNPage> {
   Future<void> _fetchUsers() async {
     _setLoading(true);
     _setNetworkError(false);
+    final now = DateTime.now();
     try {
-      final users = await PGNRepository.instance.getUsers();
+      final users = await PGNRepository.instance.getUsers(
+        start: now.subtract(const Duration(days: 28)),
+        end: now,
+      );
       _setUsers(users);
     } catch (e) {
       _setNetworkError(true);

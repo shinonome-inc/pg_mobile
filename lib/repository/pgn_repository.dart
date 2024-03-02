@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/pgn_unit.dart';
 import 'package:pg_mobile/models/pgn_user.dart';
+import 'package:pg_mobile/util/date_formatter.dart';
 
 class PGNRepository {
   PGNRepository._privateConstructor();
@@ -22,9 +23,18 @@ class PGNRepository {
   }
 
   Future<List<PGNUser>> getUsers({
+    required DateTime start,
+    required DateTime end,
     PGNUnit unit = PGNUnit.day,
   }) async {
-    final Map<String, Object> params = {};
+    if (start.isAfter(end)) {
+      throw ArgumentError('start must be before end');
+    }
+    final Map<String, Object> params = {
+      'start': DateFormatter.formatPGNDate(start),
+      'end': DateFormatter.formatPGNDate(end),
+      'unit': unit.text,
+    };
     final response = await _dio.get('/reports', queryParameters: params);
     if (response.statusCode == 200) {
       final users = List<dynamic>.from(response.data);
