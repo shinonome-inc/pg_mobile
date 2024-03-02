@@ -82,11 +82,6 @@ class _DebugPGNPageState extends State<DebugPGNPage> {
                     ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _setUsers(_users);
-        },
-      ),
     );
   }
 }
