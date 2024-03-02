@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pg_mobile/models/pgn_rank.dart';
 import 'package:pg_mobile/util/pgn_util.dart';
 
 part 'pgn_user.freezed.dart';
