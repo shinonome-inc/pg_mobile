@@ -26,12 +26,3 @@ extension PGNUserExtension on PGNUser {
   String get rankImagePath => _rank.imagePath;
   String get rankText => _rank.text;
 }
-
-const PGNUser defaultPGNUser = PGNUser(
-  id: '',
-  slackId: '',
-  total: 0,
-  totalPgrit: 0,
-  totalDawn: 0,
-  totalOther: 0,
-);
