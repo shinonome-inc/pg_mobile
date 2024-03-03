@@ -147,14 +147,10 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                                         image: FileImage(
                                           File(file.path),
                                         ),
+                                        fit: BoxFit.cover,
                                       )
                                     : file.isVideo
-                                        ? AspectRatio(
-                                            aspectRatio: 1.0,
-                                            child: VideoPlayer(
-                                              _videoController,
-                                            ),
-                                          )
+                                        ? VideoPlayer(_videoController)
                                         : const SizedBox.shrink(),
                               ),
                               IconButton(
