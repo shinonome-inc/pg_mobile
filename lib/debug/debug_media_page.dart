@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/x_file_extension.dart';
 import 'package:video_player/video_player.dart';
@@ -57,13 +58,20 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
   Future<void> _onPressedGallery() async {
     if (_isLoading) return;
     _setLoading(true);
-    final pickedFiles = await _picker.pickMultipleMedia();
+    final status = await Permission.photos.request();
+    if (!status.isGranted) {
+      // TODO: アラートダイアログを表示
+      await openAppSettings();
+      _setLoading(false);
+      return;
+    }
+    List<XFile?> pickedFiles = await _picker.pickMultipleMedia();
     if (pickedFiles.isEmpty) {
       _setLoading(false);
       return;
     }
     for (final file in pickedFiles) {
-      if (_disableAddMedia) {
+      if (file == null || _disableAddMedia) {
         continue;
       } else if (file.isVideo && _files.isEmpty) {
         setState(() {
@@ -83,6 +91,13 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
   Future<void> _onPressedCamera() async {
     if (_isLoading) return;
     _setLoading(true);
+    final status = await Permission.camera.request();
+    if (!status.isGranted) {
+      // TODO: アラートダイアログを表示
+      await openAppSettings();
+      _setLoading(false);
+      return;
+    }
     final image = await _picker.pickImage(source: ImageSource.camera);
     if (image == null) {
       _setLoading(false);
