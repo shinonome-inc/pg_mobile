@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pg_mobile/constants/app_colors.dart';
 
 class DebugMediaPage extends StatefulWidget {
   const DebugMediaPage({Key? key}) : super(key: key);
@@ -11,7 +14,7 @@ class DebugMediaPage extends StatefulWidget {
 
 class _DebugMediaPageState extends State<DebugMediaPage> {
   bool _isLoading = false;
-  List<XFile?> _files = [];
+  final List<XFile?> _files = [];
 
   final _picker = ImagePicker();
   final int maxMediaCount = 4;
@@ -32,7 +35,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
       return;
     }
     setState(() {
-      _files = files;
+      _files.addAll(files);
     });
     _setLoading(false);
   }
@@ -64,7 +67,28 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
           child: Column(
             children: [
               const Spacer(),
-              if (_files.isEmpty) const Text('画像・動画が選択されていません'),
+              _files.isEmpty
+                  ? const Text('画像・動画が選択されていません')
+                  : SizedBox(
+                      height: 120.h,
+                      child: ListView.builder(
+                        itemCount: _files.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: 120.h,
+                            decoration: BoxDecoration(
+                              color: AppColors.gray2,
+                              image: DecorationImage(
+                                image: FileImage(
+                                  File(_files[index]!.path),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
               const Spacer(),
               ElevatedButton(
                 onPressed: _onPressedCamera,
