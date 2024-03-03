@@ -19,6 +19,8 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
   final _picker = ImagePicker();
   final int maxMediaCount = 4;
 
+  bool get _isFullMediaCount => _files.length >= maxMediaCount;
+
   void _setLoading(bool value) {
     setState(() {
       _isLoading = value;
@@ -27,7 +29,6 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
 
   Future<void> _onPressedGallery() async {
     if (_isLoading) return;
-    if (_files.length >= maxMediaCount) return;
     _setLoading(true);
     final files = await _picker.pickMultipleMedia();
     if (files.isEmpty) {
@@ -42,7 +43,6 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
 
   Future<void> _onPressedCamera() async {
     if (_isLoading) return;
-    if (_files.length >= maxMediaCount) return;
     _setLoading(true);
     final image = await _picker.pickImage(source: ImageSource.camera);
     if (image == null) {
@@ -53,6 +53,12 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
       _files.add(image);
     });
     _setLoading(false);
+  }
+
+  void _removeMedia(int index) {
+    setState(() {
+      _files.removeAt(index);
+    });
   }
 
   @override
@@ -75,23 +81,35 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                         itemCount: _files.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return Container(
-                            width: 120.h,
-                            decoration: BoxDecoration(
-                              color: AppColors.gray2,
-                              image: DecorationImage(
-                                image: FileImage(
-                                  File(_files[index]!.path),
+                          return Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Container(
+                                width: 120.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.gray2,
+                                  image: DecorationImage(
+                                    image: FileImage(
+                                      File(_files[index]!.path),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              IconButton(
+                                onPressed: () => _removeMedia(index),
+                                style: IconButton.styleFrom(
+                                  backgroundColor: AppColors.gray1A80,
+                                ),
+                                icon: const Icon(Icons.close),
+                              ),
+                            ],
                           );
                         },
                       ),
                     ),
               const Spacer(),
               ElevatedButton(
-                onPressed: _onPressedCamera,
+                onPressed: _isFullMediaCount ? null : _onPressedCamera,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +122,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
               ),
               SizedBox(height: 16.h),
               ElevatedButton(
-                onPressed: _onPressedGallery,
+                onPressed: _isFullMediaCount ? null : _onPressedGallery,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
