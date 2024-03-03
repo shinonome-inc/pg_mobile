@@ -17,9 +17,9 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
   final List<XFile?> _files = [];
 
   final _picker = ImagePicker();
-  final int maxMediaCount = 4;
+  final int maxSelectedMediaCount = 4;
 
-  bool get _isFullMediaCount => _files.length >= maxMediaCount;
+  bool get _isFullSelectedMediaCount => _files.length >= maxSelectedMediaCount;
 
   void _setLoading(bool value) {
     setState(() {
@@ -35,9 +35,16 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
       _setLoading(false);
       return;
     }
-    setState(() {
-      _files.addAll(files);
-    });
+    for (final file in files) {
+      if (_isFullSelectedMediaCount) {
+        _setLoading(false);
+        return;
+      } else {
+        setState(() {
+          _files.add(file);
+        });
+      }
+    }
     _setLoading(false);
   }
 
@@ -109,7 +116,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                     ),
               const Spacer(),
               ElevatedButton(
-                onPressed: _isFullMediaCount ? null : _onPressedCamera,
+                onPressed: _isFullSelectedMediaCount ? null : _onPressedCamera,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -122,7 +129,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
               ),
               SizedBox(height: 16.h),
               ElevatedButton(
-                onPressed: _isFullMediaCount ? null : _onPressedGallery,
+                onPressed: _isFullSelectedMediaCount ? null : _onPressedGallery,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
