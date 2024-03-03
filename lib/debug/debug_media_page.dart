@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/extensions/target_platform_extension.dart';
 import 'package:pg_mobile/extensions/x_file_extension.dart';
 import 'package:pg_mobile/util/media_util.dart';
 import 'package:video_player/video_player.dart';
@@ -50,7 +51,8 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
 
   Future<void> _onPressedGallery() async {
     final status = await Permission.photos.request();
-    if (!status.isGranted) {
+    if (!mounted) return;
+    if (Theme.of(context).platform.isIOS && !status.isGranted) {
       // TODO: アラートダイアログを表示
       await openAppSettings();
       return;
@@ -84,7 +86,8 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
 
   Future<void> _onPressedCamera() async {
     final status = await Permission.camera.request();
-    if (!status.isGranted) {
+    if (!mounted) return;
+    if (Theme.of(context).platform.isIOS && !status.isGranted) {
       // TODO: アラートダイアログを表示
       await openAppSettings();
       return;
