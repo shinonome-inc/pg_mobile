@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/x_file_extension.dart';
+import 'package:video_player/video_player.dart';
 
 class DebugMediaPage extends StatefulWidget {
   const DebugMediaPage({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
   final List<XFile?> _files = [];
 
   final _picker = ImagePicker();
+  VideoPlayerController _videoController = VideoPlayerController.asset('');
+
   final int maxSelectedMediaCount = 4;
 
   bool get _isFullSelectedMediaCount => _files.length >= maxSelectedMediaCount;
@@ -36,6 +39,21 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
     });
   }
 
+  void _setVideo(XFile file) {
+    _videoController = VideoPlayerController.file(
+      File(file.path),
+    )..initialize().then((_) {
+        _videoController.setLooping(true);
+        _videoController.play();
+      });
+  }
+
+  void _removeSelectedVideo() {
+    _videoController = VideoPlayerController.asset('')
+      ..initialize().then((_) => setState(() {}));
+    _setSelectVideo(false);
+  }
+
   Future<void> _onPressedGallery() async {
     if (_isLoading) return;
     _setLoading(true);
@@ -51,6 +69,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
         setState(() {
           _files.add(file);
         });
+        _setVideo(file);
         _setSelectVideo(true);
       } else if (file.isImage) {
         setState(() {
@@ -80,11 +99,17 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
     if (file == null) {
       return;
     } else if (file.isVideo) {
-      _setSelectVideo(false);
+      _removeSelectedVideo();
     }
     setState(() {
       _files.removeAt(index);
     });
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    super.dispose();
   }
 
   @override
@@ -123,7 +148,14 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                                           File(file.path),
                                         ),
                                       )
-                                    : const SizedBox.shrink(),
+                                    : file.isVideo
+                                        ? AspectRatio(
+                                            aspectRatio: 1.0,
+                                            child: VideoPlayer(
+                                              _videoController,
+                                            ),
+                                          )
+                                        : const SizedBox.shrink(),
                               ),
                               IconButton(
                                 onPressed: () => _removeMedia(index),
