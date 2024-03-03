@@ -129,81 +129,86 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
         title: const Text('Media'),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              const Spacer(),
-              _files.isEmpty
-                  ? const Text('画像・動画が選択されていません')
-                  : SizedBox(
-                      height: 120.h,
-                      child: ListView.builder(
-                        itemCount: _files.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          final file = _files[index];
-                          if (file == null) {
-                            return const SizedBox.shrink();
-                          }
-                          return Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                width: 120.h,
-                                color: AppColors.gray2,
-                                child: file.isImage
-                                    ? Image(
-                                        image: FileImage(
-                                          File(file.path),
-                                        ),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : file.isVideo
-                                        ? VideoPlayer(_videoController)
-                                        : const SizedBox.shrink(),
+        child: Column(
+          children: [
+            const Spacer(),
+            _files.isEmpty
+                ? const Text('画像・動画が選択されていません')
+                : SizedBox(
+                    height: 120.h,
+                    child: ListView.builder(
+                      itemCount: _files.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final file = _files[index];
+                        if (file == null) {
+                          return const SizedBox.shrink();
+                        }
+                        return Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            Container(
+                              width: 120.h,
+                              height: 120.h,
+                              color: AppColors.gray2,
+                              child: file.isImage
+                                  ? Image(
+                                      image: FileImage(
+                                        File(file.path),
+                                      ),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : file.isVideo
+                                      ? VideoPlayer(_videoController)
+                                      : const SizedBox.shrink(),
+                            ),
+                            IconButton(
+                              onPressed: () => _removeMedia(index),
+                              style: IconButton.styleFrom(
+                                backgroundColor: AppColors.gray1A80,
                               ),
-                              IconButton(
-                                onPressed: () => _removeMedia(index),
-                                style: IconButton.styleFrom(
-                                  backgroundColor: AppColors.gray1A80,
-                                ),
-                                icon: const Icon(Icons.close),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
+                              icon: const Icon(Icons.close),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: _disableAddMedia ? null : _onPressedCamera,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.camera_alt_outlined),
-                    SizedBox(width: 8.w),
-                    const Text('カメラからメディアを追加する'),
-                  ],
-                ),
+                  ),
+            const Spacer(),
+            Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: _disableAddMedia ? null : _onPressedCamera,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.camera_alt_outlined),
+                        SizedBox(width: 8.w),
+                        const Text('カメラからメディアを追加する'),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  ElevatedButton(
+                    onPressed: _disableAddMedia ? null : _onPressedGallery,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.image_outlined),
+                        SizedBox(width: 8.w),
+                        const Text('アルバムからメディアを追加する'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: 16.h),
-              ElevatedButton(
-                onPressed: _disableAddMedia ? null : _onPressedGallery,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.image_outlined),
-                    SizedBox(width: 8.w),
-                    const Text('アルバムからメディアを追加する'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 32.h),
-            ],
-          ),
+            ),
+            SizedBox(height: 32.h),
+          ],
         ),
       ),
     );
