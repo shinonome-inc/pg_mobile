@@ -1,9 +1,11 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:pg_mobile/models/media_type.dart';
 
+/// 画像や動画などのメディアに関するユーティリティークラスです。
 class MediaUtil {
   MediaUtil._();
 
+  /// アルバムから複数の画像や動画を取得します。
   static Future<List<XFile?>> pickMultipleMediaFromGallery() async {
     final picker = ImagePicker();
     List<XFile?> files;
@@ -15,6 +17,7 @@ class MediaUtil {
     return files;
   }
 
+  /// カメラを起動して撮影した画像を取得します。
   static Future<XFile?> pickImageFromCamera() async {
     final picker = ImagePicker();
     XFile? file;
@@ -26,6 +29,7 @@ class MediaUtil {
     return file;
   }
 
+  /// ファイルの拡張子からメディアタイプを判定します。
   static MediaType judgeMediaType(XFile file) {
     // ファイルのパスを取得
     final path = file.path;

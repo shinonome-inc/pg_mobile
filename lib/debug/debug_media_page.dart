@@ -23,10 +23,8 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
 
   VideoPlayerController _videoController = VideoPlayerController.asset('');
 
-  final int maxSelectedMediaCount = 4;
-
-  bool get _isFullSelectedMediaCount => _files.length >= maxSelectedMediaCount;
-  bool get _disableAddMedia => _isFullSelectedMediaCount || _hasSelectVideo;
+  /// 画像は4点まで、動画は1点まで選択可能
+  bool get _disableAddMedia => _files.length >= 4 || _hasSelectVideo;
 
   void _setSelectVideo(bool value) {
     setState(() {
