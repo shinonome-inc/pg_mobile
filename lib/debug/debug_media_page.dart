@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/x_file_extension.dart';
+import 'package:pg_mobile/util/media_util.dart';
 import 'package:video_player/video_player.dart';
 
 class DebugMediaPage extends StatefulWidget {
@@ -16,23 +17,15 @@ class DebugMediaPage extends StatefulWidget {
 }
 
 class _DebugMediaPageState extends State<DebugMediaPage> {
-  bool _isLoading = false;
   bool _hasSelectVideo = false;
   final List<XFile?> _files = [];
 
-  final _picker = ImagePicker();
   VideoPlayerController _videoController = VideoPlayerController.asset('');
 
   final int maxSelectedMediaCount = 4;
 
   bool get _isFullSelectedMediaCount => _files.length >= maxSelectedMediaCount;
   bool get _disableAddMedia => _isFullSelectedMediaCount || _hasSelectVideo;
-
-  void _setLoading(bool value) {
-    setState(() {
-      _isLoading = value;
-    });
-  }
 
   void _setSelectVideo(bool value) {
     setState(() {
@@ -56,18 +49,20 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
   }
 
   Future<void> _onPressedGallery() async {
-    if (_isLoading) return;
-    _setLoading(true);
     final status = await Permission.photos.request();
     if (!status.isGranted) {
       // TODO: アラートダイアログを表示
       await openAppSettings();
-      _setLoading(false);
       return;
     }
-    List<XFile?> pickedFiles = await _picker.pickMultipleMedia();
+    List<XFile?> pickedFiles;
+    try {
+      pickedFiles = await MediaUtil.pickMultipleMediaFromGallery();
+    } catch (e) {
+      // TODO: アラートダイアログを表示
+      rethrow;
+    }
     if (pickedFiles.isEmpty) {
-      _setLoading(false);
       return;
     }
     for (final file in pickedFiles) {
@@ -85,28 +80,28 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
         });
       }
     }
-    _setLoading(false);
   }
 
   Future<void> _onPressedCamera() async {
-    if (_isLoading) return;
-    _setLoading(true);
     final status = await Permission.camera.request();
     if (!status.isGranted) {
       // TODO: アラートダイアログを表示
       await openAppSettings();
-      _setLoading(false);
       return;
     }
-    final image = await _picker.pickImage(source: ImageSource.camera);
-    if (image == null) {
-      _setLoading(false);
+    XFile? file;
+    try {
+      file = await MediaUtil.pickImageFromCamera();
+    } catch (e) {
+      // TODO: アラートダイアログを表示
+      rethrow;
+    }
+    if (file == null || file.isOther) {
       return;
     }
     setState(() {
-      _files.add(image);
+      _files.add(file);
     });
-    _setLoading(false);
   }
 
   void _removeMedia(int index) {
@@ -189,7 +184,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                   children: [
                     const Icon(Icons.camera_alt_outlined),
                     SizedBox(width: 8.w),
-                    const Text('カメラから画像を追加する'),
+                    const Text('カメラからメディアを追加する'),
                   ],
                 ),
               ),
@@ -202,7 +197,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                   children: [
                     const Icon(Icons.image_outlined),
                     SizedBox(width: 8.w),
-                    const Text('アルバムから画像を追加する'),
+                    const Text('アルバムからメディアを追加する'),
                   ],
                 ),
               ),

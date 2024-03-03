@@ -4,6 +4,28 @@ import 'package:pg_mobile/models/media_type.dart';
 class MediaUtil {
   MediaUtil._();
 
+  static Future<List<XFile?>> pickMultipleMediaFromGallery() async {
+    final picker = ImagePicker();
+    List<XFile?> files;
+    try {
+      files = await picker.pickMultipleMedia();
+    } catch (e) {
+      throw Exception('Failed to pick multiple media from gallery: $e');
+    }
+    return files;
+  }
+
+  static Future<XFile?> pickImageFromCamera() async {
+    final picker = ImagePicker();
+    XFile? file;
+    try {
+      file = await picker.pickImage(source: ImageSource.camera);
+    } catch (e) {
+      throw Exception('Failed to pick image from camera: $e');
+    }
+    return file;
+  }
+
   static MediaType judgeMediaType(XFile file) {
     // ファイルのパスを取得
     final path = file.path;
