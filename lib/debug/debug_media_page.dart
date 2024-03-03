@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/extensions/x_file_extension.dart';
 
 class DebugMediaPage extends StatefulWidget {
   const DebugMediaPage({Key? key}) : super(key: key);
@@ -14,12 +15,14 @@ class DebugMediaPage extends StatefulWidget {
 
 class _DebugMediaPageState extends State<DebugMediaPage> {
   bool _isLoading = false;
+  bool _hasSelectVideo = false;
   final List<XFile?> _files = [];
 
   final _picker = ImagePicker();
   final int maxSelectedMediaCount = 4;
 
   bool get _isFullSelectedMediaCount => _files.length >= maxSelectedMediaCount;
+  bool get _disableAddMedia => _isFullSelectedMediaCount || _hasSelectVideo;
 
   void _setLoading(bool value) {
     setState(() {
@@ -27,19 +30,29 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
     });
   }
 
+  void _setSelectVideo(bool value) {
+    setState(() {
+      _hasSelectVideo = value;
+    });
+  }
+
   Future<void> _onPressedGallery() async {
     if (_isLoading) return;
     _setLoading(true);
-    final files = await _picker.pickMultipleMedia();
-    if (files.isEmpty) {
+    final pickedFiles = await _picker.pickMultipleMedia();
+    if (pickedFiles.isEmpty) {
       _setLoading(false);
       return;
     }
-    for (final file in files) {
-      if (_isFullSelectedMediaCount) {
-        _setLoading(false);
-        return;
-      } else {
+    for (final file in pickedFiles) {
+      if (_disableAddMedia) {
+        continue;
+      } else if (file.isVideo && _files.isEmpty) {
+        setState(() {
+          _files.add(file);
+        });
+        _setSelectVideo(true);
+      } else if (file.isImage) {
         setState(() {
           _files.add(file);
         });
@@ -63,6 +76,12 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
   }
 
   void _removeMedia(int index) {
+    final file = _files[index];
+    if (file == null) {
+      return;
+    } else if (file.isVideo) {
+      _setSelectVideo(false);
+    }
     setState(() {
       _files.removeAt(index);
     });
@@ -88,19 +107,23 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                         itemCount: _files.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
+                          final file = _files[index];
+                          if (file == null) {
+                            return const SizedBox.shrink();
+                          }
                           return Stack(
                             alignment: Alignment.topRight,
                             children: [
                               Container(
                                 width: 120.h,
-                                decoration: BoxDecoration(
-                                  color: AppColors.gray2,
-                                  image: DecorationImage(
-                                    image: FileImage(
-                                      File(_files[index]!.path),
-                                    ),
-                                  ),
-                                ),
+                                color: AppColors.gray2,
+                                child: file.isImage
+                                    ? Image(
+                                        image: FileImage(
+                                          File(file.path),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
                               ),
                               IconButton(
                                 onPressed: () => _removeMedia(index),
@@ -116,7 +139,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
                     ),
               const Spacer(),
               ElevatedButton(
-                onPressed: _isFullSelectedMediaCount ? null : _onPressedCamera,
+                onPressed: _disableAddMedia ? null : _onPressedCamera,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,7 +152,7 @@ class _DebugMediaPageState extends State<DebugMediaPage> {
               ),
               SizedBox(height: 16.h),
               ElevatedButton(
-                onPressed: _isFullSelectedMediaCount ? null : _onPressedGallery,
+                onPressed: _disableAddMedia ? null : _onPressedGallery,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
