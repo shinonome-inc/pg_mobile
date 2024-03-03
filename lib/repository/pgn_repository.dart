@@ -22,7 +22,7 @@ class PGNRepository {
     _dio = Dio(options);
   }
 
-  Future<List<PGNUser>> getUsers({
+  Future<List<PGNUser>> fetchUsers({
     required DateTime start,
     required DateTime end,
     PGNUnit unit = PGNUnit.day,
