@@ -42,7 +42,7 @@ class _DebugPGNPageState extends State<DebugPGNPage> {
     final now = DateTime.now();
     try {
       final users = await PGNRepository.instance.fetchUsers(
-        start: now.subtract(const Duration(days: 1)),
+        start: now.subtract(const Duration(days: 28)),
         end: now,
       );
       _setUsers(users);
