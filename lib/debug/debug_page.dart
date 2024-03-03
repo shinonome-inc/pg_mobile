@@ -6,6 +6,7 @@ import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/util.dart';
 
 class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
@@ -41,11 +42,7 @@ class _DebugPageState extends State<DebugPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
           _button('サインイン画面', onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const LoginSample(),
-                ));
+            Util.pushScreen(context, const LoginSample());
           }),
           _button('タイムライン画面', onPressed: () {}),
           _button('通知画面', onPressed: () {}),
