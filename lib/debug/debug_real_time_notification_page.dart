@@ -1,43 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-class ApiService {
-  static const String clientId = "nItkXrOim626bBcxDxsrf-MWglvPHspWCSromG8fqDQ";
-  static const String clientSecret =
-      "LfY-blimF7OKRWiAifj-Um_CJc2PbK-Roh9irjz0QmA";
-  static const url =
-      "https://community.4nonome.com/oauth/authorize?response_type=code&client_id=$clientId&redirect_uri=https://community.4nonome.com/web/home";
-
-  Future<String> getAccessToken(Uri uri) async {
-    final code = uri.queryParameters["code"];
-    final requestBody = jsonEncode({
-      "grant_type": "authorization_code",
-      "code": code,
-      "client_id": clientId,
-      "client_secret": clientSecret,
-      "redirect_uri": "https://community.4nonome.com/web/home"
-    });
-    final response = await http.post(
-      Uri.parse("https://community.4nonome.com/oauth/token"),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: requestBody,
-    );
-    if (response.statusCode == 200) {
-      final body = json.decode(response.body);
-      final accessToken = body["access_token"];
-      return accessToken;
-    } else {
-      throw Exception("Error");
-    }
-  }
-}
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -53,21 +20,23 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(ApiService.url))
+      ..loadRequest(Uri.parse(MastodonRepository.instance.url))
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (String url) async {
             final uri = Uri.parse(url);
             if (uri.queryParameters['code'] != null) {
-              final accessToken = await ApiService().getAccessToken(uri);
-              if (!mounted) return;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) =>
-                      DebugRealTimeNotificationPage(accessToken: accessToken),
-                ),
-              );
+              final accessToken = await MastodonRepository.instance.signIn(uri);
+              if (accessToken != null) {
+                if (!mounted) return;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        DebugRealTimeNotificationPage(accessToken: accessToken),
+                  ),
+                );
+              }
             }
           },
         ),
