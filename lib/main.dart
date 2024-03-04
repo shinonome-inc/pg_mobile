@@ -7,6 +7,7 @@ import 'package:pg_mobile/constants/font_families.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:pg_mobile/firebase_options.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/repository/pgn_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,7 @@ Future<void> main() async {
   );
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
   MastodonRepository.instance.init();
+  PGNRepository.instance.init();
   runApp(const MyApp());
 }
 
