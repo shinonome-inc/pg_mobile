@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_follow_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
+import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
+import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
@@ -46,6 +48,15 @@ class _DebugPageState extends State<DebugPage> {
           }),
           _button('タイムライン画面', onPressed: () {}),
           _button('通知画面', onPressed: () {}),
+          _button(
+            'searchBar',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DebugSearchBarPage()),
+              );
+            },
+          ),
           _button(
             'PGN',
             onPressed: () {
@@ -100,6 +111,13 @@ class _DebugPageState extends State<DebugPage> {
               });
             },
           ),
+          _button(
+            'メディア（画像・動画）画面',
+            onPressed: () {
+              Util.pushScreen(context, const DebugMediaPage());
+            },
+          ),
+          SizedBox(height: 64.h),
         ],
       ),
     );
