@@ -7,7 +7,6 @@ class SecureStorageRepository {
 
   static const _tokenKey = 'access_token';
 
-  /// 端末に保存されているアクセストークンを読み取ります。
   static Future<String?> readToken() async {
     String? token;
     try {
@@ -18,7 +17,6 @@ class SecureStorageRepository {
     return token;
   }
 
-  /// 端末に保存されているアクセストークンを削除します。
   static Future<void> deleteToken() async {
     final token = await readToken();
     if (token == null || token.isEmpty) return;
@@ -29,7 +27,6 @@ class SecureStorageRepository {
     }
   }
 
-  /// 端末にアクセストークンを保存します。
   static Future<void> writeToken(String? token) async {
     if (token == null) return;
     try {
