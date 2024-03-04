@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_follow_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
+import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
@@ -40,15 +41,28 @@ class _DebugPageState extends State<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
-          _button('サインイン画面', onPressed: () {
-            Navigator.push(
+          _button(
+            'サインイン画面',
+            onPressed: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => const LoginSample(),
-                ));
-          }),
+                ),
+              );
+            },
+          ),
           _button('タイムライン画面', onPressed: () {}),
           _button('通知画面', onPressed: () {}),
+          _button(
+            'searchBar',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DebugSearchBarPage()),
+              );
+            },
+          ),
           _button(
             'PGN',
             onPressed: () {
