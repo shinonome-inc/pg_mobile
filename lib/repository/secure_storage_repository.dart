@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageRepository {
@@ -12,7 +13,7 @@ class SecureStorageRepository {
     try {
       token = await _storage.read(key: _tokenKey);
     } catch (e) {
-      throw Exception('Failed to read token: $e');
+      debugPrint('Failed to read token: $e');
     }
     return token;
   }
@@ -23,7 +24,7 @@ class SecureStorageRepository {
     try {
       await _storage.delete(key: _tokenKey);
     } catch (e) {
-      throw Exception('Failed to delete token: $e');
+      debugPrint('Failed to delete token: $e');
     }
   }
 
@@ -32,7 +33,7 @@ class SecureStorageRepository {
     try {
       await _storage.write(key: _tokenKey, value: token);
     } catch (e) {
-      throw Exception('Failed to write token: $e');
+      debugPrint('Failed to write token: $e');
     }
   }
 }
