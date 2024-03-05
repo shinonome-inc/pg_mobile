@@ -28,6 +28,11 @@ class MastodonRepository {
     _dio.options.headers.addAll(_headers!);
   }
 
+  void reset() {
+    _headers = {};
+    _dio.options.headers.addAll(_headers!);
+  }
+
   Future<List<FollowerModel>> fetchFollowerList() async {
     final response = await _dio.get("/api/v1/accounts/219/followers?limit=80");
     final followerModel = List<dynamic>.from(response.data);

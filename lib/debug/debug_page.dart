@@ -44,23 +44,15 @@ class _DebugPageState extends State<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
+          _button('サインイン画面', onPressed: () {
+            Util.pushScreen(context, const LoginSample());
+          }),
           _button("通知画面", onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const SignInPage()),
             );
           }),
-          _button(
-            'サインイン画面',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const LoginSample(),
-                ),
-              );
-            },
-          ),
           _button('タイムライン画面', onPressed: () {}),
           _button(
             'searchBar',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/repository/secure_storage_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginView extends StatefulWidget {
@@ -24,6 +25,7 @@ class _LoginViewState extends State<LoginView> {
           final accessToken = await MastodonRepository.instance.signIn(url);
           if (accessToken != null) {
             MastodonRepository.instance.set(accessToken);
+            await SecureStorageRepository.writeToken(accessToken);
             if (!mounted) return;
             Navigator.push(
               context,
