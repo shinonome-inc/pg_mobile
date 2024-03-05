@@ -4,6 +4,7 @@ import 'package:pg_mobile/debug/debug_follow_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
+import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
@@ -43,6 +44,12 @@ class _DebugPageState extends State<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
+          _button("通知画面", onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInPage()),
+            );
+          }),
           _button(
             'サインイン画面',
             onPressed: () {
@@ -55,7 +62,6 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           _button('タイムライン画面', onPressed: () {}),
-          _button('通知画面', onPressed: () {}),
           _button(
             'searchBar',
             onPressed: () {
