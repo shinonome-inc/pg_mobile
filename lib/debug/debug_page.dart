@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_follow_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
+import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
@@ -93,7 +94,7 @@ class _DebugPageState extends State<DebugPage> {
                   context,
                   MaterialPageRoute(
                     builder: (_) => DebugFollowerListPage(
-                      followerModelList: followerModelList,
+                      followerList: followerModelList,
                     ),
                   ),
                 );
@@ -104,17 +105,23 @@ class _DebugPageState extends State<DebugPage> {
             "フォロ一覧画面",
             onPressed: () {
               MastodonRepository.instance
-                  .fetchFollowList()
+                  .fetchFollowerList()
                   .then((followModelList) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => DebugFollowListPage(
-                      followModelList: followModelList,
+                      followList: followModelList,
                     ),
                   ),
                 );
               });
+            },
+          ),
+          _button(
+            'Mastodonユーザー',
+            onPressed: () {
+              Util.pushScreen(context, const DebugMastodonUserPage());
             },
           ),
           _button(

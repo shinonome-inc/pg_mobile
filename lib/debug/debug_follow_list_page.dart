@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/models/follow_model.dart';
+import 'package:pg_mobile/models/mastodon_user.dart';
 
 class DebugFollowListPage extends StatelessWidget {
-  final List<FollowModel> followModelList;
-  const DebugFollowListPage({Key? key, required this.followModelList})
-      : super(key: key);
+  final List<MastodonUser> followList;
+  const DebugFollowListPage({
+    Key? key,
+    required this.followList,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class DebugFollowListPage extends StatelessWidget {
         title: const Text("フォロー一覧画面"),
       ),
       body: ListView.builder(
-        itemCount: followModelList.length,
+        itemCount: followList.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
@@ -22,8 +24,7 @@ class DebugFollowListPage extends StatelessWidget {
                 children: [
                   const SizedBox(width: 16),
                   CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(followModelList[index].avatarUrl),
+                    backgroundImage: NetworkImage(followList[index].avatar),
                     radius: 30,
                   ),
                   const SizedBox(width: 10),
@@ -31,12 +32,12 @@ class DebugFollowListPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        followModelList[index].displayName,
+                        followList[index].displayName,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "@${followModelList[index].username}",
+                        "@${followList[index].username}",
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!

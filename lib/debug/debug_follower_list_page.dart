@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/models/follower_model.dart';
+import 'package:pg_mobile/models/mastodon_user.dart';
 
 class DebugFollowerListPage extends StatelessWidget {
-  final List<FollowerModel> followerModelList;
-  const DebugFollowerListPage({Key? key, required this.followerModelList})
-      : super(key: key);
+  final List<MastodonUser> followerList;
+  const DebugFollowerListPage({
+    Key? key,
+    required this.followerList,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class DebugFollowerListPage extends StatelessWidget {
         title: const Text("フォロワー一覧画面"),
       ),
       body: ListView.builder(
-        itemCount: followerModelList.length,
+        itemCount: followerList.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
@@ -22,8 +24,7 @@ class DebugFollowerListPage extends StatelessWidget {
                 children: [
                   const SizedBox(width: 16),
                   CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(followerModelList[index].avatarUrl),
+                    backgroundImage: NetworkImage(followerList[index].avatar),
                     radius: 30,
                   ),
                   const SizedBox(width: 10),
@@ -31,7 +32,7 @@ class DebugFollowerListPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        followerModelList[index].displayName,
+                        followerList[index].displayName,
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -40,7 +41,7 @@ class DebugFollowerListPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        "@${followerModelList[index].username}",
+                        "@${followerList[index].username}",
                         style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.gray3,
