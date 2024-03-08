@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon_user.dart';
 
-class DebugFollowerListPage extends StatelessWidget {
-  final List<MastodonUser> followerList;
-  const DebugFollowerListPage({
+class DebugFollowListPage extends StatelessWidget {
+  final List<MastodonUser> followList;
+  const DebugFollowListPage({
     Key? key,
-    required this.followerList,
+    required this.followList,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("フォロワー一覧画面"),
+        title: const Text("フォロー一覧画面"),
       ),
       body: ListView.builder(
-        itemCount: followerList.length,
+        itemCount: followList.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
@@ -24,7 +24,7 @@ class DebugFollowerListPage extends StatelessWidget {
                 children: [
                   const SizedBox(width: 16),
                   CircleAvatar(
-                    backgroundImage: NetworkImage(followerList[index].avatar),
+                    backgroundImage: NetworkImage(followList[index].avatar),
                     radius: 30,
                   ),
                   const SizedBox(width: 10),
@@ -32,30 +32,25 @@ class DebugFollowerListPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        followerList[index].displayName,
-                        style: const TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white,
-                        ),
+                        followList[index].displayName,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 8),
                       Text(
-                        "@${followerList[index].username}",
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: AppColors.gray3,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        "@${followList[index].username}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: AppColors.gray3),
                       )
                     ],
-                  ),
+                  )
                 ],
               ),
               const Divider(
                 height: 5,
-                color: AppColors.gray3,
                 thickness: 1,
+                color: AppColors.gray3,
               )
             ],
           );

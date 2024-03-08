@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
+import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
+import 'package:pg_mobile/debug/debug_media_page.dart';
+import 'package:pg_mobile/debug/debug_pgn_page.dart';
+import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
+import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
@@ -46,8 +51,32 @@ class _DebugPageState extends State<DebugPage> {
               NavigatorUtil.pushScreen(context, const LoginSample());
             },
           ),
+          _button("通知画面", onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInPage()),
+            );
+          }),
           _button('タイムライン画面', onPressed: () {}),
-          _button('通知画面', onPressed: () {}),
+          _button(
+            'searchBar',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DebugSearchBarPage()),
+              );
+            },
+          ),
+          _button(
+            'PGN',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DebugPGNPage(),
+                ),
+              );
+            },
+          ),
           _button(
             'TextTheme',
             onPressed: () {
@@ -61,7 +90,7 @@ class _DebugPageState extends State<DebugPage> {
                 (followerModelList) {
                   NavigatorUtil.pushScreen(
                     context,
-                    DebugFollowerListPage(followerModelList: followerModelList),
+                    DebugFollowerListPage(followerList: followerModelList),
                   );
                 },
               );
@@ -76,6 +105,36 @@ class _DebugPageState extends State<DebugPage> {
               );
             },
           ),
+          _button(
+            "フォロー一覧画面",
+            onPressed: () {
+              MastodonRepository.instance
+                  .fetchFollowerList()
+                  .then((followerModelList) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DebugFollowerListPage(
+                      followerList: followerModelList,
+                    ),
+                  ),
+                );
+              });
+            },
+          ),
+          _button(
+            'Mastodonユーザー',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const DebugMastodonUserPage());
+            },
+          ),
+          _button(
+            'メディア（画像・動画）画面',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const DebugMediaPage());
+            },
+          ),
+          SizedBox(height: 64.h),
         ],
       ),
     );
