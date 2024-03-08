@@ -7,6 +7,8 @@ import 'package:pg_mobile/constants/font_families.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:pg_mobile/firebase_options.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/repository/pgn_repository.dart';
+import 'package:pg_mobile/repository/secure_storage_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +17,12 @@ Future<void> main() async {
   );
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
   MastodonRepository.instance.init();
+  PGNRepository.instance.init();
+  final token = await SecureStorageRepository.readToken();
+  final hasSignIn = token != null && token.isNotEmpty;
+  if (hasSignIn) {
+    MastodonRepository.instance.set(token);
+  }
   runApp(const MyApp());
 }
 
