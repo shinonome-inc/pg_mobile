@@ -47,6 +47,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+    <key>NSCameraUsageDescription</key>
+    <string>このアプリがカメラにアクセスするのを許可します</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>このアプリがマイクにアクセスをするのを許可します</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>このアプリがアルバムにアクセスするのを許可します</string>
     <!-- Deep Links　ここから -->
     <key>FlutterDeepLinkingEnabled</key>
     <true/>
@@ -62,5 +68,9 @@
         </dict>
     </array>
     <!-- Deep Links　ここまで追加 -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>アプリが位置情報を使用することを許可する必要があります。</string>
+    <key>アプリが常に位置情報を使用することを許可する必要があります。</key>
+    <string>Because</string>
 </dict>
 </plist>
