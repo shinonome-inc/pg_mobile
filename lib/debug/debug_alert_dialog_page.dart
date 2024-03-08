@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/util/navigator_util.dart';
+import 'package:pg_mobile/util/platform_modal_handler.dart';
 
 class DebugAlertDialogPage extends StatelessWidget {
   const DebugAlertDialogPage({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class DebugAlertDialogPage extends StatelessWidget {
         child: Center(
           child: ElevatedButton(
             onPressed: () {
-              NavigatorUtil.showCommonAlertDialog(
+              PlatformModalHandler.showCommonAlertDialog(
                 context,
                 titleText: 'titleText',
                 contentText: 'contentText',
