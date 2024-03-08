@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/pages/post_detail/post_detail_view.dart';
 import 'package:pg_mobile/pages/user/user_view.dart';
-import 'package:pg_mobile/util.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
 class NotificationsView extends StatelessWidget {
   const NotificationsView({super.key});
@@ -15,12 +15,13 @@ class NotificationsView extends StatelessWidget {
           const Text('Notifications'),
           TextButton(
               onPressed: () {
-                Util.showBottomSheetMenu(context, const UserView());
+                NavigatorUtil.showBottomSheetMenu(context, const UserView());
               },
               child: const Text('User')),
           TextButton(
               onPressed: () {
-                Util.showBottomSheetMenu(context, const PostDetailView());
+                NavigatorUtil.showBottomSheetMenu(
+                    context, const PostDetailView());
               },
               child: const Text('Detail'))
         ],

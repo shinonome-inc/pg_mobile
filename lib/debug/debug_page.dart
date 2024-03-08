@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pg_mobile/debug/debug_follow_list_page.dart';
+import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
@@ -10,7 +10,7 @@ import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
-import 'package:pg_mobile/util.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
 class DebugPage extends StatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
@@ -45,9 +45,12 @@ class _DebugPageState extends State<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
-          _button('サインイン画面', onPressed: () {
-            Util.pushScreen(context, const LoginSample());
-          }),
+          _button(
+            'サインイン画面',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const LoginSample());
+            },
+          ),
           _button("通知画面", onPressed: () {
             Navigator.push(
               context,
@@ -77,15 +80,33 @@ class _DebugPageState extends State<DebugPage> {
           _button(
             'TextTheme',
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DebugTextThemePage(),
-                ),
-              );
+              NavigatorUtil.pushScreen(context, const DebugTextThemePage());
             },
           ),
           _button(
             "フォロワー一覧画面",
+            onPressed: () {
+              MastodonRepository.instance.fetchFollowerList().then(
+                (followerModelList) {
+                  NavigatorUtil.pushScreen(
+                    context,
+                    DebugFollowerListPage(followerList: followerModelList),
+                  );
+                },
+              );
+            },
+          ),
+          _button(
+            '画像のキャッシュ化',
+            onPressed: () {
+              NavigatorUtil.pushScreen(
+                context,
+                const DebugCachedNetworkImagePage(),
+              );
+            },
+          ),
+          _button(
+            "フォロー一覧画面",
             onPressed: () {
               MastodonRepository.instance
                   .fetchFollowerList()
@@ -102,32 +123,15 @@ class _DebugPageState extends State<DebugPage> {
             },
           ),
           _button(
-            "フォロ一覧画面",
-            onPressed: () {
-              MastodonRepository.instance
-                  .fetchFollowerList()
-                  .then((followModelList) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => DebugFollowListPage(
-                      followList: followModelList,
-                    ),
-                  ),
-                );
-              });
-            },
-          ),
-          _button(
             'Mastodonユーザー',
             onPressed: () {
-              Util.pushScreen(context, const DebugMastodonUserPage());
+              NavigatorUtil.pushScreen(context, const DebugMastodonUserPage());
             },
           ),
           _button(
             'メディア（画像・動画）画面',
             onPressed: () {
-              Util.pushScreen(context, const DebugMediaPage());
+              NavigatorUtil.pushScreen(context, const DebugMediaPage());
             },
           ),
           SizedBox(height: 64.h),
