@@ -5,20 +5,21 @@ part 'status.g.dart';
 
 @freezed
 class Status with _$Status {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Status({
     String? id,
-    @JsonKey(name: 'created_at') String? createdAt,
-    @JsonKey(name: 'in_reply_to_id') String? inReplyToId,
-    @JsonKey(name: 'in_reply_to_account_id') String? inReplyToAccountId,
+    String? createdAt,
+    String? inReplyToId,
+    String? inReplyToAccountId,
     bool? sensitive,
-    @JsonKey(name: 'spoiler_text') String? spoilerText,
+    String? spoilerText,
     String? visibility,
     String? language,
     String? uri,
     String? url,
-    @JsonKey(name: 'replies_count') int? repliesCount,
-    @JsonKey(name: 'reblogs_count') int? reblogsCount,
-    @JsonKey(name: 'favourites_count') int? favouritesCount,
+    int? repliesCount,
+    int? reblogsCount,
+    int? favouritesCount,
     bool? favourited,
     bool? reblogged,
     bool? muted,
@@ -40,6 +41,7 @@ class Status with _$Status {
 
 @freezed
 abstract class Application with _$Application {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Application({
     String? name,
     String? website,
@@ -51,26 +53,26 @@ abstract class Application with _$Application {
 
 @freezed
 abstract class Account with _$Account {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Account({
     String? id,
     String? username,
     String? acct,
-    @JsonKey(name: 'display_name') String? displayName,
+    String? displayName,
     bool? locked,
     bool? bot,
     bool? discoverable,
     bool? group,
-    @JsonKey(name: 'created_at') String? createdAt,
+    String? createdAt,
     String? note,
     String? url,
     String? avatar,
-    @JsonKey(name: 'avatar_static') String? avatarStatic,
+    String? avatarStatic,
     String? header,
-    @JsonKey(name: 'header_static') String? headerStatic,
-    @JsonKey(name: 'followers_count') int? followersCount,
-    @JsonKey(name: 'following_count') int? followingCount,
-    @JsonKey(name: 'statuses_count') int? statusesCount,
-    @JsonKey(name: 'last_status_at') String? lastStatusAt,
+    String? headerStatic,
+    int? followersCount,
+    int? followingCount,
+    int? statusesCount,
     List<dynamic>? emojis,
     List<AccountField>? fields,
   }) = _Account;
@@ -81,10 +83,11 @@ abstract class Account with _$Account {
 
 @freezed
 abstract class AccountField with _$AccountField {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory AccountField({
     String? name,
     String? value,
-    @JsonKey(name: 'verified_at') String? verifiedAt,
+    String? verifiedAt,
   }) = _AccountField;
 
   factory AccountField.fromJson(Map<String, dynamic> json) =>
@@ -93,20 +96,21 @@ abstract class AccountField with _$AccountField {
 
 @freezed
 abstract class Card with _$Card {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Card({
     String? url,
     String? title,
     String? description,
     String? type,
-    @JsonKey(name: 'author_name') String? authorName,
-    @JsonKey(name: 'author_url') String? authorUrl,
-    @JsonKey(name: 'provider_name') String? providerName,
-    @JsonKey(name: 'provider_url') String? providerUrl,
+    String? authorName,
+    String? authorUrl,
+    String? providerName,
+    String? providerUrl,
     String? html,
     int? width,
     int? height,
     dynamic image,
-    @JsonKey(name: 'embed_url') String? embedUrl,
+    String? embedUrl,
   }) = _Card;
 
   factory Card.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
