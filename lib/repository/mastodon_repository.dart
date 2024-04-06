@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon_user.dart';
+import 'package:pg_mobile/models/status.dart';
 
 class MastodonRepository {
   MastodonRepository._privateConstructor();
@@ -84,5 +85,15 @@ class MastodonRepository {
     final body = response.data;
     final accessToken = body['access_token'];
     return accessToken;
+  }
+
+  Future<List<Status>> fetchStatus() async {
+    try {
+      final response = await _dio.get('/api/v1/timelines/home?limit=40');
+      final statuses = List<dynamic>.from(response.data);
+      return statuses.map((status) => Status.fromJson(status)).toList();
+    } on DioException catch (e) {
+      throw Exception(e);
+    }
   }
 }

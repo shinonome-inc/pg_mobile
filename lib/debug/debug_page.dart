@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
+import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
@@ -57,7 +58,19 @@ class _DebugPageState extends State<DebugPage> {
               MaterialPageRoute(builder: (_) => const SignInPage()),
             );
           }),
-          _button('タイムライン画面', onPressed: () {}),
+          _button(
+            'ホームタイムライン画面',
+            onPressed: () async {
+              final statuses = await MastodonRepository.instance.fetchStatus();
+              if (!mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DebugHomeTimelinePage(statuses: statuses),
+                ),
+              );
+            },
+          ),
           _button(
             'searchBar',
             onPressed: () {
