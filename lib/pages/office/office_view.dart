@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/pages/office_detail/office_detail_view.dart';
-import 'package:pg_mobile/util.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
 class OfficeView extends StatelessWidget {
   const OfficeView({super.key});
@@ -14,7 +14,8 @@ class OfficeView extends StatelessWidget {
           const Text('Office'),
           TextButton(
               onPressed: () {
-                Util.showBottomSheetMenu(context, const OfficeDetailView());
+                NavigatorUtil.showBottomSheetMenu(
+                    context, const OfficeDetailView());
               },
               child: const Text("Office Detail"))
         ],

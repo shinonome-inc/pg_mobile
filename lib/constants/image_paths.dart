@@ -1,6 +1,9 @@
 class ImagePaths {
   ImagePaths._();
 
+  static const String error = 'assets/images/error.png';
+  static const String errorUser = 'assets/images/errorUser.png';
+
   static const String pgnBronze = 'assets/images/ranks/pgnBronze.png';
   static const String pgnDiamond = 'assets/images/ranks/pgnDiamond.png';
   static const String pgnGold = 'assets/images/ranks/pgnGold.png';

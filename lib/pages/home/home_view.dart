@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:pg_mobile/pages/post/post_view.dart';
 import 'package:pg_mobile/pages/user/user_view.dart';
-import 'package:pg_mobile/util.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -17,7 +17,7 @@ class HomeView extends ConsumerWidget {
               const Text('Home'),
               TextButton(
                 onPressed: () {
-                  Util.showBottomSheetMenu(context, const UserView());
+                  NavigatorUtil.showBottomSheetMenu(context, const UserView());
                 },
                 child: const Text('User'),
               ),
@@ -27,7 +27,7 @@ class HomeView extends ConsumerWidget {
                   backgroundColor: Colors.orange,
                 ),
                 onPressed: () {
-                  Util.pushScreen(context, const DebugPage());
+                  NavigatorUtil.pushScreen(context, const DebugPage());
                 },
                 child: const Text('Debug'),
               ),
@@ -36,7 +36,7 @@ class HomeView extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Util.showBottomSheetMenu(context, const PostView());
+            NavigatorUtil.showBottomSheetMenu(context, const PostView());
           },
           child: const Icon(Icons.add),
         ));
