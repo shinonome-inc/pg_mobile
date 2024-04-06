@@ -5,7 +5,7 @@ import 'package:pg_mobile/util/date_formatter.dart';
 void main() {
   group('DateFormatter', () {
     group('formatDate', () {
-      test('現在時刻がになるか', () {
+      test('現在時刻が正しくフォーマットされるか', () {
         final dateTime = DateTime.now();
         expect(DateFormatter.formatDate(dateTime), '0秒前');
       });
