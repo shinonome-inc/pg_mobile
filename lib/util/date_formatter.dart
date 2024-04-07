@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class DateFormatter {
   DateFormatter._();
 
-  static String formatDate(DateTime dateTime) {
+  static String formatPastDate(DateTime dateTime) {
     final now = DateTime.now();
     final diff = now.difference(dateTime);
     if (diff.inSeconds < 60) {
