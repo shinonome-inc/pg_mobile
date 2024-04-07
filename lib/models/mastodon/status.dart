@@ -2,7 +2,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/application.dart';
 import 'package:pg_mobile/models/mastodon/custom_emoji.dart';
+import 'package:pg_mobile/models/mastodon/filter_result.dart';
+import 'package:pg_mobile/models/mastodon/media_attachment.dart';
+import 'package:pg_mobile/models/mastodon/poll.dart';
 import 'package:pg_mobile/models/mastodon/preview_card.dart';
+import 'package:pg_mobile/models/mastodon/status_mention.dart';
+import 'package:pg_mobile/models/mastodon/status_tag.dart';
 
 part 'status.freezed.dart';
 part 'status.g.dart';
@@ -19,10 +24,10 @@ class Status with _$Status {
     required String visibility,
     required bool sensitive,
     required String spoilerText,
-    required List<dynamic> mediaAttachments,
+    required List<MediaAttachment> mediaAttachments,
     Application? application,
-    required List<dynamic> mentions,
-    required List<dynamic> tags,
+    required List<StatusMention> mentions,
+    required List<StatusTag> tags,
     required List<CustomEmoji> emojis,
     required int reblogsCount,
     required int favouritesCount,
@@ -31,7 +36,7 @@ class Status with _$Status {
     String? inReplyToId,
     String? inReplyToAccountId,
     Status? reblog,
-    dynamic poll,
+    Poll? poll,
     PreviewCard? card,
     String? language,
     String? text,
@@ -41,7 +46,7 @@ class Status with _$Status {
     bool? muted,
     bool? bookmarked,
     bool? pinned,
-    dynamic filtered,
+    List<FilterResult>? filtered,
   }) = _Status;
 
   factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
