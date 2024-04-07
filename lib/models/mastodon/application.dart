@@ -7,8 +7,10 @@ part 'application.g.dart';
 abstract class Application with _$Application {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Application({
-    String? name,
+    required String name,
     String? website,
+    String? clientId,
+    String? clientSecret,
   }) = _Application;
 
   factory Application.fromJson(Map<String, dynamic> json) =>

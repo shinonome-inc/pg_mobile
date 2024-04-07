@@ -1,7 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/application.dart';
-import 'package:pg_mobile/models/mastodon/card.dart';
+import 'package:pg_mobile/models/mastodon/custom_emoji.dart';
+import 'package:pg_mobile/models/mastodon/preview_card.dart';
 
 part 'status.freezed.dart';
 part 'status.g.dart';
@@ -10,33 +11,37 @@ part 'status.g.dart';
 class Status with _$Status {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Status({
-    String? id,
-    String? createdAt,
+    required String id,
+    required String uri,
+    required String createdAt,
+    required Account account,
+    required String content,
+    required String visibility,
+    required bool sensitive,
+    required String spoilerText,
+    required List<dynamic> mediaAttachments,
+    Application? application,
+    required List<dynamic> mentions,
+    required List<dynamic> tags,
+    required List<CustomEmoji> emojis,
+    required int reblogsCount,
+    required int favouritesCount,
+    required int repliesCount,
+    String? url,
     String? inReplyToId,
     String? inReplyToAccountId,
-    bool? sensitive,
-    String? spoilerText,
-    String? visibility,
+    Status? reblog,
+    dynamic poll,
+    PreviewCard? card,
     String? language,
-    String? uri,
-    String? url,
-    int? repliesCount,
-    int? reblogsCount,
-    int? favouritesCount,
+    String? text,
+    String? editedAt,
     bool? favourited,
     bool? reblogged,
     bool? muted,
     bool? bookmarked,
-    String? content,
-    dynamic reblog,
-    Application? application,
-    Account? account,
-    List<dynamic>? mediaAttachments,
-    List<dynamic>? mentions,
-    List<dynamic>? tags,
-    List<dynamic>? emojis,
-    Card? card,
-    dynamic poll,
+    bool? pinned,
+    dynamic filtered,
   }) = _Status;
 
   factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
