@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pg_mobile/models/mastodon/relationship_severance_event.dart';
+import 'package:pg_mobile/models/mastodon/report.dart';
 
 part 'notification.freezed.dart';
 part 'notification.g.dart';
@@ -12,8 +14,8 @@ class Notification with _$Notification {
     required String createdAt,
     required dynamic account,
     dynamic status,
-    dynamic report,
-    dynamic relationshipSeveranceEvent,
+    Report? report,
+    RelationshipSeveranceEvent? relationshipSeveranceEvent,
   }) = _Notification;
 
   factory Notification.fromJson(Map<String, dynamic> json) =>
