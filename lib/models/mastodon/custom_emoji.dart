@@ -1,17 +1,18 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'emoji.freezed.dart';
-part 'emoji.g.dart';
+part 'custom_emoji.freezed.dart';
+part 'custom_emoji.g.dart';
 
 @freezed
-class Emoji with _$Emoji {
+class CustomEmoji with _$CustomEmoji {
   @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory Emoji({
+  const factory CustomEmoji({
     required String shortcode,
     required String url,
     required String staticUrl,
     required bool visibleInPicker,
-  }) = _Emoji;
+  }) = _CustomEmoji;
 
-  factory Emoji.fromJson(Map<String, dynamic> json) => _$EmojiFromJson(json);
+  factory CustomEmoji.fromJson(Map<String, dynamic> json) =>
+      _$CustomEmojiFromJson(json);
 }

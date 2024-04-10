@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/models/mastodon_user.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 
 class DebugFollowListPage extends StatelessWidget {
-  final List<MastodonUser> followList;
+  final List<Account> followList;
   const DebugFollowListPage({
     Key? key,
     required this.followList,
