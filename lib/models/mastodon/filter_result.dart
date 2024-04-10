@@ -4,7 +4,7 @@ part 'filter_result.freezed.dart';
 part 'filter_result.g.dart';
 
 @freezed
-abstract class FilterResult with _$FilterResult {
+class FilterResult with _$FilterResult {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory FilterResult({
     required String id,

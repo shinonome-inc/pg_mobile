@@ -4,7 +4,7 @@ part 'media_attachment.freezed.dart';
 part 'media_attachment.g.dart';
 
 @freezed
-abstract class MediaAttachment with _$MediaAttachment {
+class MediaAttachment with _$MediaAttachment {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory MediaAttachment({
     required String id,

@@ -4,7 +4,7 @@ part 'preview_card.freezed.dart';
 part 'preview_card.g.dart';
 
 @freezed
-abstract class PreviewCard with _$PreviewCard {
+class PreviewCard with _$PreviewCard {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory PreviewCard({
     required String url,

@@ -6,7 +6,7 @@ part 'poll.freezed.dart';
 part 'poll.g.dart';
 
 @freezed
-abstract class Poll with _$Poll {
+class Poll with _$Poll {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Poll({
     required String id,

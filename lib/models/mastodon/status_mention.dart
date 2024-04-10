@@ -4,7 +4,7 @@ part 'status_mention.freezed.dart';
 part 'status_mention.g.dart';
 
 @freezed
-abstract class StatusMention with _$StatusMention {
+class StatusMention with _$StatusMention {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory StatusMention({
     required String id,

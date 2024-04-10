@@ -4,7 +4,7 @@ part 'status_tag.freezed.dart';
 part 'status_tag.g.dart';
 
 @freezed
-abstract class StatusTag with _$StatusTag {
+class StatusTag with _$StatusTag {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory StatusTag({
     required String id,

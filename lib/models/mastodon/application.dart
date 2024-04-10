@@ -4,7 +4,7 @@ part 'application.freezed.dart';
 part 'application.g.dart';
 
 @freezed
-abstract class Application with _$Application {
+class Application with _$Application {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Application({
     required String name,

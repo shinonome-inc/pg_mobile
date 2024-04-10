@@ -6,7 +6,7 @@ part 'account.freezed.dart';
 part 'account.g.dart';
 
 @freezed
-abstract class Account with _$Account {
+class Account with _$Account {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Account({
     required String id,
