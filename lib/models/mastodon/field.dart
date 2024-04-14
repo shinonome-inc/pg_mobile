@@ -9,7 +9,7 @@ class Field with _$Field {
   const factory Field({
     required String name,
     required String value,
-    DateTime? verifiedAt,
+    String? verifiedAt,
   }) = _Field;
 
   factory Field.fromJson(Map<String, dynamic> json) => _$FieldFromJson(json);
