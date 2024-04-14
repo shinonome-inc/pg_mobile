@@ -1,57 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/models/status.dart';
+import 'package:pg_mobile/providers/timeline_notifier.dart';
+import 'package:pg_mobile/util/date_formatter.dart';
 import 'package:pg_mobile/widgets/search_bar_widget.dart';
 
-class DebugHomeTimelinePage extends StatelessWidget {
-  final List<Status> statuses;
-  const DebugHomeTimelinePage({Key? key, required this.statuses})
-      : super(key: key);
+class DebugHomeTimelinePage extends ConsumerStatefulWidget {
+  const DebugHomeTimelinePage({Key? key}) : super(key: key);
 
-  Widget _betweenCreatedAtAndCurrentDifferenceText(
-    int differenceDays,
-    int differenceHours,
-    int differenceMinutes,
-    int differenceSeconds,
-    BuildContext context,
-  ) {
-    if (differenceDays >= 1) {
-      return Text(
-        "${differenceDays.toString()}日前",
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: AppColors.gray3),
-      );
-    } else if (differenceDays == 0 && differenceHours >= 1) {
-      return Text(
-        "${differenceHours.toString()}時間前",
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: AppColors.gray3),
-      );
-    } else if (differenceDays == 0 &&
-        differenceHours == 0 &&
-        differenceMinutes >= 1) {
-      return Text(
-        "${differenceMinutes.toString()}分前",
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: AppColors.gray3),
-      );
-    } else {
-      return Text(
-        "${differenceSeconds.toString()}秒前",
-        style: Theme.of(context)
-            .textTheme
-            .bodyMedium!
-            .copyWith(color: AppColors.gray3),
-      );
-    }
-  }
+  @override
+  ConsumerState<DebugHomeTimelinePage> createState() =>
+      _DebugHomeTimelinePageState();
+}
+
+class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
+  late final ScrollController _scrollController;
 
   Widget _statusFavoriteOrRetweetOrReplyButton(
     BuildContext context,
@@ -81,8 +46,23 @@ class DebugHomeTimelinePage extends StatelessWidget {
     );
   }
 
+  // スクロールして一番下に行ったら、次のページの分のStatusを取得して表示
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(() async {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        await ref.read(timelineProvider.notifier).fetchTimeline();
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final statusList =
+        ref.watch(timelineProvider.select((value) => value.timelineStatus));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
@@ -92,13 +72,20 @@ class DebugHomeTimelinePage extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemCount: statuses.length,
+        controller: _scrollController,
+        itemCount: statusList.length + 1,
         itemBuilder: (BuildContext context, int index) {
-          final createdAtDateTime = DateTime.parse(statuses[index].createdAt);
-          final difference = DateTime.now().difference(createdAtDateTime);
+          if (index == statusList.length) {
+            return const Center(
+              child: CupertinoActivityIndicator(
+                color: AppColors.white,
+              ),
+            );
+          }
+          final createdAtDateTime = DateTime.parse(statusList[index].createdAt);
           Widget content = Html(
             data: """
-              ${statuses[index].content}
+              ${statusList[index].content}
             """,
             style: {"p": Style(color: AppColors.white)},
           );
@@ -111,37 +98,46 @@ class DebugHomeTimelinePage extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage:
-                          NetworkImage(statuses[index].account.avatar),
+                          NetworkImage(statusList[index].account.avatar),
                       radius: 28,
                     ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              const SizedBox(width: 8),
-                              Text(
-                                statuses[index].account.displayName,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              const SizedBox(width: 16),
-                              Text(
-                                "@${statuses[index].account.username}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(color: AppColors.gray3),
-                              ),
-                              const Spacer(),
-                              _betweenCreatedAtAndCurrentDifferenceText(
-                                difference.inDays,
-                                difference.inHours,
-                                difference.inMinutes,
-                                difference.inSeconds,
-                                context,
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      statusList[index].account.displayName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    Text(
+                                      "@${statusList[index].account.username}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(color: AppColors.gray3),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                Text(
+                                  DateFormatter.formatPastDate(
+                                      createdAtDateTime),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(color: AppColors.gray3),
+                                ),
+                              ],
+                            ),
                           ),
                           content,
                           Row(
@@ -149,19 +145,19 @@ class DebugHomeTimelinePage extends StatelessWidget {
                               const SizedBox(width: 8),
                               _statusFavoriteOrRetweetOrReplyButton(
                                 context,
-                                statuses[index].repliesCount,
+                                statusList[index].repliesCount,
                                 "assets/images/statuses/reply.png",
                               ),
                               const Spacer(),
                               _statusFavoriteOrRetweetOrReplyButton(
                                 context,
-                                statuses[index].reblogsCount,
+                                statusList[index].reblogsCount,
                                 "assets/images/statuses/retweet.png",
                               ),
                               const Spacer(),
                               _statusFavoriteOrRetweetOrReplyButton(
                                 context,
-                                statuses[index].favouritesCount,
+                                statusList[index].favouritesCount,
                                 "assets/images/statuses/favorite.png",
                               ),
                               const Spacer(),

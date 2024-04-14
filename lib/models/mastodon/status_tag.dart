@@ -7,10 +7,8 @@ part 'status_tag.g.dart';
 class StatusTag with _$StatusTag {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory StatusTag({
-    required String id,
-    required String username,
+    required String name,
     required String url,
-    required String acct,
   }) = _StatusTag;
 
   factory StatusTag.fromJson(Map<String, dynamic> json) =>

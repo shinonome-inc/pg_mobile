@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
-import 'package:pg_mobile/models/status.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 
 class MastodonRepository {
   MastodonRepository._privateConstructor();
@@ -14,6 +14,7 @@ class MastodonRepository {
   Map<String, dynamic>? get headers => _headers;
   final url =
       "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}";
+  String timelineEndpoint = "/api/v1/timelines/home?limit=40";
 
   void init() {
     BaseOptions options = BaseOptions(baseUrl: "https://community.4nonome.com");
@@ -89,7 +90,13 @@ class MastodonRepository {
 
   Future<List<Status>> fetchStatus() async {
     try {
-      final response = await _dio.get('/api/v1/timelines/home?limit=40');
+      final response = await _dio.get(timelineEndpoint);
+      // ページネーションの際はレスポンスヘッダのlinkにあるエンドポイントを使うため、Statusをとる時に次のページのエンドポイントを取得する
+      final nextPageLink = response.headers["link"]![0];
+      final link = nextPageLink.split('<');
+      final nextPageUrl = link[1].split('>');
+      final nextPageEndpoint = nextPageUrl[0].split('com');
+      timelineEndpoint = nextPageEndpoint[2];
       final statuses = List<dynamic>.from(response.data);
       return statuses.map((status) => Status.fromJson(status)).toList();
     } on DioException catch (e) {
