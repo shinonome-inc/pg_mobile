@@ -15,7 +15,7 @@ class Notification with _$Notification {
     required String type,
     required String createdAt,
     required Account account,
-    Status status,
+    Status? status,
     Report? report,
     RelationshipSeveranceEvent? relationshipSeveranceEvent,
   }) = _Notification;
