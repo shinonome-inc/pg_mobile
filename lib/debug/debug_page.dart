@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
+import 'package:pg_mobile/debug/debug_favorite_status_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
@@ -9,17 +11,18 @@ import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
+import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 
-class DebugPage extends StatefulWidget {
+class DebugPage extends ConsumerStatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
 
   @override
-  State<DebugPage> createState() => _DebugPageState();
+  ConsumerState<DebugPage> createState() => _DebugPageState();
 }
 
-class _DebugPageState extends State<DebugPage> {
+class _DebugPageState extends ConsumerState<DebugPage> {
   Widget _button(String text, {required Function() onPressed}) {
     return Column(
       children: [
@@ -132,6 +135,19 @@ class _DebugPageState extends State<DebugPage> {
             'メディア（画像・動画）画面',
             onPressed: () {
               NavigatorUtil.pushScreen(context, const DebugMediaPage());
+            },
+          ),
+          _button(
+            'お気に入り一覧画面',
+            onPressed: () async {
+              await ref
+                  .read(favoriteStatusListProvider.notifier)
+                  .fetchFavoriteStatusList();
+              if (!mounted) return;
+              NavigatorUtil.pushScreen(
+                context,
+                const DebugFavoriteStatusListPage(),
+              );
             },
           ),
           SizedBox(height: 64.h),

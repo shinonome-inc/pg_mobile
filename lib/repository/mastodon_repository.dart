@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 
 class MastodonRepository {
   MastodonRepository._privateConstructor();
@@ -84,5 +85,17 @@ class MastodonRepository {
     final body = response.data;
     final accessToken = body['access_token'];
     return accessToken;
+  }
+
+  Future<List<Status>> fetchFavoriteStatusList() async {
+    final response = await _dio.get('/api/v1/favourites?limit=40');
+    if (response.statusCode == 200) {
+      final favoriteStatusList = List<dynamic>.from(response.data);
+      return favoriteStatusList
+          .map((status) => Status.fromJson(status))
+          .toList();
+    } else {
+      throw Exception('response statusCode is ${response.statusCode}.');
+    }
   }
 }
