@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pg_mobile/models/mastodon_user.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 
 class DebugMastodonUserPage extends StatefulWidget {
@@ -11,7 +11,7 @@ class DebugMastodonUserPage extends StatefulWidget {
 }
 
 class _DebugMastodonUserPageState extends State<DebugMastodonUserPage> {
-  late MastodonUser _user;
+  late Account _user;
   bool _isLoading = false;
   bool _hasNetworkError = false;
 
