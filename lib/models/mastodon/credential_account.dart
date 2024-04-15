@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pg_mobile/models/emoji.dart';
-import 'package:pg_mobile/models/field.dart';
+import 'package:pg_mobile/models/mastodon/custom_emoji.dart';
+import 'package:pg_mobile/models/mastodon/field.dart';
 import 'package:pg_mobile/models/mastodon/role.dart';
 import 'package:pg_mobile/models/mastodon/source.dart';
 
@@ -28,7 +28,7 @@ class CredentialAccount with _$CredentialAccount {
     required int followingCount,
     required int statusesCount,
     required DateTime lastStatusAt,
-    required List<Emoji> emojis,
+    required List<CustomEmoji> emojis,
     required List<Field> fields,
     required Source source,
     Role? role,

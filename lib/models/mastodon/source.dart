@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pg_mobile/models/field.dart';
+import 'package:pg_mobile/models/mastodon/field.dart';
 
 part 'source.freezed.dart';
 part 'source.g.dart';
