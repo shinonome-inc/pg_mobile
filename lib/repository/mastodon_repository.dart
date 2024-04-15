@@ -14,6 +14,7 @@ class MastodonRepository {
   Map<String, dynamic>? get headers => _headers;
   final url =
       "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}";
+  String favoriteStatusListEndpoint = '/api/v1/favourites?limit=40';
 
   void init() {
     BaseOptions options = BaseOptions(baseUrl: "https://community.4nonome.com");
@@ -88,8 +89,14 @@ class MastodonRepository {
   }
 
   Future<List<Status>> fetchFavoriteStatusList() async {
-    final response = await _dio.get('/api/v1/favourites?limit=40');
+    final response = await _dio.get(favoriteStatusListEndpoint);
     if (response.statusCode == 200) {
+      final link = response.headers['link'];
+      final nextPageLink = link![0];
+      final nextPageUrlIncludeSmaller = nextPageLink.split('>')[0];
+      final nextPageUrl = nextPageUrlIncludeSmaller.split('<')[1];
+      final nextPageEndpoint = nextPageUrl.split('com')[2];
+      favoriteStatusListEndpoint = nextPageEndpoint;
       final favoriteStatusList = List<dynamic>.from(response.data);
       return favoriteStatusList
           .map((status) => Status.fromJson(status))

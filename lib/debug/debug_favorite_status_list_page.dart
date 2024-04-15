@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,7 @@ class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
 
 class _DebugFavoriteStatusListPageState
     extends ConsumerState<DebugFavoriteStatusListPage> {
+  final ScrollController _scrollController = ScrollController();
   Widget _replyOrRetweetOrFavoriteButton(int count, String imagePath) {
     return Row(
       children: [
@@ -40,6 +42,19 @@ class _DebugFavoriteStatusListPageState
   }
 
   @override
+  void initState() {
+    _scrollController.addListener(() async {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        await ref
+            .read(favoriteStatusListProvider.notifier)
+            .fetchFavoriteStatusList();
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final favoriteStatusList = ref.watch(
       favoriteStatusListProvider.select((value) => value.favoriteStatusList),
@@ -49,6 +64,7 @@ class _DebugFavoriteStatusListPageState
         title: const Text('お気に入り一覧画面'),
       ),
       body: ListView.builder(
+        controller: _scrollController,
         itemCount: favoriteStatusList.length,
         itemBuilder: (BuildContext context, int index) {
           final createAtDateTime =
@@ -58,6 +74,11 @@ class _DebugFavoriteStatusListPageState
         ${favoriteStatusList[index].content}
         """,
           );
+          if (index == favoriteStatusList.length - 1) {
+            return const Center(
+              child: CupertinoActivityIndicator(color: AppColors.white),
+            );
+          }
           return Padding(
             padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
             child: Column(
