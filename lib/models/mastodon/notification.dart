@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/relationship_severance_event.dart';
 import 'package:pg_mobile/models/mastodon/report.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 
 part 'notification.freezed.dart';
 part 'notification.g.dart';
@@ -12,8 +14,8 @@ class Notification with _$Notification {
     required String id,
     required String type,
     required String createdAt,
-    required dynamic account,
-    dynamic status,
+    required Account account,
+    Status status,
     Report? report,
     RelationshipSeveranceEvent? relationshipSeveranceEvent,
   }) = _Notification;

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 
 part 'report.freezed.dart';
 part 'report.g.dart';
@@ -16,7 +17,7 @@ class Report with _$Report {
     required String createdAt,
     List<String>? statusIds,
     List<String>? ruleIds,
-    required dynamic targetAccount,
+    required Account targetAccount,
   }) = _Report;
 
   factory Report.fromJson(Map<String, dynamic> json) => _$ReportFromJson(json);
