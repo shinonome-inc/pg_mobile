@@ -103,4 +103,16 @@ class MastodonRepository {
       throw Exception(e);
     }
   }
+
+  Future<Status> favoriteStatus(String id) async {
+    final response = await _dio.post('/api/v1/statuses/$id/favourite');
+    if (response.statusCode == 200) {
+      final status = Status.fromJson(response.data);
+      return status;
+    } else {
+      throw Exception(
+        'Failed to favorite status with status code ${response.statusCode}',
+      );
+    }
+  }
 }
