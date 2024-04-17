@@ -38,7 +38,7 @@ class _LoginSampleState extends State<LoginSample> {
     if (_isLoading) return;
     _setLoading(true);
     await SecureStorageRepository.deleteToken();
-    MastodonRepository.instance.reset();
+    await MastodonRepository.instance.reset();
     _setSignIn(false);
     _setLoading(false);
   }

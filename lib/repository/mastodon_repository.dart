@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/repository/secure_storage_repository.dart';
 
 class MastodonRepository {
   MastodonRepository._privateConstructor();
@@ -23,17 +24,24 @@ class MastodonRepository {
     _dio = Dio(options);
   }
 
-  void set(String accessToken) {
+  Future<void> set(String accessToken) async {
+    print('set');
     _headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Bearer $accessToken',
     };
     _dio.options.headers.addAll(_headers!);
+    await SecureStorageRepository.writeToken(accessToken);
+    print(accessToken);
   }
 
-  void reset() {
+  Future<void> reset() async {
+    print('reset');
     _headers = {};
     _dio.options.headers.addAll(_headers!);
+    await SecureStorageRepository.deleteToken();
+    final token = await SecureStorageRepository.readToken();
+    print(token);
   }
 
   Future<String?> signIn(Uri uri) async {
@@ -51,7 +59,7 @@ class MastodonRepository {
 
     final body = response.data;
     final accessToken = body['access_token'];
-    set(accessToken);
+    await set(accessToken);
     return accessToken;
   }
 

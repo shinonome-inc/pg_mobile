@@ -4,6 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
 import 'package:pg_mobile/widgets/search_bar_widget.dart';
 
@@ -20,29 +21,33 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
 
   Widget _statusFavoriteOrRetweetOrReplyButton(
     BuildContext context,
+    void Function()? onTap,
     int count,
     String imagePath,
   ) {
-    return Row(
-      children: [
-        SizedBox(
-          height: 24,
-          width: 24,
-          child: Image.asset(
-            imagePath,
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        children: [
+          SizedBox(
+            height: 24,
+            width: 24,
+            child: Image.asset(
+              imagePath,
+            ),
           ),
-        ),
-        const SizedBox(width: 4),
-        if (count > 0) ...[
-          Text(
-            count.toString(),
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(color: AppColors.gray3),
-          ),
+          const SizedBox(width: 4),
+          if (count > 0) ...[
+            Text(
+              count.toString(),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: AppColors.gray3),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 
@@ -82,10 +87,11 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
               ),
             );
           }
+          final status = statusList[index];
           final createdAtDateTime = DateTime.parse(statusList[index].createdAt);
           Widget content = Html(
             data: """
-              ${statusList[index].content}
+              ${status.content}
             """,
             style: {"p": Style(color: AppColors.white)},
           );
@@ -97,8 +103,7 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(statusList[index].account.avatar),
+                      backgroundImage: NetworkImage(status.account.avatar),
                       radius: 28,
                     ),
                     Expanded(
@@ -113,13 +118,13 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      statusList[index].account.displayName,
+                                      status.account.displayName,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium,
                                     ),
                                     Text(
-                                      "@${statusList[index].account.username}",
+                                      "@${status.account.username}",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
@@ -145,19 +150,25 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                               const SizedBox(width: 8),
                               _statusFavoriteOrRetweetOrReplyButton(
                                 context,
-                                statusList[index].repliesCount,
+                                () {},
+                                status.repliesCount,
                                 "assets/images/statuses/reply.png",
                               ),
                               const Spacer(),
                               _statusFavoriteOrRetweetOrReplyButton(
                                 context,
-                                statusList[index].reblogsCount,
+                                () {},
+                                status.reblogsCount,
                                 "assets/images/statuses/retweet.png",
                               ),
                               const Spacer(),
                               _statusFavoriteOrRetweetOrReplyButton(
                                 context,
-                                statusList[index].favouritesCount,
+                                () async {
+                                  await MastodonRepository.instance
+                                      .favoriteStatus(status.id);
+                                },
+                                status.favouritesCount,
                                 "assets/images/statuses/favorite.png",
                               ),
                               const Spacer(),

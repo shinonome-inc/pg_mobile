@@ -24,7 +24,7 @@ class _LoginViewState extends State<LoginView> {
         if (url.queryParameters['code'] != null) {
           final accessToken = await MastodonRepository.instance.signIn(url);
           if (accessToken != null) {
-            MastodonRepository.instance.set(accessToken);
+            await MastodonRepository.instance.set(accessToken);
             await SecureStorageRepository.writeToken(accessToken);
             if (!mounted) return;
             Navigator.push(
