@@ -5,6 +5,7 @@ import 'package:pg_mobile/models/mastodon/status.dart';
 
 class MastodonRepository {
   MastodonRepository._privateConstructor();
+
   static final MastodonRepository _instance =
       MastodonRepository._privateConstructor();
   static MastodonRepository get instance => _instance;
@@ -12,6 +13,7 @@ class MastodonRepository {
   Dio get dio => _dio;
   Map<String, dynamic>? _headers;
   Map<String, dynamic>? get headers => _headers;
+
   final url =
       "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}";
   String timelineEndpoint = "/api/v1/timelines/home?limit=40";
@@ -24,7 +26,7 @@ class MastodonRepository {
   void set(String accessToken) {
     _headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
-      "Authorization": "Bearer $accessToken",
+      'Authorization': 'Bearer $accessToken',
     };
     _dio.options.headers.addAll(_headers!);
   }
@@ -32,6 +34,25 @@ class MastodonRepository {
   void reset() {
     _headers = {};
     _dio.options.headers.addAll(_headers!);
+  }
+
+  Future<String?> signIn(Uri uri) async {
+    final code = uri.queryParameters['code'];
+    final response = await _dio.post(
+      '/oauth/token',
+      data: {
+        'client_id': Env.mastodonClientId,
+        'client_secret': Env.mastodonClientSecret,
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': Env.mastodonRedirectUri,
+      },
+    );
+
+    final body = response.data;
+    final accessToken = body['access_token'];
+    set(accessToken);
+    return accessToken;
   }
 
   Future<List<Account>> fetchFollowerList() async {
@@ -68,24 +89,6 @@ class MastodonRepository {
         'Failed to fetch user with status code ${response.statusCode}',
       );
     }
-  }
-
-  Future<String?> signIn(Uri uri) async {
-    final code = uri.queryParameters['code'];
-    final response = await _dio.post(
-      '/oauth/token',
-      data: {
-        'client_id': Env.mastodonClientId,
-        'client_secret': Env.mastodonClientSecret,
-        'grant_type': 'authorization_code',
-        'code': code,
-        'redirect_uri': Env.mastodonRedirectUri,
-      },
-    );
-
-    final body = response.data;
-    final accessToken = body['access_token'];
-    return accessToken;
   }
 
   Future<List<Status>> fetchStatus() async {
