@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
 import 'package:pg_mobile/debug/debug_favorite_status_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
+import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
@@ -12,6 +14,7 @@ import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
+import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 
@@ -60,7 +63,19 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               MaterialPageRoute(builder: (_) => const SignInPage()),
             );
           }),
-          _button('タイムライン画面', onPressed: () {}),
+          _button(
+            'ホームタイムライン画面',
+            onPressed: () async {
+              await ref.read(timelineProvider.notifier).fetchTimeline();
+              if (!mounted) return;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const DebugHomeTimelinePage(),
+                ),
+              );
+            },
+          ),
           _button(
             'searchBar',
             onPressed: () {

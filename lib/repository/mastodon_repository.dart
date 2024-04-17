@@ -15,6 +15,7 @@ class MastodonRepository {
   final url =
       "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}";
   String favoriteStatusListEndpoint = '/api/v1/favourites?limit=40';
+  String timelineEndpoint = "/api/v1/timelines/home?limit=40";
 
   void init() {
     BaseOptions options = BaseOptions(baseUrl: "https://community.4nonome.com");
@@ -103,6 +104,22 @@ class MastodonRepository {
           .toList();
     } else {
       throw Exception('response statusCode is ${response.statusCode}.');
+    }
+  }
+
+  Future<List<Status>> fetchStatus() async {
+    try {
+      final response = await _dio.get(timelineEndpoint);
+      // ページネーションの際はレスポンスヘッダのlinkにあるエンドポイントを使うため、Statusをとる時に次のページのエンドポイントを取得する
+      final nextPageLink = response.headers["link"]![0];
+      final link = nextPageLink.split('<');
+      final nextPageUrl = link[1].split('>');
+      final nextPageEndpoint = nextPageUrl[0].split('com');
+      timelineEndpoint = nextPageEndpoint[2];
+      final statuses = List<dynamic>.from(response.data);
+      return statuses.map((status) => Status.fromJson(status)).toList();
+    } on DioException catch (e) {
+      throw Exception(e);
     }
   }
 }
