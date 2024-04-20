@@ -23,33 +23,29 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
 
   Widget _statusFavoriteOrRetweetOrReplyButton(
     BuildContext context,
-    void Function()? onTap,
     int count,
     String imagePath,
   ) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          SizedBox(
-            height: 24,
-            width: 24,
-            child: Image.asset(
-              imagePath,
-            ),
+    return Row(
+      children: [
+        SizedBox(
+          height: 24,
+          width: 24,
+          child: Image.asset(
+            imagePath,
           ),
-          const SizedBox(width: 4),
-          if (count > 0) ...[
-            Text(
-              count.toString(),
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: AppColors.gray3),
-            ),
-          ],
+        ),
+        const SizedBox(width: 4),
+        if (count > 0) ...[
+          Text(
+            count.toString(),
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: AppColors.gray3),
+          ),
         ],
-      ),
+      ],
     );
   }
 
@@ -170,14 +166,12 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                                 const SizedBox(width: 8),
                                 _statusFavoriteOrRetweetOrReplyButton(
                                   context,
-                                  () {},
                                   status.repliesCount,
                                   "assets/images/statuses/reply.png",
                                 ),
                                 const Spacer(),
                                 _statusFavoriteOrRetweetOrReplyButton(
                                   context,
-                                  () {},
                                   status.reblogsCount,
                                   "assets/images/statuses/retweet.png",
                                 ),
