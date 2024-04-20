@@ -20,13 +20,10 @@ class _LoginViewState extends State<LoginView> {
       ..setNavigationDelegate(NavigationDelegate(
         onPageFinished: (String url) async {
           final uri = Uri.parse(url);
-          if (uri.queryParameters['code'] == null) {
-            return;
-          }
-          final accessToken = await MastodonRepository.instance.signIn(uri);
-          if (accessToken == null) {
-            return;
-          }
+          if (uri.queryParameters['code'] == null) return;
+          final accessToken =
+              await MastodonRepository.instance.obtainToken(uri);
+          if (accessToken == null) return;
           if (!mounted) return;
           Navigator.push(
             context,
@@ -34,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
           );
         },
       ))
-      ..loadRequest(Uri.parse(MastodonRepository.instance.url));
+      ..loadRequest(Uri.parse(MastodonRepository.authorizeUrl));
   }
 
   @override

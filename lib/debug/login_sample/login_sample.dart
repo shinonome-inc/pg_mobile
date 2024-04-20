@@ -37,8 +37,8 @@ class _LoginSampleState extends State<LoginSample> {
   Future<void> _signOut() async {
     if (_isLoading) return;
     _setLoading(true);
-    await SecureStorageRepository.deleteToken();
-    await MastodonRepository.instance.reset();
+    final instance = MastodonRepository.instance;
+    await instance.revokeToken();
     _setSignIn(false);
     _setLoading(false);
   }

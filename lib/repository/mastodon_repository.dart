@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
@@ -16,22 +18,24 @@ class MastodonRepository {
   Map<String, dynamic>? get headers => _headers;
   String? _token;
 
-  final url =
-      "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}&scope=read+write";
-  String timelineEndpoint = "/api/v1/timelines/home?limit=40";
+  static const String _scope = 'read+write';
+
+  static const String _baseUrl = 'https://community.4nonome.com';
+  static final String authorizeUrl =
+      '$_baseUrl/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}&scope=$_scope';
 
   void init() {
-    BaseOptions options = BaseOptions(baseUrl: "https://community.4nonome.com");
+    BaseOptions options = BaseOptions(baseUrl: _baseUrl);
     _dio = Dio(options);
   }
 
   Future<void> set(String accessToken) async {
     _headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Bearer $accessToken',
+      HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
+      HttpHeaders.authorizationHeader: 'Bearer $accessToken',
     };
-    _token = accessToken;
     _dio.options.headers.addAll(_headers!);
+    _token = accessToken;
     await SecureStorageRepository.writeToken(accessToken);
   }
 
@@ -42,7 +46,7 @@ class MastodonRepository {
     await SecureStorageRepository.deleteToken();
   }
 
-  Future<String?> signIn(Uri uri) async {
+  Future<String?> obtainToken(Uri uri) async {
     final code = uri.queryParameters['code'];
     final response = await _dio.post(
       '/oauth/token',
@@ -52,7 +56,7 @@ class MastodonRepository {
         'grant_type': 'authorization_code',
         'code': code,
         'redirect_uri': Env.mastodonRedirectUri,
-        'scopes': 'read write',
+        'scopes': _scope,
       },
     );
     final body = response.data;
@@ -70,7 +74,9 @@ class MastodonRepository {
         'token': _token,
       },
     );
-    if (response.statusCode != 200) {
+    if (response.statusCode == 200) {
+      await reset();
+    } else {
       throw Exception(
         'Failed to revoke token with status code ${response.statusCode}',
       );
@@ -115,13 +121,14 @@ class MastodonRepository {
 
   Future<List<Status>> fetchStatus() async {
     try {
-      final response = await _dio.get(timelineEndpoint);
+      String endPoint = '/api/v1/timelines/home?limit=40';
+      final response = await _dio.get(endPoint);
       // ページネーションの際はレスポンスヘッダのlinkにあるエンドポイントを使うため、Statusをとる時に次のページのエンドポイントを取得する
       final nextPageLink = response.headers["link"]![0];
       final link = nextPageLink.split('<');
       final nextPageUrl = link[1].split('>');
       final nextPageEndpoint = nextPageUrl[0].split('com');
-      timelineEndpoint = nextPageEndpoint[2];
+      endPoint = nextPageEndpoint[2];
       final statuses = List<dynamic>.from(response.data);
       return statuses.map((status) => Status.fromJson(status)).toList();
     } on DioException catch (e) {
