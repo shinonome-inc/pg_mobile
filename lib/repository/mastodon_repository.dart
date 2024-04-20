@@ -16,7 +16,7 @@ class MastodonRepository {
   Map<String, dynamic>? get headers => _headers;
 
   final url =
-      "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}";
+      "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}&scope=read+write";
   String timelineEndpoint = "/api/v1/timelines/home?limit=40";
 
   void init() {
@@ -25,23 +25,18 @@ class MastodonRepository {
   }
 
   Future<void> set(String accessToken) async {
-    print('set');
     _headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Bearer $accessToken',
     };
     _dio.options.headers.addAll(_headers!);
     await SecureStorageRepository.writeToken(accessToken);
-    print(accessToken);
   }
 
   Future<void> reset() async {
-    print('reset');
     _headers = {};
     _dio.options.headers.addAll(_headers!);
     await SecureStorageRepository.deleteToken();
-    final token = await SecureStorageRepository.readToken();
-    print(token);
   }
 
   Future<String?> signIn(Uri uri) async {
@@ -54,9 +49,9 @@ class MastodonRepository {
         'grant_type': 'authorization_code',
         'code': code,
         'redirect_uri': Env.mastodonRedirectUri,
+        'scopes': 'read write',
       },
     );
-
     final body = response.data;
     final accessToken = body['access_token'];
     await set(accessToken);
@@ -122,7 +117,7 @@ class MastodonRepository {
       return status;
     } else {
       throw Exception(
-        'Failed to favorite status with status code ${response.statusCode}',
+        'Failed to favorite status with status code ${response.statusCode}, response requestOptions: ${response.requestOptions}',
       );
     }
   }
