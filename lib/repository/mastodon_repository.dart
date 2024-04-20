@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
-import 'package:pg_mobile/models/mastodon/credential_account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/secure_storage_repository.dart';
 
@@ -116,18 +115,6 @@ class MastodonRepository {
     } else {
       throw Exception(
         'Failed to fetch user with status code ${response.statusCode}',
-      );
-    }
-  }
-
-  Future<CredentialAccount> fetchCredentialAccount() async {
-    final response = await _dio.get('/api/v1/accounts/verify_credentials');
-    if (response.statusCode == 200) {
-      final credentialAccount = CredentialAccount.fromJson(response.data);
-      return credentialAccount;
-    } else {
-      throw Exception(
-        'Failed to fetch credential account. response status code is ${response.statusCode}. error message is ${response.statusMessage}.',
       );
     }
   }
