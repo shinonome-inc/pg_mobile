@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
@@ -49,6 +51,15 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
         ],
       ),
     );
+  }
+
+  Future<void> _onTapFavorite(Status status) async {
+    if (status.favourited == null) return;
+    if (status.favourited!) {
+      await MastodonRepository.instance.undoFavoriteStatus(status.id);
+    } else {
+      await MastodonRepository.instance.favoriteStatus(status.id);
+    }
   }
 
   // スクロールして一番下に行ったら、次のページの分のStatusを取得して表示
@@ -162,14 +173,33 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                                 "assets/images/statuses/retweet.png",
                               ),
                               const Spacer(),
-                              _statusFavoriteOrRetweetOrReplyButton(
-                                context,
-                                () async {
-                                  await MastodonRepository.instance
-                                      .favoriteStatus(status.id);
-                                },
-                                status.favouritesCount,
-                                "assets/images/statuses/favorite.png",
+                              GestureDetector(
+                                onTap: () => _onTapFavorite(status),
+                                child: Row(
+                                  children: [
+                                    status.favourited!
+                                        ? const Icon(
+                                            Icons.star,
+                                            color: AppColors.yellow,
+                                          )
+                                        : const Icon(
+                                            Icons.star_border_outlined,
+                                            color: AppColors.gray3,
+                                          ),
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      status.favouritesCount.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: status.favourited!
+                                                ? AppColors.yellow
+                                                : AppColors.gray3,
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               const Spacer(),
                               SizedBox(
