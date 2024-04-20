@@ -14,6 +14,7 @@ class MastodonRepository {
   Dio get dio => _dio;
   Map<String, dynamic>? _headers;
   Map<String, dynamic>? get headers => _headers;
+  String? _token;
 
   final url =
       "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}&scope=read+write";
@@ -29,6 +30,7 @@ class MastodonRepository {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Bearer $accessToken',
     };
+    _token = accessToken;
     _dio.options.headers.addAll(_headers!);
     await SecureStorageRepository.writeToken(accessToken);
   }
@@ -36,6 +38,7 @@ class MastodonRepository {
   Future<void> reset() async {
     _headers = {};
     _dio.options.headers.addAll(_headers!);
+    _token = null;
     await SecureStorageRepository.deleteToken();
   }
 
@@ -56,6 +59,22 @@ class MastodonRepository {
     final accessToken = body['access_token'];
     await set(accessToken);
     return accessToken;
+  }
+
+  Future<void> revokeToken() async {
+    final response = await _dio.post(
+      '/oauth/revoke',
+      data: {
+        'client_id': Env.mastodonClientId,
+        'client_secret': Env.mastodonClientSecret,
+        'token': _token,
+      },
+    );
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to revoke token with status code ${response.statusCode}',
+      );
+    }
   }
 
   Future<List<Account>> fetchFollowerList() async {
