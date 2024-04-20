@@ -8,7 +8,11 @@ final timelineProvider =
 });
 
 class TimelineNotifier extends StateNotifier<Timeline> {
-  TimelineNotifier() : super(const Timeline());
+  TimelineNotifier() : super(defaultTimeline);
+
+  void reset() {
+    state = defaultTimeline;
+  }
 
   Future<void> fetchTimeline() async {
     final statusTimeline = await MastodonRepository.instance.fetchStatus();

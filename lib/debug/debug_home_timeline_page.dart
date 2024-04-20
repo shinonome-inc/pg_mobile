@@ -87,146 +87,156 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
           child: SearchBarWidget(),
         ),
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: statusList.length + 1,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == statusList.length) {
-            return const Center(
-              child: CupertinoActivityIndicator(
-                color: AppColors.white,
-              ),
-            );
-          }
-          final status = statusList[index];
-          final createdAtDateTime = DateTime.parse(statusList[index].createdAt);
-          Widget content = Html(
-            data: """
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // TODO: pull to refreshで更新しているが、リアルタイム更新に修正する。
+          final notifier = ref.read(timelineProvider.notifier);
+          notifier.reset();
+          notifier.fetchTimeline();
+        },
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: statusList.length + 1,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == statusList.length) {
+              return const Center(
+                child: CupertinoActivityIndicator(
+                  color: AppColors.white,
+                ),
+              );
+            }
+            final status = statusList[index];
+            final createdAtDateTime =
+                DateTime.parse(statusList[index].createdAt);
+            Widget content = Html(
+              data: """
               ${status.content}
-            """,
-            style: {"p": Style(color: AppColors.white)},
-          );
-          return Padding(
-            padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(status.account.avatar),
-                      radius: 28,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Row(
+              """,
+              style: {"p": Style(color: AppColors.white)},
+            );
+            return Padding(
+              padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(status.account.avatar),
+                        radius: 28,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        status.account.displayName,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                      Text(
+                                        "@${status.account.username}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(color: AppColors.gray3),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    DateFormatter.formatPastDate(
+                                        createdAtDateTime),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: AppColors.gray3),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            content,
+                            Row(
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      status.account.displayName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    Text(
-                                      "@${status.account.username}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: AppColors.gray3),
-                                    ),
-                                  ],
+                                const SizedBox(width: 8),
+                                _statusFavoriteOrRetweetOrReplyButton(
+                                  context,
+                                  () {},
+                                  status.repliesCount,
+                                  "assets/images/statuses/reply.png",
                                 ),
                                 const Spacer(),
-                                Text(
-                                  DateFormatter.formatPastDate(
-                                      createdAtDateTime),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(color: AppColors.gray3),
+                                _statusFavoriteOrRetweetOrReplyButton(
+                                  context,
+                                  () {},
+                                  status.reblogsCount,
+                                  "assets/images/statuses/retweet.png",
                                 ),
+                                const Spacer(),
+                                GestureDetector(
+                                  onTap: () => _onTapFavorite(status),
+                                  child: Row(
+                                    children: [
+                                      status.favourited!
+                                          ? const Icon(
+                                              Icons.star,
+                                              color: AppColors.yellow,
+                                            )
+                                          : const Icon(
+                                              Icons.star_border_outlined,
+                                              color: AppColors.gray3,
+                                            ),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        status.favouritesCount.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              color: status.favourited!
+                                                  ? AppColors.yellow
+                                                  : AppColors.gray3,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Spacer(),
+                                SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: Image.asset(
+                                    "assets/images/statuses/three_point_leader.png",
+                                  ),
+                                ),
+                                const Spacer(),
                               ],
                             ),
-                          ),
-                          content,
-                          Row(
-                            children: [
-                              const SizedBox(width: 8),
-                              _statusFavoriteOrRetweetOrReplyButton(
-                                context,
-                                () {},
-                                status.repliesCount,
-                                "assets/images/statuses/reply.png",
-                              ),
-                              const Spacer(),
-                              _statusFavoriteOrRetweetOrReplyButton(
-                                context,
-                                () {},
-                                status.reblogsCount,
-                                "assets/images/statuses/retweet.png",
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                onTap: () => _onTapFavorite(status),
-                                child: Row(
-                                  children: [
-                                    status.favourited!
-                                        ? const Icon(
-                                            Icons.star,
-                                            color: AppColors.yellow,
-                                          )
-                                        : const Icon(
-                                            Icons.star_border_outlined,
-                                            color: AppColors.gray3,
-                                          ),
-                                    SizedBox(width: 4.w),
-                                    Text(
-                                      status.favouritesCount.toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                            color: status.favourited!
-                                                ? AppColors.yellow
-                                                : AppColors.gray3,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: Image.asset(
-                                  "assets/images/statuses/three_point_leader.png",
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 16),
-                const Divider(
-                  thickness: 1,
-                  color: AppColors.gray2,
-                  height: 0,
-                )
-              ],
-            ),
-          );
-        },
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Divider(
+                    thickness: 1,
+                    color: AppColors.gray2,
+                    height: 0,
+                  )
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
