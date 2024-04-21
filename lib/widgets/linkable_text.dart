@@ -1,14 +1,25 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/patterns.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// テキストのURL、メンション、ハッシュタグをタップ可能にするWidgetです。
 class LinkableText extends StatelessWidget {
-  const LinkableText(this.text, {super.key});
+  const LinkableText(
+    this.text, {
+    super.key,
+    this.onTapUrl,
+    required this.onTapMention,
+    required this.onTapHashtag,
+  });
 
   final String text;
 
-  List<Match> matchList() {
+  final void Function(String)? onTapUrl;
+  final void Function(String) onTapMention;
+  final void Function(String) onTapHashtag;
+
+  List<Match> _matchList() {
     final List<Match> matches = [];
 
     final urlMatches = Patterns.url.allMatches(text);
@@ -21,6 +32,13 @@ class LinkableText extends StatelessWidget {
     matches.sort((a, b) => a.start.compareTo(b.start));
 
     return matches;
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $uri');
+    }
   }
 
   List<TextSpan> textSpanList(List<Match> allMatches) {
@@ -40,20 +58,22 @@ class LinkableText extends StatelessWidget {
 
       final matchedText = text.substring(match.start, match.end);
       if (Patterns.url.hasMatch(matchedText)) {
-        final url = matchedText.replaceAll(' ', '');
+        final url = matchedText.replaceAll(' ', '').replaceAll('\n', '');
         textSpans.add(
           TextSpan(
             text: matchedText,
-            // style: Styles.hyperlink,
-            recognizer: TapGestureRecognizer()..onTap = () => onTapUrl(url),
+            style: const TextStyle(color: Colors.blue),
+            recognizer: TapGestureRecognizer()
+              ..onTap =
+                  () => onTapUrl == null ? _launchUrl(url) : onTapUrl!(url),
           ),
         );
       } else if (Patterns.mention.hasMatch(matchedText)) {
-        final mention = matchedText.replaceAll(' ', '');
+        final mention = matchedText.replaceAll(' ', '').replaceAll('\n', '');
         textSpans.add(
           TextSpan(
             text: matchedText,
-            // style: Styles.hyperlink,
+            style: const TextStyle(color: Colors.blue),
             recognizer: TapGestureRecognizer()
               ..onTap = () => onTapMention(mention),
           ),
@@ -62,7 +82,7 @@ class LinkableText extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: matchedText,
-            // style: Styles.hyperlink,
+            style: const TextStyle(color: Colors.blue),
             recognizer: TapGestureRecognizer()
               ..onTap = () => onTapHashtag(matchedText),
           ),
@@ -83,21 +103,9 @@ class LinkableText extends StatelessWidget {
     return textSpans;
   }
 
-  void onTapMention(String mention) {
-    debugPrint('On tap mention: $mention');
-  }
-
-  void onTapUrl(String url) {
-    debugPrint('On tap url: $url');
-  }
-
-  void onTapHashtag(String hashtag) {
-    debugPrint('On tap hashtag: $hashtag');
-  }
-
   @override
   Widget build(BuildContext context) {
-    final allMatches = matchList();
+    final allMatches = _matchList();
     final textSpans = textSpanList(allMatches);
     return SelectableText.rich(
       allMatches.isEmpty ? TextSpan(text: text) : TextSpan(children: textSpans),
