@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/util/date_formatter.dart';
+import 'package:pg_mobile/widgets/network_image_container.dart';
+import 'package:pg_mobile/widgets/status_icon_button.dart';
+
+class StatusView extends StatelessWidget {
+  final Status status;
+  const StatusView({super.key, required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget content = Html(
+      data: """
+        ${status.content}
+        """,
+    );
+    final createdAtDateTime = DateTime.parse(status.createdAt);
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              NetworkImageContainer(
+                imageUrl: status.account.avatar,
+                width: 56,
+                height: 56,
+                boxShape: BoxShape.circle,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                status.account.displayName,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              Text(
+                                "@${status.account.username}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(color: AppColors.gray3),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Text(
+                            DateFormatter.formatPastDate(createdAtDateTime),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: AppColors.gray3),
+                          ),
+                        ],
+                      ),
+                    ),
+                    content,
+                    Row(
+                      children: [
+                        const SizedBox(width: 8),
+                        StatusIconButton(
+                          imagePath: "assets/images/statuses/reply.png",
+                          count: status.repliesCount,
+                        ),
+                        const Spacer(),
+                        StatusIconButton(
+                          imagePath: "assets/images/statuses/retweet.png",
+                          count: status.reblogsCount,
+                        ),
+                        const Spacer(),
+                        StatusIconButton(
+                          imagePath: "assets/images/statuses/favorite.png",
+                          count: status.favouritesCount,
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Image.asset(
+                            "assets/images/statuses/three_point_leader.png",
+                          ),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 16),
+          const Divider(
+            thickness: 1,
+            color: AppColors.gray2,
+            height: 0,
+          )
+        ],
+      ),
+    );
+  }
+}
