@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/constants/patterns.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -62,7 +63,7 @@ class LinkableText extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: matchedText,
-            style: const TextStyle(color: Colors.blue),
+            style: const TextStyle(color: AppColors.blue),
             recognizer: TapGestureRecognizer()
               ..onTap =
                   () => onTapUrl == null ? _launchUrl(url) : onTapUrl!(url),
@@ -73,7 +74,7 @@ class LinkableText extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: matchedText,
-            style: const TextStyle(color: Colors.blue),
+            style: const TextStyle(color: AppColors.blue),
             recognizer: TapGestureRecognizer()
               ..onTap = () => onTapMention(mention),
           ),
@@ -82,7 +83,7 @@ class LinkableText extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: matchedText,
-            style: const TextStyle(color: Colors.blue),
+            style: const TextStyle(color: AppColors.blue),
             recognizer: TapGestureRecognizer()
               ..onTap = () => onTapHashtag(matchedText),
           ),
