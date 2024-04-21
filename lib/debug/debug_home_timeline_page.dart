@@ -5,6 +5,7 @@ import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
+import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/search_bar_widget.dart';
 
 class DebugHomeTimelinePage extends ConsumerStatefulWidget {
@@ -134,7 +135,17 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                               ],
                             ),
                           ),
-                          Text(status.contentText),
+                          LinkableText(
+                            status.contentText,
+                            onTapMention: (value) {
+                              // TODO: ユーザー画面へ遷移する。
+                              debugPrint('on tap mention: $value');
+                            },
+                            onTapHashtag: (value) {
+                              // TODO: ハッシュタグ画面へ遷移する。
+                              debugPrint('on tap hashtag: $value');
+                            },
+                          ),
                           Row(
                             children: [
                               const SizedBox(width: 8),
