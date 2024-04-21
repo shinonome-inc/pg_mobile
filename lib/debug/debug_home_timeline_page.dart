@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
 import 'package:pg_mobile/widgets/search_bar_widget.dart';
@@ -82,13 +82,8 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
               ),
             );
           }
+          final status = statusList[index];
           final createdAtDateTime = DateTime.parse(statusList[index].createdAt);
-          Widget content = Html(
-            data: """
-              ${statusList[index].content}
-            """,
-            style: {"p": Style(color: AppColors.white)},
-          );
           return Padding(
             padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
             child: Column(
@@ -139,7 +134,7 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                               ],
                             ),
                           ),
-                          content,
+                          Text(status.contentText),
                           Row(
                             children: [
                               const SizedBox(width: 8),
