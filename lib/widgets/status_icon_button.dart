@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 
 class StatusIconButton extends StatelessWidget {
-  final String imagePath;
+  final IconData iconData;
   final int count;
   const StatusIconButton(
-      {super.key, required this.imagePath, required this.count});
+      {super.key, required this.iconData, required this.count});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +16,7 @@ class StatusIconButton extends StatelessWidget {
           SizedBox(
             height: 24,
             width: 24,
-            child: Image.asset(
-              imagePath,
-            ),
+            child: Icon(iconData, color: AppColors.gray3),
           ),
           const SizedBox(width: 4),
           if (count > 0) ...[

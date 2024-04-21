@@ -71,26 +71,24 @@ class StatusView extends StatelessWidget {
                       children: [
                         const SizedBox(width: 8),
                         StatusIconButton(
-                          imagePath: "assets/images/statuses/reply.png",
+                          iconData: Icons.reply,
                           count: status.repliesCount,
                         ),
                         const Spacer(),
                         StatusIconButton(
-                          imagePath: "assets/images/statuses/retweet.png",
+                          iconData: Icons.repeat,
                           count: status.reblogsCount,
                         ),
                         const Spacer(),
                         StatusIconButton(
-                          imagePath: "assets/images/statuses/favorite.png",
+                          iconData: Icons.star_border,
                           count: status.favouritesCount,
                         ),
                         const Spacer(),
-                        SizedBox(
+                        const SizedBox(
                           height: 24,
                           width: 24,
-                          child: Image.asset(
-                            "assets/images/statuses/three_point_leader.png",
-                          ),
+                          child: Icon(Icons.more_horiz, color: AppColors.gray3),
                         ),
                         const Spacer(),
                       ],
