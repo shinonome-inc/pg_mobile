@@ -54,6 +54,7 @@ dependencies:
   permission_handler: ^11.3.0
   flutter_html: ^3.0.0-beta.2
   hooks_riverpod: ^2.5.1
+  html: ^0.15.4
   url_launcher: ^6.2.6
 
 dev_dependencies:
