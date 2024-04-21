@@ -6,6 +6,7 @@ import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
+import 'package:pg_mobile/debug/debug_my_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
@@ -147,6 +148,18 @@ class _DebugPageState extends ConsumerState<DebugPage> {
             'メディア（画像・動画）画面',
             onPressed: () {
               NavigatorUtil.pushScreen(context, const DebugMediaPage());
+            },
+          ),
+          _button(
+            'マイページ',
+            onPressed: () async {
+              final credentialAccount =
+                  await MastodonRepository.instance.fetchCredentialAccount();
+              if (!mounted) return;
+              NavigatorUtil.pushScreen(
+                context,
+                DebugMyPage(credentialAccount: credentialAccount),
+              );
             },
           ),
           SizedBox(height: 64.h),

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
+import 'package:pg_mobile/models/mastodon/credential_account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 
 class MastodonRepository {
@@ -86,6 +87,18 @@ class MastodonRepository {
     final body = response.data;
     final accessToken = body['access_token'];
     return accessToken;
+  }
+
+  Future<CredentialAccount> fetchCredentialAccount() async {
+    final response = await _dio.get('/api/v1/accounts/verify_credentials');
+    if (response.statusCode == 200) {
+      final credentialAccount = CredentialAccount.fromJson(response.data);
+      return credentialAccount;
+    } else {
+      throw Exception(
+        'Failed to fetch credential account. response status code is ${response.statusCode}. error message is ${response.statusMessage}.',
+      );
+    }
   }
 
   Future<List<Status>> fetchStatus() async {
