@@ -53,6 +53,7 @@ dependencies:
   video_player: ^2.8.2
   permission_handler: ^11.3.0
   flutter_html: ^3.0.0-beta.2
+  hooks_riverpod: ^2.5.1
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +84,7 @@ flutter:
   assets:
    - assets/images/
    - assets/images/ranks/
+   - assets/images/statuses/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
