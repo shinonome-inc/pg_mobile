@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 
 class StatusIconButton extends StatelessWidget {
@@ -14,11 +15,11 @@ class StatusIconButton extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            height: 24,
-            width: 24,
+            height: 24.h,
+            width: 24.w,
             child: Icon(iconData, color: AppColors.gray3),
           ),
-          const SizedBox(width: 4),
+          SizedBox(width: 4.w),
           if (count > 0) ...[
             Text(
               count.toString(),

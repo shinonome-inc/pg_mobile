@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
@@ -27,8 +28,8 @@ class StatusView extends StatelessWidget {
             children: [
               NetworkImageContainer(
                 imageUrl: status.account.avatar,
-                width: 56,
-                height: 56,
+                width: 56.w,
+                height: 56.h,
                 boxShape: BoxShape.circle,
               ),
               Expanded(
@@ -69,7 +70,7 @@ class StatusView extends StatelessWidget {
                     content,
                     Row(
                       children: [
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8.w),
                         StatusIconButton(
                           iconData: Icons.reply,
                           count: status.repliesCount,
@@ -85,10 +86,11 @@ class StatusView extends StatelessWidget {
                           count: status.favouritesCount,
                         ),
                         const Spacer(),
-                        const SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: Icon(Icons.more_horiz, color: AppColors.gray3),
+                        SizedBox(
+                          height: 24.h,
+                          width: 24.w,
+                          child: const Icon(Icons.more_horiz,
+                              color: AppColors.gray3),
                         ),
                         const Spacer(),
                       ],
@@ -98,7 +100,7 @@ class StatusView extends StatelessWidget {
               )
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           const Divider(
             thickness: 1,
             color: AppColors.gray2,
