@@ -47,7 +47,7 @@ class StatusView extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
-                                "@${status.account.username}",
+                                '@${status.account.username}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
