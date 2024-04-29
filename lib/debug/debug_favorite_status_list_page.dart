@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
-import 'package:pg_mobile/views/status_view.dart';
+import 'package:pg_mobile/widgets/status_view.dart';
 
 class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
   const DebugFavoriteStatusListPage({Key? key}) : super(key: key);
