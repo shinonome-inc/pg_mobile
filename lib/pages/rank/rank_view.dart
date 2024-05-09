@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/pages/user/user_view.dart';
-import 'package:pg_mobile/util.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
 class RankView extends StatelessWidget {
   const RankView({super.key});
@@ -14,7 +14,7 @@ class RankView extends StatelessWidget {
           const Text('Rank'),
           TextButton(
               onPressed: () {
-                Util.showBottomSheetMenu(context, const UserView());
+                NavigatorUtil.showBottomSheetMenu(context, const UserView());
               },
               child: const Text('User'))
         ],

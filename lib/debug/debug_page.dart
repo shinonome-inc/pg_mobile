@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
+import 'package:pg_mobile/debug/debug_favorite_status_list_page.dart';
+import 'package:pg_mobile/debug/debug_follower_list_page.dart';
+import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
+import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
+import 'package:pg_mobile/debug/debug_media_page.dart';
+import 'package:pg_mobile/debug/debug_my_page.dart';
 import 'package:pg_mobile/debug/debug_office_page.dart';
+import 'package:pg_mobile/debug/debug_pgn_page.dart';
+import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
+import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
+import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
+import 'package:pg_mobile/providers/timeline_notifier.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 
-class DebugPage extends StatelessWidget {
+class DebugPage extends ConsumerStatefulWidget {
   const DebugPage({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<DebugPage> createState() => _DebugPageState();
+}
+
+class _DebugPageState extends ConsumerState<DebugPage> {
   Widget _button(String text, {required Function() onPressed}) {
     return Column(
       children: [
@@ -32,9 +53,6 @@ class DebugPage extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
-          _button("サインイン画面", onPressed: () {}),
-          _button("タイムライン画面", onPressed: () {}),
-          _button("通知画面", onPressed: () {}),
           _button(
             'オフィス画面',
             onPressed: () {
@@ -45,25 +63,131 @@ class DebugPage extends StatelessWidget {
               );
             },
           ),
-          _button('サインイン画面', onPressed: () {
+          _button(
+            'サインイン画面',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const LoginSample());
+            },
+          ),
+          _button("通知画面", onPressed: () {
             Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SignInPage()),
+            );
+          }),
+          _button(
+            'ホームタイムライン画面',
+            onPressed: () async {
+              await ref.read(timelineProvider.notifier).fetchTimeline();
+              if (!mounted) return;
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => const LoginSample(),
-                ));
-          }),
-          _button('タイムライン画面', onPressed: () {}),
-          _button('通知画面', onPressed: () {}),
-          _button(
-            'TextTheme',
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DebugTextThemePage(),
+                  builder: (_) => const DebugHomeTimelinePage(),
                 ),
               );
             },
           ),
+          _button(
+            'searchBar',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const DebugSearchBarPage()),
+              );
+            },
+          ),
+          _button(
+            'PGN',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DebugPGNPage(),
+                ),
+              );
+            },
+          ),
+          _button(
+            'TextTheme',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const DebugTextThemePage());
+            },
+          ),
+          _button(
+            "フォロワー一覧画面",
+            onPressed: () {
+              MastodonRepository.instance.fetchFollowerList().then(
+                (followerModelList) {
+                  NavigatorUtil.pushScreen(
+                    context,
+                    DebugFollowerListPage(followerList: followerModelList),
+                  );
+                },
+              );
+            },
+          ),
+          _button(
+            '画像のキャッシュ化',
+            onPressed: () {
+              NavigatorUtil.pushScreen(
+                context,
+                const DebugCachedNetworkImagePage(),
+              );
+            },
+          ),
+          _button(
+            "フォロー一覧画面",
+            onPressed: () {
+              MastodonRepository.instance
+                  .fetchFollowerList()
+                  .then((followerModelList) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DebugFollowerListPage(
+                      followerList: followerModelList,
+                    ),
+                  ),
+                );
+              });
+            },
+          ),
+          _button(
+            'Mastodonユーザー',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const DebugMastodonUserPage());
+            },
+          ),
+          _button(
+            'メディア（画像・動画）画面',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const DebugMediaPage());
+            },
+          ),
+          _button(
+            'お気に入り一覧画面',
+            onPressed: () async {
+              await ref
+                  .read(favoriteStatusListProvider.notifier)
+                  .fetchFavoriteStatusList();
+              if (!mounted) return;
+              NavigatorUtil.pushScreen(
+                  context, const DebugFavoriteStatusListPage());
+            },
+          ),
+          _button(
+            'マイページ',
+            onPressed: () async {
+              final credentialAccount =
+                  await MastodonRepository.instance.fetchCredentialAccount();
+              if (!mounted) return;
+              NavigatorUtil.pushScreen(
+                context,
+                DebugMyPage(credentialAccount: credentialAccount),
+              );
+            },
+          ),
+          SizedBox(height: 64.h),
         ],
       ),
     );
