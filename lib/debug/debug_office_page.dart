@@ -90,10 +90,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
   }
 
   Future<void> _checkIn(String officeId) async {
-    if (_isLoading) return;
+    if (_isLoading || _isAlreadySignedIn) return;
     _setLoading(true);
     final office = _officeFromId(officeId);
-    if (_isAlreadySignedIn) return;
     if (_isNotRegisteredUser) {
       await FirestoreRepository.setOfficeUser(signInUser);
     }
@@ -105,10 +104,9 @@ class _DebugOfficePageState extends State<DebugOfficePage> {
   }
 
   Future<void> _checkOut(String officeId) async {
-    if (_isLoading) return;
+    if (_isLoading || _isNotAlreadySignedIn) return;
     _setLoading(true);
     final office = _officeFromId(officeId);
-    if (_isNotAlreadySignedIn) return;
     final newUserIdList = List<String>.from(office.userIdList)
       ..remove(signInUser.id);
     final newOffice = office.copyWith(userIdList: newUserIdList);
