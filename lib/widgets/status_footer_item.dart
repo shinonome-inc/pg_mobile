@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pg_mobile/constants/app_colors.dart';
 
-class StatusIconButton extends StatelessWidget {
+class StatusFooterItem extends StatelessWidget {
+  const StatusFooterItem({
+    super.key,
+    required this.onTap,
+    required this.iconData,
+    required this.count,
+    required this.color,
+  });
+
+  final void Function()? onTap;
   final IconData iconData;
-  final int count;
-  const StatusIconButton(
-      {super.key, required this.iconData, required this.count});
+  final int? count;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Row(
         children: [
           SizedBox(
-            height: 24.h,
             width: 24.w,
-            child: Icon(iconData, color: AppColors.gray3),
+            child: Icon(
+              iconData,
+              color: color,
+            ),
           ),
           SizedBox(width: 4.w),
-          if (count > 0) ...[
+          if (count != 0 && count != null)
             Text(
               count.toString(),
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium!
-                  .copyWith(color: AppColors.gray3),
+                  .copyWith(color: color),
             ),
-          ],
         ],
       ),
     );
