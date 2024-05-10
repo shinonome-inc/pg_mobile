@@ -15,6 +15,7 @@ class MastodonRepository {
   Map<String, dynamic>? get headers => _headers;
   final url =
       "${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}";
+  String favoriteStatusListEndpoint = '/api/v1/favourites?limit=40';
   String timelineEndpoint = "/api/v1/timelines/home?limit=40";
 
   void init() {
@@ -87,6 +88,24 @@ class MastodonRepository {
     final body = response.data;
     final accessToken = body['access_token'];
     return accessToken;
+  }
+
+  Future<List<Status>> fetchFavoriteStatusList() async {
+    final response = await _dio.get(favoriteStatusListEndpoint);
+    if (response.statusCode == 200) {
+      final link = response.headers['link'];
+      final nextPageLink = link![0];
+      final nextPageUrlIncludeSmaller = nextPageLink.split('>')[0];
+      final nextPageUrl = nextPageUrlIncludeSmaller.split('<')[1];
+      final nextPageEndpoint = nextPageUrl.split('com')[2];
+      favoriteStatusListEndpoint = nextPageEndpoint;
+      final favoriteStatusList = List<dynamic>.from(response.data);
+      return favoriteStatusList
+          .map((status) => Status.fromJson(status))
+          .toList();
+    } else {
+      throw Exception('response statusCode is ${response.statusCode}.');
+    }
   }
 
   Future<CredentialAccount> fetchCredentialAccount() async {

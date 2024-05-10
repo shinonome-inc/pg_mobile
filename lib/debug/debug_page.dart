@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
+import 'package:pg_mobile/debug/debug_favorite_status_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
 import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_my_page.dart';
+import 'package:pg_mobile/debug/debug_office_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
+import 'package:pg_mobile/debug/location/debug_location_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
+import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
@@ -49,6 +53,16 @@ class _DebugPageState extends ConsumerState<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
+          _button(
+            'オフィス画面',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DebugOfficePage(),
+                ),
+              );
+            },
+          ),
           _button(
             'サインイン画面',
             onPressed: () {
@@ -151,6 +165,17 @@ class _DebugPageState extends ConsumerState<DebugPage> {
             },
           ),
           _button(
+            'お気に入り一覧画面',
+            onPressed: () async {
+              await ref
+                  .read(favoriteStatusListProvider.notifier)
+                  .fetchFavoriteStatusList();
+              if (!mounted) return;
+              NavigatorUtil.pushScreen(
+                  context, const DebugFavoriteStatusListPage());
+            },
+          ),
+          _button(
             'マイページ',
             onPressed: () async {
               final credentialAccount =
@@ -159,6 +184,15 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               NavigatorUtil.pushScreen(
                 context,
                 DebugMyPage(credentialAccount: credentialAccount),
+              );
+            },
+          ),
+          _button(
+            '位置情報',
+            onPressed: () {
+              NavigatorUtil.pushScreen(
+                context,
+                const DebugLocationPage(),
               );
             },
           ),
