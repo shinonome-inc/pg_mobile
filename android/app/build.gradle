@@ -30,7 +30,6 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.example.pg_mobile"
-    compileSdkVersion 33
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 

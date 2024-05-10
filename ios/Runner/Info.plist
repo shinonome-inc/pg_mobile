@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>PG Mobile</string>
+	<string>Pg Mobile</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>PG Mobile</string>
+	<string>pg_mobile</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -70,13 +70,7 @@
     <!-- Deep Links　ここまで追加 -->
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>アプリが位置情報を使用することを許可する必要があります。</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>アプリが常に位置情報を使用することを許可する必要があります。</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>アプリが常に位置情報を使用することを許可する必要があります。</string>
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>location</string>
-    </array>
+    <key>アプリが常に位置情報を使用することを許可する必要があります。</key>
+    <string>Because</string>
 </dict>
 </plist>

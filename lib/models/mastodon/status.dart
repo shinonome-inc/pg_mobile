@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:html/parser.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/application.dart';
 import 'package:pg_mobile/models/mastodon/custom_emoji.dart';
@@ -51,12 +50,4 @@ class Status with _$Status {
   }) = _Status;
 
   factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
-}
-
-extension StatusExtension on Status {
-  String get contentText {
-    return parse(
-      content.replaceAll('<br />', '\n').replaceAll('</p><p>', '\n\n'),
-    ).body!.text;
-  }
 }
