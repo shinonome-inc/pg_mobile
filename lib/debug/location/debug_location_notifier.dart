@@ -80,12 +80,11 @@ class DebugLocationNotifier extends StateNotifier<DebugLocationState> {
       return;
     }
     _setCurrentLatLong(currentLocation.latitude!, currentLocation.longitude!);
-    state = state.copyWith(
-      distanceInMeters: LocationUtil.distanceInMeters(
-        currentLocation,
-        Locations.debugTarget,
-      ),
+    final distanceInMeters = LocationUtil.distanceInMeters(
+      currentLocation,
+      Locations.debugTarget,
     );
+    state = state.copyWith(distanceInMeters: distanceInMeters);
     if (!state.isInitializedCurrentLocation) {
       _setIsInitializedCurrentLocation(true);
       _setLoading(false);
