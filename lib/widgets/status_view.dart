@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
+import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_icon_button.dart';
 
@@ -13,11 +13,6 @@ class StatusView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Html(
-      data: """
-        ${status.content}
-        """,
-    );
     final createdAtDateTime = DateTime.parse(status.createdAt);
     return Padding(
       padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
@@ -67,7 +62,17 @@ class StatusView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    content,
+                    LinkableText(
+                      status.contentText,
+                      onTapMention: (value) {
+                        // TODO: ユーザー画面へ遷移する。
+                        debugPrint('on tap mention: $value');
+                      },
+                      onTapHashtag: (value) {
+                        // TODO: ハッシュタグ画面へ遷移する。
+                        debugPrint('on tap hashtag: $value');
+                      },
+                    ),
                     Row(
                       children: [
                         SizedBox(width: 8.w),
