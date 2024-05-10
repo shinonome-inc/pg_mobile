@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
 import 'package:pg_mobile/debug/debug_favorite_status_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
@@ -14,6 +13,7 @@ import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
+import 'package:pg_mobile/debug/location/debug_location_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
@@ -184,6 +184,15 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               NavigatorUtil.pushScreen(
                 context,
                 DebugMyPage(credentialAccount: credentialAccount),
+              );
+            },
+          ),
+          _button(
+            '位置情報',
+            onPressed: () {
+              NavigatorUtil.pushScreen(
+                context,
+                const DebugLocationPage(),
               );
             },
           ),
