@@ -9,6 +9,7 @@ import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_my_page.dart';
+import 'package:pg_mobile/debug/debug_office_page.dart';
 import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
@@ -52,6 +53,16 @@ class _DebugPageState extends ConsumerState<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
+          _button(
+            'オフィス画面',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DebugOfficePage(),
+                ),
+              );
+            },
+          ),
           _button(
             'サインイン画面',
             onPressed: () {
