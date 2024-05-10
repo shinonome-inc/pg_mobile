@@ -6,7 +6,7 @@ import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/widgets/search_bar_widget.dart';
-import 'package:pg_mobile/widgets/status_view.dart';
+import 'package:pg_mobile/widgets/status_item.dart';
 
 class DebugHomeTimelinePage extends ConsumerStatefulWidget {
   const DebugHomeTimelinePage({Key? key}) : super(key: key);
@@ -71,7 +71,7 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
                 ),
               );
             }
-            return StatusView(status: statusList[index]);
+            return StatusItem(status: statusList[index]);
           },
         ),
       ),
