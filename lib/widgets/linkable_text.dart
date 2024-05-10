@@ -50,10 +50,7 @@ class LinkableText extends StatelessWidget {
       if (currentPosition < match.start) {
         final textPart = text.substring(currentPosition, match.start);
         textSpans.add(
-          TextSpan(
-            text: textPart,
-            // style: Styles.normal,
-          ),
+          TextSpan(text: textPart),
         );
       }
 
@@ -95,10 +92,7 @@ class LinkableText extends StatelessWidget {
     if (currentPosition < text.length) {
       final remainingText = text.substring(currentPosition);
       textSpans.add(
-        TextSpan(
-          text: remainingText,
-          // style: Styles.normal,
-        ),
+        TextSpan(text: remainingText),
       );
     }
     return textSpans;
