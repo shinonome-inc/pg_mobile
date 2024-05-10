@@ -13,6 +13,7 @@ import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
+import 'package:pg_mobile/debug/location/debug_location_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
@@ -189,7 +190,10 @@ class _DebugPageState extends ConsumerState<DebugPage> {
           _button(
             '位置情報',
             onPressed: () {
-              NavigatorUtil.pushScreen(context, const DebugPGNPage());
+              NavigatorUtil.pushScreen(
+                context,
+                const DebugLocationPage(),
+              );
             },
           ),
           SizedBox(height: 64.h),
