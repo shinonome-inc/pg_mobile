@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
+import 'package:pg_mobile/models/mastodon/credential_account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/secure_storage_repository.dart';
 
@@ -16,6 +17,7 @@ class MastodonRepository {
   Dio get dio => _dio;
   Map<String, dynamic>? _headers;
   Map<String, dynamic>? get headers => _headers;
+
   String? _token;
 
   static const String _scope = 'read+write';
@@ -115,6 +117,55 @@ class MastodonRepository {
     } else {
       throw Exception(
         'Failed to fetch user with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<String?> signIn(Uri uri) async {
+    final code = uri.queryParameters['code'];
+    final response = await _dio.post(
+      '/oauth/token',
+      data: {
+        'client_id': Env.mastodonClientId,
+        'client_secret': Env.mastodonClientSecret,
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': Env.mastodonRedirectUri,
+      },
+    );
+
+    final body = response.data;
+    final accessToken = body['access_token'];
+    return accessToken;
+  }
+
+  Future<List<Status>> fetchFavoriteStatusList() async {
+    String favoriteStatusListEndpoint = '/api/v1/favourites?limit=40';
+    final response = await _dio.get(favoriteStatusListEndpoint);
+    if (response.statusCode == 200) {
+      final link = response.headers['link'];
+      final nextPageLink = link![0];
+      final nextPageUrlIncludeSmaller = nextPageLink.split('>')[0];
+      final nextPageUrl = nextPageUrlIncludeSmaller.split('<')[1];
+      final nextPageEndpoint = nextPageUrl.split('com')[2];
+      favoriteStatusListEndpoint = nextPageEndpoint;
+      final favoriteStatusList = List<dynamic>.from(response.data);
+      return favoriteStatusList
+          .map((status) => Status.fromJson(status))
+          .toList();
+    } else {
+      throw Exception('response statusCode is ${response.statusCode}.');
+    }
+  }
+
+  Future<CredentialAccount> fetchCredentialAccount() async {
+    final response = await _dio.get('/api/v1/accounts/verify_credentials');
+    if (response.statusCode == 200) {
+      final credentialAccount = CredentialAccount.fromJson(response.data);
+      return credentialAccount;
+    } else {
+      throw Exception(
+        'Failed to fetch credential account. response status code is ${response.statusCode}. error message is ${response.statusMessage}.',
       );
     }
   }
