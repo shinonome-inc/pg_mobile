@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/widgets/search_bar_widget.dart';
-import 'package:pg_mobile/widgets/status_view.dart';
+import 'package:pg_mobile/widgets/status_item.dart';
 
 class DebugHomeTimelinePage extends ConsumerStatefulWidget {
   const DebugHomeTimelinePage({Key? key}) : super(key: key);
@@ -42,19 +42,27 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
           child: SearchBarWidget(),
         ),
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: statusList.length + 1,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == statusList.length) {
-            return const Center(
-              child: CupertinoActivityIndicator(
-                color: AppColors.white,
-              ),
-            );
-          }
-          return StatusView(status: statusList[index]);
+      body: RefreshIndicator(
+        onRefresh: () async {
+          // TODO: pull to refreshで更新しているが、リアルタイム更新に修正する。
+          final notifier = ref.read(timelineProvider.notifier);
+          notifier.reset();
+          notifier.fetchTimeline();
         },
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: statusList.length + 1,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == statusList.length) {
+              return const Center(
+                child: CupertinoActivityIndicator(
+                  color: AppColors.white,
+                ),
+              );
+            }
+            return StatusItem(status: statusList[index]);
+          },
+        ),
       ),
     );
   }

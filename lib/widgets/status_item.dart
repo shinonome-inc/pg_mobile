@@ -2,14 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
-import 'package:pg_mobile/widgets/status_icon_button.dart';
+import 'package:pg_mobile/widgets/status_footer_item.dart';
 
-class StatusView extends StatelessWidget {
+class StatusItem extends StatelessWidget {
   final Status status;
-  const StatusView({super.key, required this.status});
+  const StatusItem({super.key, required this.status});
+
+  Future<void> _onTapFavorite(Status status) async {
+    if (status.favourited == null) return;
+    if (status.favourited!) {
+      await MastodonRepository.instance.undoFavoriteStatus(status.id);
+    } else {
+      await MastodonRepository.instance.favoriteStatus(status.id);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,23 +86,32 @@ class StatusView extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(width: 8.w),
-                        StatusIconButton(
+                        StatusFooterItem(
+                          onTap: () {},
                           iconData: Icons.reply,
                           count: status.repliesCount,
+                          color: AppColors.gray3,
                         ),
                         const Spacer(),
-                        StatusIconButton(
+                        StatusFooterItem(
+                          onTap: () {},
                           iconData: Icons.repeat,
                           count: status.reblogsCount,
+                          color: AppColors.gray3,
                         ),
                         const Spacer(),
-                        StatusIconButton(
-                          iconData: Icons.star_border,
+                        StatusFooterItem(
+                          onTap: () => _onTapFavorite(status),
+                          iconData: status.favourited!
+                              ? Icons.star
+                              : Icons.star_border,
                           count: status.favouritesCount,
+                          color: status.favourited!
+                              ? AppColors.yellow
+                              : AppColors.gray3,
                         ),
                         const Spacer(),
                         SizedBox(
-                          height: 24.h,
                           width: 24.w,
                           child: const Icon(Icons.more_horiz,
                               color: AppColors.gray3),
