@@ -55,6 +55,8 @@ dependencies:
   video_player: ^2.8.2
   permission_handler: ^11.3.0
   hooks_riverpod: ^2.5.1
+  html: ^0.15.4
+  url_launcher: ^6.2.6
   flutter_html: ^3.0.0-beta.2
 
 dev_dependencies:
