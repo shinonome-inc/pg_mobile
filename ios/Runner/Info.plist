@@ -47,6 +47,12 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+    <key>NSCameraUsageDescription</key>
+    <string>このアプリがカメラにアクセスするのを許可します</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>このアプリがマイクにアクセスをするのを許可します</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>このアプリがアルバムにアクセスするのを許可します</string>
     <!-- Deep Links　ここから -->
     <key>FlutterDeepLinkingEnabled</key>
     <true/>
