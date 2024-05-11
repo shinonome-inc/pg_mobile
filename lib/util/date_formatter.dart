@@ -6,7 +6,9 @@ class DateFormatter {
   static String formatPastDate(DateTime dateTime) {
     final now = DateTime.now();
     final diff = now.difference(dateTime);
-    if (diff.inSeconds < 60) {
+    if (diff.inSeconds < 1) {
+      return '今';
+    } else if (diff.inSeconds < 60) {
       return '${diff.inSeconds}秒前';
     } else if (diff.inMinutes < 60) {
       return '${diff.inMinutes}分前';
