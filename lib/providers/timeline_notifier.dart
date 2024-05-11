@@ -14,10 +14,14 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     state = defaultTimeline;
   }
 
+  void setLoading(bool value) {
+    state = state.copyWith(isLoading: value);
+  }
+
   Future<void> fetchTimeline() async {
-    final statusTimeline = await MastodonRepository.instance.fetchStatus();
-    final currentStatusList = [...state.timelineStatus];
-    currentStatusList.addAll(statusTimeline);
-    state = state.copyWith(timelineStatus: currentStatusList);
+    final fetchedStatuses = await MastodonRepository.instance.fetchStatus();
+    final statuses = [...state.statuses];
+    statuses.addAll(fetchedStatuses);
+    state = state.copyWith(statuses: statuses);
   }
 }

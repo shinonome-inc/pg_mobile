@@ -6,10 +6,12 @@ part 'timeline.freezed.dart';
 @freezed
 class Timeline with _$Timeline {
   const factory Timeline({
-    required List<Status> timelineStatus,
+    required bool isLoading,
+    required List<Status> statuses,
   }) = _Timeline;
 }
 
 const Timeline defaultTimeline = Timeline(
-  timelineStatus: [],
+  isLoading: false,
+  statuses: [],
 );
