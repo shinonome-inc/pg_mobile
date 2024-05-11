@@ -7,6 +7,7 @@ import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
+import 'package:pg_mobile/widgets/status_media_view.dart';
 
 class StatusItem extends StatelessWidget {
   const StatusItem({
@@ -123,6 +124,14 @@ class StatusItem extends StatelessWidget {
                         debugPrint('on tap hashtag: $value');
                       },
                     ),
+                    SizedBox(height: 8.h),
+                    if (status.mediaAttachments.isNotEmpty)
+                      SizedBox(
+                        height: 160.h,
+                        child: StatusMediaView(
+                          mediaAttachments: status.mediaAttachments,
+                        ),
+                      ),
                     SizedBox(height: 8.h),
                     Row(
                       children: [
