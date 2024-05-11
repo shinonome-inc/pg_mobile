@@ -187,6 +187,30 @@ class MastodonRepository {
     }
   }
 
+  Future<Status> boostStatus(String id) async {
+    final response = await _dio.post('/api/v1/statuses/$id/reblog');
+    if (response.statusCode == 200) {
+      final status = Status.fromJson(response.data);
+      return status;
+    } else {
+      throw Exception(
+        'Failed to boost status with status code ${response.statusCode}, response requestOptions: ${response.requestOptions}',
+      );
+    }
+  }
+
+  Future<Status> undoBoostStatus(String id) async {
+    final response = await _dio.post('/api/v1/statuses/$id/unreblog');
+    if (response.statusCode == 200) {
+      final status = Status.fromJson(response.data);
+      return status;
+    } else {
+      throw Exception(
+        'Failed to undo boost status with status code ${response.statusCode}, response requestOptions: ${response.requestOptions}',
+      );
+    }
+  }
+
   Future<Status> favoriteStatus(String id) async {
     final response = await _dio.post('/api/v1/statuses/$id/favourite');
     if (response.statusCode == 200) {

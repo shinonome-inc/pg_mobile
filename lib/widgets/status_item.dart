@@ -11,6 +11,15 @@ class StatusItem extends StatelessWidget {
   final Status status;
   const StatusItem({super.key, required this.status});
 
+  Future<void> _onTapBoost(Status status) async {
+    if (status.reblogged == null) return;
+    if (status.reblogged!) {
+      await MastodonRepository.instance.undoBoostStatus(status.id);
+    } else {
+      await MastodonRepository.instance.boostStatus(status.id);
+    }
+  }
+
   Future<void> _onTapFavorite(Status status) async {
     if (status.favourited == null) return;
     if (status.favourited!) {
@@ -92,10 +101,12 @@ class StatusItem extends StatelessWidget {
                         ),
                         const Spacer(),
                         StatusFooterItem(
-                          onTap: () {},
+                          onTap: () => _onTapBoost(status),
                           iconData: Icons.repeat,
                           count: status.reblogsCount,
-                          color: AppColors.gray3,
+                          color: status.reblogged!
+                              ? AppColors.blue
+                              : AppColors.gray3,
                         ),
                         const Spacer(),
                         StatusFooterItem(
