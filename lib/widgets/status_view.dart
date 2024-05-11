@@ -33,7 +33,11 @@ class StatusView extends StatelessWidget {
                 ),
               );
             }
-            return StatusItem(status: statuses[index]);
+            final status = statuses[index];
+            return StatusItem(
+              status: status.reblog == null ? status : status.reblog!,
+              reblogAccount: status.reblog == null ? null : status.account,
+            );
           },
         ),
       ),

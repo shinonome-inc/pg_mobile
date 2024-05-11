@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
@@ -8,8 +9,14 @@ import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
 
 class StatusItem extends StatelessWidget {
+  const StatusItem({
+    super.key,
+    required this.status,
+    this.reblogAccount,
+  });
+
   final Status status;
-  const StatusItem({super.key, required this.status});
+  final Account? reblogAccount;
 
   Future<void> _onTapBoost(Status status) async {
     if (status.reblogged == null) return;
@@ -38,40 +45,21 @@ class StatusItem extends StatelessWidget {
           bottom: BorderSide(color: AppColors.gray2),
         ),
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          NetworkImageContainer(
-            imageUrl: status.account.avatar,
-            width: 56.w,
-            height: 56.w,
-            boxShape: BoxShape.circle,
-          ),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          if (reblogAccount != null)
+            Column(
               children: [
                 Row(
                   children: [
-                    Text(
-                      status.account.displayName,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    SizedBox(width: 8.w),
-                    Expanded(
-                      child: Text(
-                        '@${status.account.username}',
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: AppColors.gray3),
-                      ),
+                    SizedBox(width: 40.w),
+                    const Icon(
+                      Icons.repeat,
+                      color: AppColors.gray3,
                     ),
                     Text(
-                      status.createdAtText,
-                      overflow: TextOverflow.ellipsis,
+                      '${reblogAccount!.username}さんがブースト',
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -80,55 +68,103 @@ class StatusItem extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 8.h),
-                LinkableText(
-                  status.contentText,
-                  onTapMention: (value) {
-                    // TODO: ユーザー画面へ遷移する。
-                    debugPrint('on tap mention: $value');
-                  },
-                  onTapHashtag: (value) {
-                    // TODO: ハッシュタグ画面へ遷移する。
-                    debugPrint('on tap hashtag: $value');
-                  },
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    StatusFooterItem(
-                      onTap: () {},
-                      iconData: Icons.reply,
-                      count: status.repliesCount,
-                      color: AppColors.gray3,
-                    ),
-                    const Spacer(),
-                    StatusFooterItem(
-                      onTap: () => _onTapBoost(status),
-                      iconData: Icons.repeat,
-                      count: status.reblogsCount,
-                      color:
-                          status.reblogged! ? AppColors.blue : AppColors.gray3,
-                    ),
-                    const Spacer(),
-                    StatusFooterItem(
-                      onTap: () => _onTapFavorite(status),
-                      iconData:
-                          status.favourited! ? Icons.star : Icons.star_border,
-                      count: status.favouritesCount,
-                      color: status.favourited!
-                          ? AppColors.yellow
-                          : AppColors.gray3,
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: 24.w,
-                      child:
-                          const Icon(Icons.more_horiz, color: AppColors.gray3),
-                    ),
-                    const Spacer(),
-                  ],
-                ),
               ],
             ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              NetworkImageContainer(
+                imageUrl: status.account.avatar,
+                width: 56.w,
+                height: 56.w,
+                boxShape: BoxShape.circle,
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          status.account.displayName,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: Text(
+                            '@${status.account.username}',
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: AppColors.gray3),
+                          ),
+                        ),
+                        Text(
+                          status.createdAtText,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(color: AppColors.gray3),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    LinkableText(
+                      status.contentText,
+                      onTapMention: (value) {
+                        // TODO: ユーザー画面へ遷移する。
+                        debugPrint('on tap mention: $value');
+                      },
+                      onTapHashtag: (value) {
+                        // TODO: ハッシュタグ画面へ遷移する。
+                        debugPrint('on tap hashtag: $value');
+                      },
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        StatusFooterItem(
+                          onTap: () {},
+                          iconData: Icons.reply,
+                          count: status.repliesCount,
+                          color: AppColors.gray3,
+                        ),
+                        const Spacer(),
+                        StatusFooterItem(
+                          onTap: () => _onTapBoost(status),
+                          iconData: Icons.repeat,
+                          count: status.reblogsCount,
+                          color: status.reblogged!
+                              ? AppColors.blue
+                              : AppColors.gray3,
+                        ),
+                        const Spacer(),
+                        StatusFooterItem(
+                          onTap: () => _onTapFavorite(status),
+                          iconData: status.favourited!
+                              ? Icons.star
+                              : Icons.star_border,
+                          count: status.favouritesCount,
+                          color: status.favourited!
+                              ? AppColors.yellow
+                              : AppColors.gray3,
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: 24.w,
+                          child: const Icon(Icons.more_horiz,
+                              color: AppColors.gray3),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
