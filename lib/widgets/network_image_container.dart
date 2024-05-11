@@ -12,6 +12,7 @@ class NetworkImageContainer extends StatelessWidget {
     this.backgroundColor,
     this.errorImagePath = ImagePaths.error,
     this.boxShape = BoxShape.rectangle,
+    this.borderRadius,
     this.fit,
     this.onTap,
   }) : super(key: key);
@@ -22,6 +23,7 @@ class NetworkImageContainer extends StatelessWidget {
   final String errorImagePath;
   final Color? backgroundColor;
   final BoxShape boxShape;
+  final BorderRadiusGeometry? borderRadius;
   final BoxFit? fit;
   final void Function()? onTap;
 
@@ -38,7 +40,6 @@ class NetworkImageContainer extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: backgroundColor,
-          shape: boxShape,
         ),
         child: CachedNetworkImage(
           fit: fit,
@@ -46,6 +47,7 @@ class NetworkImageContainer extends StatelessWidget {
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               shape: boxShape,
+              borderRadius: borderRadius,
               image: DecorationImage(
                 fit: fit,
                 image: imageProvider,
@@ -55,6 +57,7 @@ class NetworkImageContainer extends StatelessWidget {
           errorWidget: (context, url, error) => Container(
             decoration: BoxDecoration(
               shape: boxShape,
+              borderRadius: borderRadius,
               image: DecorationImage(
                 fit: fit,
                 image: AssetImage(errorImagePath),
