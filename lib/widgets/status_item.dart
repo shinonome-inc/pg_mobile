@@ -58,6 +58,7 @@ class StatusItem extends StatelessWidget {
                       status.account.displayName,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
+                    SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         '@${status.account.username}',
