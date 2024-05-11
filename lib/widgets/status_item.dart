@@ -69,7 +69,6 @@ class StatusItem extends StatelessWidget {
                             .copyWith(color: AppColors.gray3),
                       ),
                     ),
-                    const Spacer(),
                     Text(
                       status.createdAtText,
                       overflow: TextOverflow.ellipsis,
