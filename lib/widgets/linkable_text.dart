@@ -25,7 +25,7 @@ class LinkableText extends StatelessWidget {
 
     final urlMatches = Patterns.url.allMatches(text);
     final mentionMatches = Patterns.mention.allMatches(text);
-    final hashtagMatches = Patterns.hashtagPattern.allMatches(text);
+    final hashtagMatches = Patterns.hashtag.allMatches(text);
 
     matches.addAll(urlMatches);
     matches.addAll(mentionMatches);
@@ -76,7 +76,7 @@ class LinkableText extends StatelessWidget {
               ..onTap = () => onTapMention(mention),
           ),
         );
-      } else if (Patterns.hashtagPattern.hasMatch(matchedText)) {
+      } else if (Patterns.hashtag.hasMatch(matchedText)) {
         textSpans.add(
           TextSpan(
             text: matchedText,
