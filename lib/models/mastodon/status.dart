@@ -9,6 +9,7 @@ import 'package:pg_mobile/models/mastodon/poll.dart';
 import 'package:pg_mobile/models/mastodon/preview_card.dart';
 import 'package:pg_mobile/models/mastodon/status_mention.dart';
 import 'package:pg_mobile/models/mastodon/status_tag.dart';
+import 'package:pg_mobile/util/date_formatter.dart';
 
 part 'status.freezed.dart';
 part 'status.g.dart';
@@ -54,6 +55,12 @@ class Status with _$Status {
 }
 
 extension StatusExtension on Status {
+  String get createdAtText {
+    final DateTime dateTime = DateTime.parse(createdAt).toLocal();
+    final String createdAtText = DateFormatter.formatPastDate(dateTime);
+    return createdAtText;
+  }
+
   String get contentText {
     return parse(
       content.replaceAll('<br />', '\n').replaceAll('</p><p>', '\n\n'),

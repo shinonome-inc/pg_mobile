@@ -5,9 +5,13 @@ import 'package:pg_mobile/util/date_formatter.dart';
 void main() {
   group('DateFormatter', () {
     group('formatPastDate', () {
+      test('1秒後が正しくフォーマットされるか（端末本体の時計が遅れている場合を想定）', () {
+        final dateTime = DateTime.now().add(const Duration(seconds: 1));
+        expect(DateFormatter.formatPastDate(dateTime), '今');
+      });
       test('現在時刻が正しくフォーマットされるか', () {
         final dateTime = DateTime.now();
-        expect(DateFormatter.formatPastDate(dateTime), '0秒前');
+        expect(DateFormatter.formatPastDate(dateTime), '今');
       });
 
       test('1秒前が正しくフォーマットされるか', () {
