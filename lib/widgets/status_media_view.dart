@@ -20,6 +20,18 @@ class _StatusMediaViewState extends State<StatusMediaView> {
   final _fit = BoxFit.cover;
   late PageController _controller;
 
+  List<String> get _imageUrls =>
+      [for (var attachment in widget.mediaAttachments) attachment.url];
+
+  void _onTapImage(int selectedIndex) {
+    NavigatorUtil.showNetworkImagePreview(
+      context: context,
+      controller: _controller,
+      imageUrls: _imageUrls,
+      selectedIndex: selectedIndex,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,9 +50,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
     if (widget.mediaAttachments.isEmpty) {
       return const SizedBox.shrink();
     }
-    final imageUrls = [
-      for (var attachment in widget.mediaAttachments) attachment.url
-    ];
+
     return Row(
       children: [
         Expanded(
@@ -48,14 +58,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
             children: [
               Expanded(
                 child: NetworkImageContainer(
-                  onTap: () {
-                    NavigatorUtil.showNetworkImagePreview(
-                      context: context,
-                      controller: _controller,
-                      imageUrls: imageUrls,
-                      selectedIndex: 0,
-                    );
-                  },
+                  onTap: () => _onTapImage(0),
                   imageUrl: widget.mediaAttachments[0].url,
                   fit: _fit,
                   borderRadius: borderRadius,
@@ -65,14 +68,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                 SizedBox(height: 8.h),
                 Expanded(
                   child: NetworkImageContainer(
-                    onTap: () {
-                      NavigatorUtil.showNetworkImagePreview(
-                        context: context,
-                        controller: _controller,
-                        imageUrls: imageUrls,
-                        selectedIndex: 2,
-                      );
-                    },
+                    onTap: () => _onTapImage(2),
                     imageUrl: widget.mediaAttachments[2].url,
                     fit: _fit,
                     borderRadius: borderRadius,
@@ -89,14 +85,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
               children: [
                 Expanded(
                   child: NetworkImageContainer(
-                    onTap: () {
-                      NavigatorUtil.showNetworkImagePreview(
-                        context: context,
-                        controller: _controller,
-                        imageUrls: imageUrls,
-                        selectedIndex: 1,
-                      );
-                    },
+                    onTap: () => _onTapImage(1),
                     imageUrl: widget.mediaAttachments[1].url,
                     fit: _fit,
                     borderRadius: borderRadius,
@@ -106,14 +95,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                   SizedBox(height: 8.h),
                   Expanded(
                     child: NetworkImageContainer(
-                      onTap: () {
-                        NavigatorUtil.showNetworkImagePreview(
-                          context: context,
-                          controller: _controller,
-                          imageUrls: imageUrls,
-                          selectedIndex: 3,
-                        );
-                      },
+                      onTap: () => _onTapImage(3),
                       imageUrl: widget.mediaAttachments[3].url,
                       fit: _fit,
                       borderRadius: borderRadius,
