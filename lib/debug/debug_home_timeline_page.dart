@@ -36,8 +36,7 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
 
   @override
   Widget build(BuildContext context) {
-    final statusList =
-        ref.watch(timelineProvider.select((value) => value.timelineStatus));
+    final state = ref.watch(timelineProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -46,11 +45,15 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
           child: SearchBarWidget(),
         ),
       ),
-      body: StatusView(
-        statuses: statusList,
-        controller: _scrollController,
-        onRefresh: _onRefresh,
-      ),
+      body: state.isLoading && state.statuses.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : StatusView(
+              statuses: state.statuses,
+              controller: _scrollController,
+              onRefresh: _onRefresh,
+            ),
     );
   }
 }
