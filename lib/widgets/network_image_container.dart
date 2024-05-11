@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/image_paths.dart';
-import 'package:pg_mobile/util/navigator_util.dart';
 
 class NetworkImageContainer extends StatelessWidget {
   const NetworkImageContainer({
@@ -27,14 +26,10 @@ class NetworkImageContainer extends StatelessWidget {
   final BoxFit? fit;
   final void Function()? onTap;
 
-  void _onTap(BuildContext context) {
-    NavigatorUtil.showNetworkImagePreview(context, imageUrl);
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap ?? () => _onTap(context),
+      onTap: onTap,
       child: Container(
         width: width,
         height: height,
