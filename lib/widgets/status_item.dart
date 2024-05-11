@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
-import 'package:pg_mobile/util/date_formatter.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
@@ -23,7 +22,6 @@ class StatusItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final createdAtDateTime = DateTime.parse(status.createdAt);
     return Padding(
       padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
       child: Column(
@@ -63,7 +61,7 @@ class StatusItem extends StatelessWidget {
                           ),
                           const Spacer(),
                           Text(
-                            DateFormatter.formatPastDate(createdAtDateTime),
+                            status.createdAtText,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
