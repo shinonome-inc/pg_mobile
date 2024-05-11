@@ -20,19 +20,22 @@ class StatusView extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: onRefresh,
-      child: ListView.builder(
+      child: Scrollbar(
         controller: controller,
-        itemCount: statuses.length + 1,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == statuses.length) {
-            return const Center(
-              child: CupertinoActivityIndicator(
-                color: AppColors.white,
-              ),
-            );
-          }
-          return StatusItem(status: statuses[index]);
-        },
+        child: ListView.builder(
+          controller: controller,
+          itemCount: statuses.length + 1,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == statuses.length) {
+              return const Center(
+                child: CupertinoActivityIndicator(
+                  color: AppColors.white,
+                ),
+              );
+            }
+            return StatusItem(status: statuses[index]);
+          },
+        ),
       ),
     );
   }

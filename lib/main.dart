@@ -90,6 +90,11 @@ class MyApp extends StatelessWidget {
             dividerTheme: const DividerThemeData(
               color: AppColors.gray3,
             ),
+            scrollbarTheme: ScrollbarThemeData(
+              radius: Radius.circular(8.r),
+              interactive: true,
+              thumbColor: MaterialStateProperty.all(AppColors.gray3),
+            ),
           ),
           home: child,
         );
