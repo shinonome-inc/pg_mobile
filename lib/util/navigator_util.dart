@@ -28,6 +28,7 @@ class NavigatorUtil {
     required BuildContext context,
     required PageController controller,
     required List<String> imageUrls,
+    required int selectedIndex,
   }) {
     showGeneralDialog(
       barrierDismissible: true,
@@ -37,6 +38,7 @@ class NavigatorUtil {
         return NetworkImagePreview(
           controller: controller,
           imageUrls: imageUrls,
+          selectedIndex: selectedIndex,
         );
       },
     );

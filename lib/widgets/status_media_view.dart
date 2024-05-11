@@ -53,6 +53,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                       context: context,
                       controller: _controller,
                       imageUrls: imageUrls,
+                      selectedIndex: 0,
                     );
                   },
                   imageUrl: widget.mediaAttachments[0].url,
@@ -69,6 +70,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                         context: context,
                         controller: _controller,
                         imageUrls: imageUrls,
+                        selectedIndex: 2,
                       );
                     },
                     imageUrl: widget.mediaAttachments[2].url,
@@ -92,6 +94,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                         context: context,
                         controller: _controller,
                         imageUrls: imageUrls,
+                        selectedIndex: 1,
                       );
                     },
                     imageUrl: widget.mediaAttachments[1].url,
@@ -108,6 +111,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                           context: context,
                           controller: _controller,
                           imageUrls: imageUrls,
+                          selectedIndex: 3,
                         );
                       },
                       imageUrl: widget.mediaAttachments[3].url,

@@ -6,10 +6,12 @@ class NetworkImagePreview extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.imageUrls,
+    required this.selectedIndex,
   }) : super(key: key);
 
   final PageController controller;
   final List<String> imageUrls;
+  final int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +28,8 @@ class NetworkImagePreview extends StatelessWidget {
                       ? const NeverScrollableScrollPhysics()
                       : null,
                   itemBuilder: (context, index) {
-                    final imageUrl =
-                        imageUrls.elementAt(index % imageUrls.length);
+                    final imageUrl = imageUrls
+                        .elementAt(index % imageUrls.length + selectedIndex);
                     return InteractiveViewer(
                       minScale: 0.1,
                       maxScale: 5,
