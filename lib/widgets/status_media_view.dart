@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/models/mastodon/media_attachment.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
-import 'package:pg_mobile/widgets/network_image_preview.dart';
 
 class StatusMediaView extends StatefulWidget {
   const StatusMediaView({
@@ -18,26 +18,7 @@ class StatusMediaView extends StatefulWidget {
 
 class _StatusMediaViewState extends State<StatusMediaView> {
   final _fit = BoxFit.cover;
-
   late PageController _controller;
-
-  void showNetworkImagesPreview({
-    required BuildContext context,
-    required PageController controller,
-    required List<String> imageUrls,
-  }) {
-    showGeneralDialog(
-      barrierDismissible: true,
-      barrierLabel: '',
-      context: context,
-      pageBuilder: (context, animation1, animation2) {
-        return NetworkImagePreview(
-          controller: controller,
-          imageUrls: imageUrls,
-        );
-      },
-    );
-  }
 
   @override
   void initState() {
@@ -68,7 +49,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
               Expanded(
                 child: NetworkImageContainer(
                   onTap: () {
-                    showNetworkImagesPreview(
+                    NavigatorUtil.showNetworkImagePreview(
                       context: context,
                       controller: _controller,
                       imageUrls: imageUrls,
@@ -84,7 +65,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                 Expanded(
                   child: NetworkImageContainer(
                     onTap: () {
-                      showNetworkImagesPreview(
+                      NavigatorUtil.showNetworkImagePreview(
                         context: context,
                         controller: _controller,
                         imageUrls: imageUrls,
@@ -107,7 +88,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                 Expanded(
                   child: NetworkImageContainer(
                     onTap: () {
-                      showNetworkImagesPreview(
+                      NavigatorUtil.showNetworkImagePreview(
                         context: context,
                         controller: _controller,
                         imageUrls: imageUrls,
@@ -123,7 +104,7 @@ class _StatusMediaViewState extends State<StatusMediaView> {
                   Expanded(
                     child: NetworkImageContainer(
                       onTap: () {
-                        showNetworkImagesPreview(
+                        NavigatorUtil.showNetworkImagePreview(
                           context: context,
                           controller: _controller,
                           imageUrls: imageUrls,
