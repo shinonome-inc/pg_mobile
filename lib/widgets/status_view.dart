@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/widgets/status_item.dart';
 
@@ -25,7 +26,9 @@ class StatusView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           if (index == statuses.length) {
             return const Center(
-              child: CupertinoActivityIndicator(),
+              child: CupertinoActivityIndicator(
+                color: AppColors.white,
+              ),
             );
           }
           return StatusItem(status: statuses[index]);
