@@ -4,12 +4,10 @@ import 'package:pg_mobile/widgets/network_image_container.dart';
 class NetworkImagePreview extends StatelessWidget {
   const NetworkImagePreview({
     Key? key,
-    required this.controller,
     required this.imageUrls,
     required this.selectedIndex,
   }) : super(key: key);
 
-  final PageController controller;
   final List<String> imageUrls;
   final int selectedIndex;
 
@@ -23,13 +21,13 @@ class NetworkImagePreview extends StatelessWidget {
               const Spacer(),
               Expanded(
                 child: PageView.builder(
-                  controller: controller,
+                  controller: PageController(initialPage: selectedIndex),
                   physics: imageUrls.length == 1
                       ? const NeverScrollableScrollPhysics()
                       : null,
+                  itemCount: imageUrls.length,
                   itemBuilder: (context, index) {
-                    final imageUrl = imageUrls
-                        .elementAt(index % imageUrls.length + selectedIndex);
+                    final imageUrl = imageUrls.elementAt(index);
                     return InteractiveViewer(
                       minScale: 0.1,
                       maxScale: 5,

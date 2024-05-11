@@ -26,7 +26,6 @@ class _StatusMediaViewState extends State<StatusMediaView> {
   void _onTapImage(int selectedIndex) {
     NavigatorUtil.showNetworkImagePreview(
       context: context,
-      controller: _controller,
       imageUrls: _imageUrls,
       selectedIndex: selectedIndex,
     );

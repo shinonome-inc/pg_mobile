@@ -26,7 +26,6 @@ class NavigatorUtil {
 
   static void showNetworkImagePreview({
     required BuildContext context,
-    required PageController controller,
     required List<String> imageUrls,
     required int selectedIndex,
   }) {
@@ -36,7 +35,6 @@ class NavigatorUtil {
       context: context,
       pageBuilder: (context, animation1, animation2) {
         return NetworkImagePreview(
-          controller: controller,
           imageUrls: imageUrls,
           selectedIndex: selectedIndex,
         );
