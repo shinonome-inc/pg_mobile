@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/models/mastodon/media_attachment.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
+import 'package:pg_mobile/widgets/video_player_view.dart';
 
 class StatusMediaView extends StatelessWidget {
   const StatusMediaView({
@@ -29,6 +30,12 @@ class StatusMediaView extends StatelessWidget {
   Widget build(BuildContext context) {
     if (mediaAttachments.isEmpty) {
       return const SizedBox.shrink();
+    }
+    if (mediaAttachments.isGifv || mediaAttachments.isVideo) {
+      return SizedBox(
+        width: double.infinity,
+        child: VideoPlayerView(mediaAttachments: mediaAttachments),
+      );
     }
     final borderRadius = BorderRadius.circular(4.r);
     return Row(
