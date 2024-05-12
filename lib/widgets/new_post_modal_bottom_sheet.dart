@@ -2,10 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 
-class NewPostModalBottomSheet extends StatelessWidget {
+class NewPostModalBottomSheet extends StatefulWidget {
   const NewPostModalBottomSheet({Key? key}) : super(key: key);
 
+  @override
+  State<NewPostModalBottomSheet> createState() =>
+      _NewPostModalBottomSheetState();
+}
+
+class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
   final Color _foregroundColor = AppColors.gray3;
+
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +36,7 @@ class NewPostModalBottomSheet extends StatelessWidget {
       child: Column(
         children: [
           TextField(
+            controller: _controller,
             keyboardType: TextInputType.multiline,
             maxLines: null,
             decoration: InputDecoration(
