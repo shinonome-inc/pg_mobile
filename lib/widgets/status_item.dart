@@ -125,14 +125,15 @@ class StatusItem extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 8.h),
-                    if (status.mediaAttachments.isNotEmpty)
+                    if (status.mediaAttachments.isNotEmpty) ...{
                       SizedBox(
                         height: 160.h,
                         child: StatusMediaView(
                           mediaAttachments: status.mediaAttachments,
                         ),
                       ),
-                    SizedBox(height: 8.h),
+                      SizedBox(height: 8.h),
+                    },
                     Row(
                       children: [
                         StatusFooterItem(
