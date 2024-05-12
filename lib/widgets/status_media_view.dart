@@ -27,11 +27,10 @@ class StatusMediaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(4.r);
     if (mediaAttachments.isEmpty) {
       return const SizedBox.shrink();
     }
-
+    final borderRadius = BorderRadius.circular(4.r);
     return Row(
       children: [
         Expanded(
