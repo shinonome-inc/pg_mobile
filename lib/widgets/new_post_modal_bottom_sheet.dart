@@ -12,8 +12,8 @@ class NewPostModalBottomSheet extends StatefulWidget {
 
 class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
   final Color _foregroundColor = AppColors.gray3;
-
   final TextEditingController _controller = TextEditingController();
+  int remainingCount = 500;
 
   @override
   void dispose() {
@@ -48,6 +48,11 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
                 ),
               ),
             ),
+            onChanged: (value) {
+              setState(() {
+                remainingCount = _controller.text.length;
+              });
+            },
           ),
           SizedBox(height: 16.h),
           Row(
@@ -65,13 +70,19 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
               ),
               const Spacer(),
               Text(
-                '残りxxx文字',
+                '残り${500 - _controller.text.length}文字',
                 style: TextStyle(color: _foregroundColor),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: _controller.text.isEmpty
+                    ? () {}
+                    : () {
+                        // TODO: 送信処理を追加する。
+                      },
                 icon: const Icon(Icons.send),
-                color: AppColors.accent,
+                color: _controller.text.isEmpty
+                    ? _foregroundColor
+                    : AppColors.accent,
               ),
             ],
           ),
