@@ -22,6 +22,8 @@ class NewPostModalBottomSheet extends StatelessWidget {
       child: Column(
         children: [
           TextField(
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
             decoration: InputDecoration(
               hintText: 'メッセージを入力',
               hintStyle: const TextStyle(color: AppColors.gray3),
