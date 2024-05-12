@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/models/mastodon/media_attachment.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerView extends StatefulWidget {
@@ -50,11 +51,14 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return const SizedBox.shrink();
-    return ClipRect(
-      child: AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
-        child: VideoPlayer(_controller),
-      ),
+    return GestureDetector(
+      onTap: () {
+        NavigatorUtil.showNetworkVideoPreview(
+          context: context,
+          controller: _controller,
+        );
+      },
+      child: VideoPlayer(_controller),
     );
   }
 }
