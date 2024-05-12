@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:video_player/video_player.dart';
 
@@ -65,7 +68,24 @@ class _NetworkVideoThumbnailViewState extends State<NetworkVideoThumbnailView> {
           );
         }
       },
-      child: VideoPlayer(_controller),
+      child: Stack(
+        alignment: Alignment.bottomLeft,
+        children: [
+          VideoPlayer(_controller),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 4.w),
+            margin: EdgeInsets.only(left: 4.w, bottom: 4.h),
+            decoration: BoxDecoration(
+              color: AppColors.gray1A80,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: const Text(
+              'GIF',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
