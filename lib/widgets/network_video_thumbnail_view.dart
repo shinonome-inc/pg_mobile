@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pg_mobile/models/mastodon/media_attachment.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoPlayerView extends StatefulWidget {
-  const VideoPlayerView({
+class NetworkVideoThumbnailView extends StatefulWidget {
+  const NetworkVideoThumbnailView({
     Key? key,
-    required this.mediaAttachments,
+    required this.url,
   }) : super(key: key);
 
-  final List<MediaAttachment> mediaAttachments;
+  final String url;
 
   @override
-  State<VideoPlayerView> createState() => _VideoPlayerViewState();
+  State<NetworkVideoThumbnailView> createState() =>
+      _NetworkVideoThumbnailViewState();
 }
 
-class _VideoPlayerViewState extends State<VideoPlayerView> {
+class _NetworkVideoThumbnailViewState extends State<NetworkVideoThumbnailView> {
   late VideoPlayerController _controller;
   bool _isLoading = false;
 
@@ -24,9 +24,7 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
       _isLoading = true;
     });
     _controller = VideoPlayerController.networkUrl(
-      Uri.parse(
-        widget.mediaAttachments.first.url,
-      ),
+      Uri.parse(widget.url),
     );
     await _controller.initialize();
     await _controller.setLooping(true);
