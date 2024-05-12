@@ -6,9 +6,11 @@ class NetworkVideoThumbnailView extends StatefulWidget {
   const NetworkVideoThumbnailView({
     Key? key,
     required this.url,
+    this.isGifv = false,
   }) : super(key: key);
 
   final String url;
+  final bool isGifv;
 
   @override
   State<NetworkVideoThumbnailView> createState() =>
@@ -51,10 +53,17 @@ class _NetworkVideoThumbnailViewState extends State<NetworkVideoThumbnailView> {
     if (_isLoading) return const SizedBox.shrink();
     return GestureDetector(
       onTap: () {
-        NavigatorUtil.showNetworkVideoPreview(
-          context: context,
-          controller: _controller,
-        );
+        if (widget.isGifv) {
+          NavigatorUtil.showNetworkGifvPreview(
+            context: context,
+            controller: _controller,
+          );
+        } else {
+          NavigatorUtil.showNetworkVideoPreview(
+            context: context,
+            controller: _controller,
+          );
+        }
       },
       child: VideoPlayer(_controller),
     );

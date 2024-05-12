@@ -36,6 +36,7 @@ class StatusMediaView extends StatelessWidget {
         width: double.infinity,
         child: NetworkVideoThumbnailView(
           url: mediaAttachments.first.url,
+          isGifv: mediaAttachments.isGifv,
         ),
       );
     }

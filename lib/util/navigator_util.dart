@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:pg_mobile/widgets/network_gifv_preview.dart';
 import 'package:pg_mobile/widgets/network_image_preview.dart';
 import 'package:pg_mobile/widgets/network_video_preview.dart';
 import 'package:video_player/video_player.dart';
@@ -54,6 +55,22 @@ class NavigatorUtil {
       context: context,
       pageBuilder: (context, animation1, animation2) {
         return NetworkVideoPreview(
+          controller: controller,
+        );
+      },
+    );
+  }
+
+  static void showNetworkGifvPreview({
+    required BuildContext context,
+    required VideoPlayerController controller,
+  }) {
+    showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: '',
+      context: context,
+      pageBuilder: (context, animation1, animation2) {
+        return NetworkGifvPreview(
           controller: controller,
         );
       },
