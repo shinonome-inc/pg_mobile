@@ -17,7 +17,6 @@ class NetworkVideoPreview extends StatefulWidget {
 class _NetworkVideoPreviewState extends State<NetworkVideoPreview> {
   bool _isLoading = false;
   bool _isPlaying = true;
-  Duration _duration = const Duration();
 
   Future<void> _onPressedPlayButton() async {
     if (_isLoading) return;
@@ -42,65 +41,27 @@ class _NetworkVideoPreviewState extends State<NetworkVideoPreview> {
     });
   }
 
-  Future<void> _initialize() async {
-    widget.controller.addListener(() async {
-      final duration = await widget.controller.position;
-      if (duration == null) return;
-      setState(() {
-        _duration = duration;
-      });
-      print(_duration.inMicroseconds);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initialize();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          VideoPlayer(
-            widget.controller,
-          ),
-          SafeArea(
-            child: Column(
-              children: [
-                const Align(
-                  alignment: Alignment.topLeft,
-                  child: CloseButton(),
-                ),
-                const Spacer(),
-                Expanded(
-                  child: IconButton(
-                    onPressed: _onPressedPlayButton,
-                    icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-                    color: AppColors.white,
-                  ),
-                ),
-                Slider(
-                  value: _duration.inMicroseconds /
-                      widget.controller.value.duration.inMicroseconds,
-                  onChanged: (double value) {},
-                  activeColor: AppColors.white,
-                ),
-                Row(
-                  children: [
-                    Text('${_duration.inMinutes}:${_duration.inSeconds}'),
-                    const Spacer(),
-                    Text('${_duration.inMinutes}:${_duration.inSeconds}'),
-                  ],
-                ),
-              ],
+    return Stack(
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            VideoPlayer(
+              widget.controller,
             ),
-          ),
-        ],
-      ),
+            IconButton(
+              onPressed: _onPressedPlayButton,
+              icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+              color: AppColors.white,
+            ),
+          ],
+        ),
+        const SafeArea(
+          child: CloseButton(),
+        ),
+      ],
     );
   }
 }
