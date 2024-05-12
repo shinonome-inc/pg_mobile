@@ -4,7 +4,7 @@ import 'package:pg_mobile/models/mastodon/media_attachment.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 
-class StatusMediaView extends StatefulWidget {
+class StatusMediaView extends StatelessWidget {
   const StatusMediaView({
     Key? key,
     required this.mediaAttachments,
@@ -12,18 +12,12 @@ class StatusMediaView extends StatefulWidget {
 
   final List<MediaAttachment> mediaAttachments;
 
-  @override
-  State<StatusMediaView> createState() => _StatusMediaViewState();
-}
-
-class _StatusMediaViewState extends State<StatusMediaView> {
   final _fit = BoxFit.cover;
-  late PageController _controller;
 
   List<String> get _imageUrls =>
-      [for (var attachment in widget.mediaAttachments) attachment.url];
+      [for (var attachment in mediaAttachments) attachment.url];
 
-  void _onTapImage(int selectedIndex) {
+  void _onTapImage(BuildContext context, int selectedIndex) {
     NavigatorUtil.showNetworkImagePreview(
       context: context,
       imageUrls: _imageUrls,
@@ -32,21 +26,9 @@ class _StatusMediaViewState extends State<StatusMediaView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _controller = PageController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(4.r);
-    if (widget.mediaAttachments.isEmpty) {
+    if (mediaAttachments.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -57,18 +39,18 @@ class _StatusMediaViewState extends State<StatusMediaView> {
             children: [
               Expanded(
                 child: NetworkImageContainer(
-                  onTap: () => _onTapImage(0),
-                  imageUrl: widget.mediaAttachments[0].url,
+                  onTap: () => _onTapImage(context, 0),
+                  imageUrl: mediaAttachments[0].url,
                   fit: _fit,
                   borderRadius: borderRadius,
                 ),
               ),
-              if (widget.mediaAttachments.length > 2) ...{
+              if (mediaAttachments.length > 2) ...{
                 SizedBox(height: 8.h),
                 Expanded(
                   child: NetworkImageContainer(
-                    onTap: () => _onTapImage(2),
-                    imageUrl: widget.mediaAttachments[2].url,
+                    onTap: () => _onTapImage(context, 2),
+                    imageUrl: mediaAttachments[2].url,
                     fit: _fit,
                     borderRadius: borderRadius,
                   ),
@@ -77,25 +59,25 @@ class _StatusMediaViewState extends State<StatusMediaView> {
             ],
           ),
         ),
-        if (widget.mediaAttachments.length > 1) ...{
+        if (mediaAttachments.length > 1) ...{
           SizedBox(width: 8.w),
           Expanded(
             child: Column(
               children: [
                 Expanded(
                   child: NetworkImageContainer(
-                    onTap: () => _onTapImage(1),
-                    imageUrl: widget.mediaAttachments[1].url,
+                    onTap: () => _onTapImage(context, 1),
+                    imageUrl: mediaAttachments[1].url,
                     fit: _fit,
                     borderRadius: borderRadius,
                   ),
                 ),
-                if (widget.mediaAttachments.length > 3) ...{
+                if (mediaAttachments.length > 3) ...{
                   SizedBox(height: 8.h),
                   Expanded(
                     child: NetworkImageContainer(
-                      onTap: () => _onTapImage(3),
-                      imageUrl: widget.mediaAttachments[3].url,
+                      onTap: () => _onTapImage(context, 3),
+                      imageUrl: mediaAttachments[3].url,
                       fit: _fit,
                       borderRadius: borderRadius,
                     ),
