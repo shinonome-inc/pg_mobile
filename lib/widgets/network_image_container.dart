@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/image_paths.dart';
-import 'package:pg_mobile/util/navigator_util.dart';
 
 class NetworkImageContainer extends StatelessWidget {
   const NetworkImageContainer({
@@ -12,6 +11,7 @@ class NetworkImageContainer extends StatelessWidget {
     this.backgroundColor,
     this.errorImagePath = ImagePaths.error,
     this.boxShape = BoxShape.rectangle,
+    this.borderRadius,
     this.fit,
     this.onTap,
   }) : super(key: key);
@@ -22,23 +22,19 @@ class NetworkImageContainer extends StatelessWidget {
   final String errorImagePath;
   final Color? backgroundColor;
   final BoxShape boxShape;
+  final BorderRadiusGeometry? borderRadius;
   final BoxFit? fit;
   final void Function()? onTap;
-
-  void _onTap(BuildContext context) {
-    NavigatorUtil.showNetworkImagePreview(context, imageUrl);
-  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap ?? () => _onTap(context),
+      onTap: onTap,
       child: Container(
         width: width,
         height: height,
         decoration: BoxDecoration(
           color: backgroundColor,
-          shape: boxShape,
         ),
         child: CachedNetworkImage(
           fit: fit,
@@ -46,6 +42,7 @@ class NetworkImageContainer extends StatelessWidget {
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               shape: boxShape,
+              borderRadius: borderRadius,
               image: DecorationImage(
                 fit: fit,
                 image: imageProvider,
@@ -55,6 +52,7 @@ class NetworkImageContainer extends StatelessWidget {
           errorWidget: (context, url, error) => Container(
             decoration: BoxDecoration(
               shape: boxShape,
+              borderRadius: borderRadius,
               image: DecorationImage(
                 fit: fit,
                 image: AssetImage(errorImagePath),
