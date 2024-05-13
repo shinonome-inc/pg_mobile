@@ -17,7 +17,8 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
   final Color _foregroundColor = AppColors.gray3;
   final TextEditingController _controller = TextEditingController();
   bool _isLoading = false;
-  int remainingCount = 500;
+  static const _maxTextCount = 500;
+  int _remainingCount = _maxTextCount;
 
   Future<void> _onPressedSend() async {
     if (_isLoading) return;
@@ -93,7 +94,8 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
                         ),
                         onChanged: (value) {
                           setState(() {
-                            remainingCount = _controller.text.length;
+                            _remainingCount =
+                                _maxTextCount - _controller.text.length;
                           });
                         },
                       ),
@@ -113,7 +115,7 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
                           ),
                           const Spacer(),
                           Text(
-                            '残り${500 - _controller.text.length}文字',
+                            '残り$_remainingCount文字',
                             style: TextStyle(color: _foregroundColor),
                           ),
                           IconButton(
