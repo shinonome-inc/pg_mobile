@@ -14,14 +14,28 @@ class NewPostModalBottomSheet extends StatefulWidget {
 class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
   final Color _foregroundColor = AppColors.gray3;
   final TextEditingController _controller = TextEditingController();
+  bool _isLoading = false;
   int remainingCount = 500;
 
   Future<void> _onPressedSend() async {
-    await MastodonRepository.instance.postNewStatus(
-      text: _controller.text,
-      mediaIds: [],
-      poll: [],
-    );
+    if (_isLoading) return;
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await MastodonRepository.instance.postNewStatus(
+        text: _controller.text,
+        mediaIds: [],
+        poll: [],
+      );
+    } catch (e) {
+      throw Exception('Failed to send: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _controller.clear();
   }
 
   @override
