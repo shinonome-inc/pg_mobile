@@ -6,6 +6,7 @@ import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/credential_account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/secure_storage_repository.dart';
+import 'package:uuid/uuid.dart';
 
 class MastodonRepository {
   MastodonRepository._privateConstructor();
@@ -192,8 +193,8 @@ class MastodonRepository {
     required List<String> mediaIds,
     required List<String> poll,
   }) async {
-    // final uuid = const Uuid().v4();
-    // _dio.options.headers.addAll({'Idempotency-Key': uuid});
+    final uuid = const Uuid().v4();
+    _dio.options.headers.addAll({'Idempotency-Key': uuid});
     final response = await _dio.post(
       '/api/v1/statuses',
       data: {
@@ -202,7 +203,7 @@ class MastodonRepository {
         'poll': poll,
       },
     );
-    // _dio.options.headers.remove('Idempotency-Key');
+    _dio.options.headers.remove('Idempotency-Key');
     if (response.statusCode == 200) {
       final status = Status.fromJson(response.data);
       return status;
