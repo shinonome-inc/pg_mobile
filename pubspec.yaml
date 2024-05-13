@@ -59,6 +59,7 @@ dependencies:
   url_launcher: ^6.2.6
   flutter_html: ^3.0.0-beta.2
   flick_video_player: ^0.8.0
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:
