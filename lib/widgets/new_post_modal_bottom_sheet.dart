@@ -46,67 +46,85 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
-      decoration: BoxDecoration(
-        color: AppColors.gray1,
-        border: Border(
-          top: BorderSide(
-            color: _foregroundColor,
-          ),
-        ),
-      ),
-      child: Column(
-        children: [
-          TextField(
-            controller: _controller,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            decoration: InputDecoration(
-              hintText: 'メッセージを入力',
-              hintStyle: const TextStyle(color: AppColors.gray3),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: _foregroundColor,
-                ),
+    const minChildSize = 0.24;
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return DraggableScrollableSheet(
+      expand: false,
+      minChildSize: minChildSize,
+      initialChildSize: keyboardHeight == 0
+          ? minChildSize
+          : (200.h + keyboardHeight) / deviceHeight,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.gray1,
+            border: Border(
+              top: BorderSide(
+                color: _foregroundColor,
               ),
             ),
-            onChanged: (value) {
-              setState(() {
-                remainingCount = _controller.text.length;
-              });
-            },
           ),
-          SizedBox(height: 16.h),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.camera_alt_outlined),
-                color: _foregroundColor,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _controller,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      hintText: 'メッセージを入力',
+                      hintStyle: const TextStyle(color: AppColors.gray3),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: _foregroundColor,
+                        ),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        remainingCount = _controller.text.length;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.camera_alt_outlined),
+                        color: _foregroundColor,
+                      ),
+                      SizedBox(width: 8.w),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.image_outlined),
+                        color: _foregroundColor,
+                      ),
+                      const Spacer(),
+                      Text(
+                        '残り${500 - _controller.text.length}文字',
+                        style: TextStyle(color: _foregroundColor),
+                      ),
+                      IconButton(
+                        onPressed:
+                            _controller.text.isEmpty ? () {} : _onPressedSend,
+                        icon: const Icon(Icons.send),
+                        color: _controller.text.isEmpty
+                            ? _foregroundColor
+                            : AppColors.accent,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: keyboardHeight),
+                ],
               ),
-              SizedBox(width: 8.w),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.image_outlined),
-                color: _foregroundColor,
-              ),
-              const Spacer(),
-              Text(
-                '残り${500 - _controller.text.length}文字',
-                style: TextStyle(color: _foregroundColor),
-              ),
-              IconButton(
-                onPressed: _controller.text.isEmpty ? () {} : _onPressedSend,
-                icon: const Icon(Icons.send),
-                color: _controller.text.isEmpty
-                    ? _foregroundColor
-                    : AppColors.accent,
-              ),
-            ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

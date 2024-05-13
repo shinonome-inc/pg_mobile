@@ -18,6 +18,9 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
   void _onPressedNewPost() {
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      // backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return const NewPostModalBottomSheet();
       },
@@ -49,25 +52,15 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Stack(
-              children: [
-                StatusView(
-                  statuses: state.statuses,
-                  controller: _scrollController,
-                  onRefresh: notifier.onRefresh,
-                ),
-                const Column(
-                  children: [
-                    Spacer(),
-                    NewPostModalBottomSheet(),
-                  ],
-                ),
-              ],
+          : StatusView(
+              statuses: state.statuses,
+              controller: _scrollController,
+              onRefresh: notifier.onRefresh,
             ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _onPressedNewPost,
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _onPressedNewPost,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
