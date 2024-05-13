@@ -20,7 +20,7 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      // backgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return const NewPostModalBottomSheet();
       },
