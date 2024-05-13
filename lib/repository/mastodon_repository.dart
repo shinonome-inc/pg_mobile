@@ -187,6 +187,32 @@ class MastodonRepository {
     }
   }
 
+  Future<Status> postNewStatus({
+    required String text,
+    required List<String> mediaIds,
+    required List<String> poll,
+  }) async {
+    // final uuid = const Uuid().v4();
+    // _dio.options.headers.addAll({'Idempotency-Key': uuid});
+    final response = await _dio.post(
+      '/api/v1/statuses',
+      data: {
+        'status': text,
+        'media_ids': mediaIds,
+        'poll': poll,
+      },
+    );
+    // _dio.options.headers.remove('Idempotency-Key');
+    if (response.statusCode == 200) {
+      final status = Status.fromJson(response.data);
+      return status;
+    } else {
+      throw Exception(
+        'Failed to post new status with status code ${response.statusCode}, response requestOptions: ${response.requestOptions}',
+      );
+    }
+  }
+
   Future<Status> boostStatus(String id) async {
     final response = await _dio.post('/api/v1/statuses/$id/reblog');
     if (response.statusCode == 200) {

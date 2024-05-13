@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 
 class NewPostModalBottomSheet extends StatefulWidget {
   const NewPostModalBottomSheet({Key? key}) : super(key: key);
@@ -14,6 +15,14 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
   final Color _foregroundColor = AppColors.gray3;
   final TextEditingController _controller = TextEditingController();
   int remainingCount = 500;
+
+  Future<void> _onPressedSend() async {
+    await MastodonRepository.instance.postNewStatus(
+      text: _controller.text,
+      mediaIds: [],
+      poll: [],
+    );
+  }
 
   @override
   void dispose() {
@@ -74,11 +83,7 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
                 style: TextStyle(color: _foregroundColor),
               ),
               IconButton(
-                onPressed: _controller.text.isEmpty
-                    ? () {}
-                    : () {
-                        // TODO: 送信処理を追加する。
-                      },
+                onPressed: _controller.text.isEmpty ? () {} : _onPressedSend,
                 icon: const Icon(Icons.send),
                 color: _controller.text.isEmpty
                     ? _foregroundColor
