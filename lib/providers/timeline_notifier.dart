@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/timeline.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 
@@ -31,6 +32,40 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     _setLoading(false);
     final statuses = [...state.statuses];
     statuses.addAll(fetchedStatuses);
+    state = state.copyWith(statuses: statuses);
+  }
+
+  Future<void> onTapBoost(Status tappedStatus) async {
+    if (tappedStatus.reblogged == null) return;
+    Status status;
+    if (tappedStatus.reblogged!) {
+      status = await MastodonRepository.instance.undoBoostStatus(
+        tappedStatus.id,
+      );
+    } else {
+      status = await MastodonRepository.instance.boostStatus(
+        tappedStatus.id,
+      );
+    }
+    List<Status> statuses = state.statuses;
+    statuses.firstWhere((element) => element.id == status.id);
+    state = state.copyWith(statuses: statuses);
+  }
+
+  Future<void> onTapFavorite(Status tappedStatus) async {
+    if (tappedStatus.favourited == null) return;
+    Status status;
+    if (tappedStatus.favourited!) {
+      status = await MastodonRepository.instance.undoFavoriteStatus(
+        tappedStatus.id,
+      );
+    } else {
+      status = await MastodonRepository.instance.favoriteStatus(
+        tappedStatus.id,
+      );
+    }
+    List<Status> statuses = state.statuses;
+    statuses.firstWhere((element) => element.id == status.id);
     state = state.copyWith(statuses: statuses);
   }
 }

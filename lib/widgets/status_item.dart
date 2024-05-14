@@ -1,45 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
 import 'package:pg_mobile/widgets/status_link_preview.dart';
 import 'package:pg_mobile/widgets/status_media_view.dart';
 
-class StatusItem extends StatelessWidget {
+class StatusItem extends ConsumerStatefulWidget {
   const StatusItem({
-    super.key,
+    Key? key,
     required this.status,
     this.reblogAccount,
-  });
+  }) : super(key: key);
 
   final Status status;
   final Account? reblogAccount;
 
-  Future<void> _onTapBoost(Status status) async {
-    if (status.reblogged == null) return;
-    if (status.reblogged!) {
-      await MastodonRepository.instance.undoBoostStatus(status.id);
-    } else {
-      await MastodonRepository.instance.boostStatus(status.id);
-    }
-  }
+  @override
+  ConsumerState<StatusItem> createState() => _StatusItemState();
+}
 
-  Future<void> _onTapFavorite(Status status) async {
-    if (status.favourited == null) return;
-    if (status.favourited!) {
-      await MastodonRepository.instance.undoFavoriteStatus(status.id);
-    } else {
-      await MastodonRepository.instance.favoriteStatus(status.id);
-    }
-  }
-
+class _StatusItemState extends ConsumerState<StatusItem> {
   @override
   Widget build(BuildContext context) {
+    final notifier = ref.read(timelineProvider.notifier);
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: const BoxDecoration(
@@ -50,7 +39,7 @@ class StatusItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (reblogAccount != null)
+          if (widget.reblogAccount != null)
             Column(
               children: [
                 Row(
@@ -61,7 +50,7 @@ class StatusItem extends StatelessWidget {
                       color: AppColors.gray3,
                     ),
                     Text(
-                      '${reblogAccount!.username}さんがブースト',
+                      '${widget.reblogAccount!.username}さんがブースト',
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -76,7 +65,7 @@ class StatusItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               NetworkImageContainer(
-                imageUrl: status.account.avatar,
+                imageUrl: widget.status.account.avatar,
                 width: 56.w,
                 height: 56.w,
                 boxShape: BoxShape.circle,
@@ -89,13 +78,13 @@ class StatusItem extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          status.account.displayName,
+                          widget.status.account.displayName,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            '@${status.account.username}',
+                            '@${widget.status.account.username}',
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
@@ -104,7 +93,7 @@ class StatusItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          status.createdAtText,
+                          widget.status.createdAtText,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
@@ -115,7 +104,7 @@ class StatusItem extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     LinkableText(
-                      status.contentText,
+                      widget.status.contentText,
                       onTapMention: (value) {
                         // TODO: ユーザー画面へ遷移する。
                         debugPrint('on tap mention: $value');
@@ -126,18 +115,18 @@ class StatusItem extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 8.h),
-                    if (status.mediaAttachments.isNotEmpty) ...{
+                    if (widget.status.mediaAttachments.isNotEmpty) ...{
                       SizedBox(
                         height: 160.h,
                         child: StatusMediaView(
-                          mediaAttachments: status.mediaAttachments,
+                          mediaAttachments: widget.status.mediaAttachments,
                         ),
                       ),
                       SizedBox(height: 8.h),
                     },
-                    if (status.showLinkPreview) ...{
+                    if (widget.status.showLinkPreview) ...{
                       StatusLinkPreview(
-                        url: status.urls.first,
+                        url: widget.status.urls.first,
                       ),
                       SizedBox(height: 8.h),
                     },
@@ -146,26 +135,26 @@ class StatusItem extends StatelessWidget {
                         StatusFooterItem(
                           onTap: () {},
                           iconData: Icons.reply,
-                          count: status.repliesCount,
+                          count: widget.status.repliesCount,
                           color: AppColors.gray3,
                         ),
                         const Spacer(),
                         StatusFooterItem(
-                          onTap: () => _onTapBoost(status),
+                          onTap: () => notifier.onTapBoost(widget.status),
                           iconData: Icons.repeat,
-                          count: status.reblogsCount,
-                          color: status.reblogged!
+                          count: widget.status.reblogsCount,
+                          color: widget.status.reblogged!
                               ? AppColors.blue
                               : AppColors.gray3,
                         ),
                         const Spacer(),
                         StatusFooterItem(
-                          onTap: () => _onTapFavorite(status),
-                          iconData: status.favourited!
+                          onTap: () => notifier.onTapFavorite(widget.status),
+                          iconData: widget.status.favourited!
                               ? Icons.star
                               : Icons.star_border,
-                          count: status.favouritesCount,
-                          color: status.favourited!
+                          count: widget.status.favouritesCount,
+                          color: widget.status.favourited!
                               ? AppColors.yellow
                               : AppColors.gray3,
                         ),
