@@ -40,7 +40,6 @@ class _StatusLinkPreviewState extends State<StatusLinkPreview> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return const SizedBox.shrink();
-    print('url: ${widget.url}');
     return GestureDetector(
       onTap: () async {
         await launchUrl(Uri.parse(widget.url));
