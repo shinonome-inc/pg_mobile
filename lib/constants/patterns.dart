@@ -2,8 +2,7 @@ class Patterns {
   Patterns._();
 
   /// 通常のURLパターン
-  static final RegExp url = RegExp(
-      r'((https?:\/\/)|(https?:www\.)|(www\.))[a-zA-Z0-9-]{1,256}\.[a-zA-Z0-9]{2,6}(\/[a-zA-Z0-9亜-熙ぁ-んァ-ヶ()@:%_\+.~#?&\/=-]*)?');
+  static final RegExp url = RegExp(r"https?://[\w!?/+\-=_~;.,*&@#$%()'[\]]+");
 
   /// Mastodon本文にURLが含まれているかどうか判定するためのURLパターン
   static final RegExp statusUrl =
