@@ -36,8 +36,6 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: WebViewWidget(controller: _controller),
-    );
+    return WebViewWidget(controller: _controller);
   }
 }
