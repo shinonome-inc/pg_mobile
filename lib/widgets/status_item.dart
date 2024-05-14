@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:link_preview_generator/link_preview_generator.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
@@ -8,6 +7,7 @@ import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
+import 'package:pg_mobile/widgets/status_link_preview.dart';
 import 'package:pg_mobile/widgets/status_media_view.dart';
 
 class StatusItem extends StatelessWidget {
@@ -137,12 +137,9 @@ class StatusItem extends StatelessWidget {
                     },
                     if (status.showLinkPreview) ...{
                       SizedBox(
-                        height: 200.h,
-                        child: LinkPreviewGenerator(
-                          bodyMaxLines: 3,
-                          link: status.urls.first,
-                          linkPreviewStyle: LinkPreviewStyle.large,
-                          showGraphic: true,
+                        height: 104.h,
+                        child: StatusLinkPreview(
+                          url: status.urls.first,
                         ),
                       ),
                       SizedBox(height: 8.h),
