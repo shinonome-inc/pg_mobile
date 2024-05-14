@@ -7,6 +7,7 @@ import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
+import 'package:pg_mobile/widgets/status_link_preview.dart';
 import 'package:pg_mobile/widgets/status_media_view.dart';
 
 class StatusItem extends StatelessWidget {
@@ -131,6 +132,12 @@ class StatusItem extends StatelessWidget {
                         child: StatusMediaView(
                           mediaAttachments: status.mediaAttachments,
                         ),
+                      ),
+                      SizedBox(height: 8.h),
+                    },
+                    if (status.showLinkPreview) ...{
+                      StatusLinkPreview(
+                        url: status.urls.first,
                       ),
                       SizedBox(height: 8.h),
                     },
