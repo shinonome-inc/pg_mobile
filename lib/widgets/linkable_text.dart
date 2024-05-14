@@ -23,7 +23,7 @@ class LinkableText extends StatelessWidget {
   List<Match> _matchList() {
     final List<Match> matches = [];
 
-    final urlMatches = Patterns.url.allMatches(text);
+    final urlMatches = Patterns.statusUrl.allMatches(text);
     final mentionMatches = Patterns.mention.allMatches(text);
     final hashtagMatches = Patterns.hashtag.allMatches(text);
 
@@ -55,7 +55,7 @@ class LinkableText extends StatelessWidget {
       }
 
       final matchedText = text.substring(match.start, match.end);
-      if (Patterns.url.hasMatch(matchedText)) {
+      if (Patterns.statusUrl.hasMatch(matchedText)) {
         final url = matchedText.replaceAll(' ', '').replaceAll('\n', '');
         textSpans.add(
           TextSpan(

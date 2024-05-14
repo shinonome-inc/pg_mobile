@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:link_preview_generator/link_preview_generator.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
@@ -130,6 +131,18 @@ class StatusItem extends StatelessWidget {
                         height: 160.h,
                         child: StatusMediaView(
                           mediaAttachments: status.mediaAttachments,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                    },
+                    if (status.showLinkPreview) ...{
+                      SizedBox(
+                        height: 200.h,
+                        child: LinkPreviewGenerator(
+                          bodyMaxLines: 3,
+                          link: status.urls.first,
+                          linkPreviewStyle: LinkPreviewStyle.large,
+                          showGraphic: true,
                         ),
                       ),
                       SizedBox(height: 8.h),

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:html/parser.dart';
+import 'package:pg_mobile/constants/patterns.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/application.dart';
 import 'package:pg_mobile/models/mastodon/custom_emoji.dart';
@@ -66,4 +67,19 @@ extension StatusExtension on Status {
       content.replaceAll('<br />', '\n').replaceAll('</p><p>', '\n\n'),
     ).body!.text;
   }
+
+  List<String> get urls {
+    List<String> urls = [];
+    final regExp = Patterns.url;
+    final matches = regExp.allMatches(contentText);
+    for (var regExpMatch in matches) {
+      final url = contentText.substring(regExpMatch.start, regExpMatch.end);
+      urls.add(url);
+    }
+    return urls;
+  }
+
+  bool get containsUrl => urls.isNotEmpty;
+
+  bool get showLinkPreview => containsUrl && mediaAttachments.isEmpty;
 }
