@@ -16,7 +16,6 @@ import 'package:pg_mobile/debug/debug_text_theme_page.dart';
 import 'package:pg_mobile/debug/location/debug_location_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
-import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 
@@ -77,15 +76,8 @@ class _DebugPageState extends ConsumerState<DebugPage> {
           }),
           _button(
             'ホームタイムライン画面',
-            onPressed: () async {
-              await ref.read(timelineProvider.notifier).fetchTimeline();
-              if (!mounted) return;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const DebugHomeTimelinePage(),
-                ),
-              );
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const DebugHomeTimelinePage());
             },
           ),
           _button(

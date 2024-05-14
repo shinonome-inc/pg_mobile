@@ -27,14 +27,18 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
     );
   }
 
-  // スクロールして一番下に行ったら、次のページの分のStatusを取得して表示
   @override
   void initState() {
+    final notifier = ref.read(timelineProvider.notifier);
+    Future(() async {
+      await notifier.fetchTimeline();
+    });
     _scrollController = ScrollController();
     _scrollController.addListener(() async {
+      // スクロールして一番下に行ったら、次のページの分のStatusを取得して表示
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
-        await ref.read(timelineProvider.notifier).fetchTimeline();
+        await notifier.fetchTimeline();
       }
     });
     super.initState();
