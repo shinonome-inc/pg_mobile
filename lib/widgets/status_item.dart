@@ -136,11 +136,8 @@ class StatusItem extends StatelessWidget {
                       SizedBox(height: 8.h),
                     },
                     if (status.showLinkPreview) ...{
-                      SizedBox(
-                        height: 104.h,
-                        child: StatusLinkPreview(
-                          url: status.urls.first,
-                        ),
+                      StatusLinkPreview(
+                        url: status.urls.first,
                       ),
                       SizedBox(height: 8.h),
                     },

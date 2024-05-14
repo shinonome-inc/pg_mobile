@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:link_preview_generator/link_preview_generator.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StatusLinkPreview extends StatefulWidget {
@@ -19,6 +20,9 @@ class StatusLinkPreview extends StatefulWidget {
 class _StatusLinkPreviewState extends State<StatusLinkPreview> {
   late WebInfo _info;
   bool _isLoading = false;
+
+  bool get _hide =>
+      _info.image.isEmpty || _info.title.isEmpty || _info.domain.isEmpty;
 
   Future<void> _initialize() async {
     setState(() {
@@ -39,25 +43,29 @@ class _StatusLinkPreviewState extends State<StatusLinkPreview> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) return const SizedBox.shrink();
+    final double height = 104.h;
+    if (_isLoading) {
+      return SizedBox(height: height);
+    } else if (_hide) {
+      return const SizedBox.shrink();
+    }
     return GestureDetector(
       onTap: () async {
         await launchUrl(Uri.parse(widget.url));
       },
       child: Container(
+        height: height,
         decoration: BoxDecoration(
           color: AppColors.gray2,
           borderRadius: BorderRadius.circular(4.r),
         ),
         child: Row(
           children: [
-            SizedBox(
-              width: 104.h,
-              height: 104.h,
-              child: Image.network(
-                _info.image,
-                fit: BoxFit.cover,
-              ),
+            NetworkImageContainer(
+              width: height,
+              height: height,
+              imageUrl: _info.image,
+              fit: BoxFit.cover,
             ),
             Expanded(
               child: Container(
