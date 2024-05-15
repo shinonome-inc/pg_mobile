@@ -28,7 +28,10 @@ class StatusItem extends ConsumerStatefulWidget {
 
 class _StatusItemState extends ConsumerState<StatusItem> {
   void _onTapReply(Status tappedStatus) {
-    NavigatorUtil.showNewPostCreateView(context, replyToStatus: tappedStatus);
+    NavigatorUtil.showNewPostCreateView(
+      context,
+      replyToStatus: tappedStatus,
+    );
   }
 
   @override
@@ -138,10 +141,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                     Row(
                       children: [
                         StatusFooterItem(
-                          onTap: () => NavigatorUtil.showNewPostCreateView(
-                            context,
-                            replyToStatus: widget.status,
-                          ),
+                          onTap: () => _onTapReply(widget.status),
                           iconData: Icons.reply,
                           count: widget.status.repliesCount,
                           color: AppColors.gray3,
