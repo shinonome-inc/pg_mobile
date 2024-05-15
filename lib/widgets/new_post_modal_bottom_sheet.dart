@@ -71,12 +71,11 @@ class _NewPostModalBottomSheetState
     const minChildSize = 0.24;
     final deviceHeight = MediaQuery.of(context).size.height;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    final initialChildSize =
-        (_replyToStatusViewHeight + 200.h + keyboardHeight) / deviceHeight;
     return DraggableScrollableSheet(
       expand: false,
       minChildSize: minChildSize,
-      initialChildSize: initialChildSize,
+      initialChildSize:
+          (_replyToStatusViewHeight + 200.h + keyboardHeight) / deviceHeight,
       builder: (BuildContext context, ScrollController scrollController) {
         return Stack(
           alignment: Alignment.bottomCenter,
