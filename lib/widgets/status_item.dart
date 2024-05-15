@@ -27,16 +27,12 @@ class StatusItem extends ConsumerStatefulWidget {
 }
 
 class _StatusItemState extends ConsumerState<StatusItem> {
+  void _onTapReply(Status tappedStatus) {
+    NavigatorUtil.showNewPostCreateView(context, replyToStatus: tappedStatus);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final status = ref.watch(
-      timelineProvider.select(
-        (state) => state.statuses.firstWhere(
-          (status) => status.id == widget.status.id,
-          orElse: () => widget.status,
-        ),
-      ),
-    );
     final notifier = ref.read(timelineProvider.notifier);
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
@@ -74,7 +70,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               NetworkImageContainer(
-                imageUrl: status.account.avatar,
+                imageUrl: widget.status.account.avatar,
                 width: 56.w,
                 height: 56.w,
                 boxShape: BoxShape.circle,
@@ -87,13 +83,13 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                     Row(
                       children: [
                         Text(
-                          status.account.displayName,
+                          widget.status.account.displayName,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Text(
-                            '@${status.account.username}',
+                            '@${widget.status.account.username}',
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
@@ -102,7 +98,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                           ),
                         ),
                         Text(
-                          status.createdAtText,
+                          widget.status.createdAtText,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
@@ -113,7 +109,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                     ),
                     SizedBox(height: 8.h),
                     LinkableText(
-                      status.contentText,
+                      widget.status.contentText,
                       onTapMention: (value) {
                         // TODO: ユーザー画面へ遷移する。
                         debugPrint('on tap mention: $value');
@@ -124,18 +120,18 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                       },
                     ),
                     SizedBox(height: 8.h),
-                    if (status.mediaAttachments.isNotEmpty) ...{
+                    if (widget.status.mediaAttachments.isNotEmpty) ...{
                       SizedBox(
                         height: 160.h,
                         child: StatusMediaView(
-                          mediaAttachments: status.mediaAttachments,
+                          mediaAttachments: widget.status.mediaAttachments,
                         ),
                       ),
                       SizedBox(height: 8.h),
                     },
-                    if (status.showLinkPreview) ...{
+                    if (widget.status.showLinkPreview) ...{
                       StatusLinkPreview(
-                        url: status.urls.first,
+                        url: widget.status.urls.first,
                       ),
                       SizedBox(height: 8.h),
                     },
@@ -144,29 +140,29 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                         StatusFooterItem(
                           onTap: () => NavigatorUtil.showNewPostCreateView(
                             context,
-                            replyToStatus: status,
+                            replyToStatus: widget.status,
                           ),
                           iconData: Icons.reply,
-                          count: status.repliesCount,
+                          count: widget.status.repliesCount,
                           color: AppColors.gray3,
                         ),
                         const Spacer(),
                         StatusFooterItem(
-                          onTap: () async => notifier.onTapBoost(status),
+                          onTap: () => notifier.onTapBoost(widget.status),
                           iconData: Icons.repeat,
-                          count: status.reblogsCount,
-                          color: status.reblogged!
+                          count: widget.status.reblogsCount,
+                          color: widget.status.reblogged!
                               ? AppColors.blue
                               : AppColors.gray3,
                         ),
                         const Spacer(),
                         StatusFooterItem(
-                          onTap: () async => notifier.onTapFavorite(status),
-                          iconData: status.favourited!
+                          onTap: () => notifier.onTapFavorite(widget.status),
+                          iconData: widget.status.favourited!
                               ? Icons.star
                               : Icons.star_border,
-                          count: status.favouritesCount,
-                          color: status.favourited!
+                          count: widget.status.favouritesCount,
+                          color: widget.status.favourited!
                               ? AppColors.yellow
                               : AppColors.gray3,
                         ),
