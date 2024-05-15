@@ -79,6 +79,14 @@ extension StatusExtension on Status {
     return urls;
   }
 
+  String get mentionsText {
+    String mentionsText = '';
+    for (var mention in mentions) {
+      mentionsText += '@${mention.username} ';
+    }
+    return mentionsText;
+  }
+
   bool get containsUrl => urls.isNotEmpty;
 
   bool get showLinkPreview => containsUrl && mediaAttachments.isEmpty;

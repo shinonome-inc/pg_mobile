@@ -12,6 +12,7 @@ class LoginButton extends StatefulWidget with EnvMixin {
 class _LoginButtonState extends State<LoginButton> {
   @override
   Widget build(BuildContext context) {
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return ElevatedButton(
       onPressed: () {
         showModalBottomSheet(
@@ -20,7 +21,8 @@ class _LoginButtonState extends State<LoginButton> {
           context: context,
           builder: (BuildContext context) {
             return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8,
+              height:
+                  MediaQuery.of(context).size.height * 0.96 + keyboardHeight,
               child: const LoginView(),
             );
           },

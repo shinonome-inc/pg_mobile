@@ -192,16 +192,21 @@ class MastodonRepository {
     required String text,
     required List<String> mediaIds,
     required List<String> poll,
+    String? inReplyToId,
   }) async {
     final uuid = const Uuid().v4();
     _dio.options.headers.addAll({'Idempotency-Key': uuid});
+    final data = {
+      'status': text,
+      'media_ids': mediaIds,
+      'poll': poll,
+    };
+    if (inReplyToId != null) {
+      data.addAll({'in_reply_to_id': inReplyToId});
+    }
     final response = await _dio.post(
       '/api/v1/statuses',
-      data: {
-        'status': text,
-        'media_ids': mediaIds,
-        'poll': poll,
-      },
+      data: data,
     );
     _dio.options.headers.remove('Idempotency-Key');
     if (response.statusCode == 200) {
