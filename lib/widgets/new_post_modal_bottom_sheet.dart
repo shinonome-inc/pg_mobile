@@ -21,7 +21,7 @@ class NewPostModalBottomSheet extends StatefulWidget {
 
 class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
   final Color _foregroundColor = AppColors.gray3;
-  final TextEditingController _controller = TextEditingController();
+  late TextEditingController _controller;
   bool _isLoading = false;
   static const _maxTextCount = 500;
   int _remainingCount = _maxTextCount;
@@ -48,6 +48,14 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
     _controller.clear();
     if (!mounted) return;
     NavigatorUtil.popScreen(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: widget.replyToStatus?.mentionsText,
+    );
   }
 
   @override
