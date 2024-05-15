@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
-import 'package:pg_mobile/widgets/new_post_modal_bottom_sheet.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/status_view.dart';
 
 class DebugHomeTimelinePage extends ConsumerStatefulWidget {
@@ -16,15 +16,7 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
   late final ScrollController _scrollController;
 
   void _onPressedNewPost() {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return const NewPostModalBottomSheet();
-      },
-    );
+    NavigatorUtil.showNewPostCreateView(context);
   }
 
   @override

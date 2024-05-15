@@ -35,6 +35,22 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     state = state.copyWith(statuses: statuses);
   }
 
+  Future<void> onTapReply(Status tappedStatus) async {
+    Status status;
+    if (tappedStatus.reblogged!) {
+      status = await MastodonRepository.instance.undoBoostStatus(
+        tappedStatus.id,
+      );
+    } else {
+      status = await MastodonRepository.instance.boostStatus(
+        tappedStatus.id,
+      );
+    }
+    List<Status> statuses = state.statuses;
+    statuses.firstWhere((element) => element.id == status.id);
+    state = state.copyWith(statuses: statuses);
+  }
+
   Future<void> onTapBoost(Status tappedStatus) async {
     if (tappedStatus.reblogged == null) return;
     Status status;

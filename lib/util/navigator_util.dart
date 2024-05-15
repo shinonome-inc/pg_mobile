@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/widgets/network_gifv_preview.dart';
 import 'package:pg_mobile/widgets/network_image_preview.dart';
 import 'package:pg_mobile/widgets/network_video_preview.dart';
+import 'package:pg_mobile/widgets/new_post_modal_bottom_sheet.dart';
 import 'package:video_player/video_player.dart';
 
 class NavigatorUtil {
@@ -73,6 +75,21 @@ class NavigatorUtil {
         return NetworkGifvPreview(
           controller: controller,
         );
+      },
+    );
+  }
+
+  static void showNewPostCreateView(
+    BuildContext context, {
+    Status? replyToStatus,
+  }) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return NewPostModalBottomSheet(replyToStatus: replyToStatus);
       },
     );
   }

@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/debug/debug_loding_view.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 
 class NewPostModalBottomSheet extends StatefulWidget {
-  const NewPostModalBottomSheet({Key? key}) : super(key: key);
+  const NewPostModalBottomSheet({
+    Key? key,
+    required this.replyToStatus,
+  }) : super(key: key);
+
+  final Status? replyToStatus;
 
   @override
   State<NewPostModalBottomSheet> createState() =>
@@ -30,6 +36,7 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
         text: _controller.text,
         mediaIds: [],
         poll: [],
+        inReplyToId: widget.replyToStatus?.id,
       );
     } catch (e) {
       throw Exception('Failed to send: $e');

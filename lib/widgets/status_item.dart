@@ -5,6 +5,7 @@ import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
@@ -26,6 +27,10 @@ class StatusItem extends ConsumerStatefulWidget {
 }
 
 class _StatusItemState extends ConsumerState<StatusItem> {
+  void _onTapReply(Status tappedStatus) {
+    NavigatorUtil.showNewPostCreateView(context, replyToStatus: tappedStatus);
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(timelineProvider.notifier);
@@ -133,7 +138,10 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                     Row(
                       children: [
                         StatusFooterItem(
-                          onTap: () {},
+                          onTap: () => NavigatorUtil.showNewPostCreateView(
+                            context,
+                            replyToStatus: widget.status,
+                          ),
                           iconData: Icons.reply,
                           count: widget.status.repliesCount,
                           color: AppColors.gray3,
