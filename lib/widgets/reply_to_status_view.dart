@@ -24,23 +24,25 @@ class ReplyToStatusView extends StatelessWidget {
           borderRadius: BorderRadius.circular(32.r),
         ),
         SizedBox(width: 8.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              status.account.displayName,
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: AppColors.gray3,
-                  ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              status.contentText,
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: AppColors.gray3,
-                  ),
-            ),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                status.account.displayName,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: AppColors.gray3,
+                    ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                status.contentText,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: AppColors.gray3,
+                    ),
+              ),
+            ],
+          ),
         ),
       ],
     );
