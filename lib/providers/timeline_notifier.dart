@@ -36,52 +36,100 @@ class TimelineNotifier extends StateNotifier<Timeline> {
   }
 
   Future<void> onTapReply(Status tappedStatus) async {
-    Status status;
+    Status updatedStatus;
     if (tappedStatus.reblogged!) {
-      status = await MastodonRepository.instance.undoBoostStatus(
+      updatedStatus = await MastodonRepository.instance.undoBoostStatus(
         tappedStatus.id,
       );
     } else {
-      status = await MastodonRepository.instance.boostStatus(
+      updatedStatus = await MastodonRepository.instance.boostStatus(
         tappedStatus.id,
       );
     }
-    List<Status> statuses = state.statuses;
-    statuses.firstWhere((element) => element.id == status.id);
+    final statuses = state.statuses
+        .map((status) => status.id == updatedStatus.id
+            ? tappedStatus.repliesCount > 0
+                ? updatedStatus.copyWith(
+                    repliesCount: updatedStatus.repliesCount - 1,
+                  )
+                : updatedStatus
+            : status)
+        .toList();
     state = state.copyWith(statuses: statuses);
   }
 
   Future<void> onTapBoost(Status tappedStatus) async {
     if (tappedStatus.reblogged == null) return;
-    Status status;
+    Status updatedStatus;
     if (tappedStatus.reblogged!) {
-      status = await MastodonRepository.instance.undoBoostStatus(
+      updatedStatus = await MastodonRepository.instance.undoBoostStatus(
         tappedStatus.id,
       );
     } else {
-      status = await MastodonRepository.instance.boostStatus(
+      updatedStatus = await MastodonRepository.instance.boostStatus(
         tappedStatus.id,
       );
     }
-    List<Status> statuses = state.statuses;
-    statuses.firstWhere((element) => element.id == status.id);
-    state = state.copyWith(statuses: statuses);
+    print('${updatedStatus.account.displayName}: ${updatedStatus.reblogged}');
+    if (tappedStatus.reblogged!) {
+      final statuses = state.statuses
+          .map((status) => status.id == updatedStatus.id
+              ? updatedStatus.copyWith(
+                  reblogged: false,
+                  reblogsCount: updatedStatus.reblogsCount - 1)
+              : status)
+          .toList();
+      state = state.copyWith(statuses: statuses);
+    } else {
+      final statuses = state.statuses
+          .map((status) => status.id == tappedStatus.id
+              ? updatedStatus.copyWith(
+                  reblogged: true,
+                  reblogsCount: updatedStatus.reblogsCount + 1,
+                )
+              : status)
+          .toList();
+      state = state.copyWith(statuses: statuses);
+    }
+
+    // final statuses = state.statuses
+    //     .map(
+    //       (status) => status.id == tappedStatus.id
+    //           ? tappedStatus.reblogged!
+    //               ? updatedStatus.copyWith(
+    //                   reblogged: false,
+    //                   reblogsCount: updatedStatus.reblogsCount - 1,
+    //                 )
+    //               : updatedStatus.copyWith(
+    //                   reblogged: true,
+    //                   reblogsCount: updatedStatus.reblogsCount + 1,
+    //                 )
+    //           : status,
+    //     )
+    //     .toList();
   }
 
   Future<void> onTapFavorite(Status tappedStatus) async {
     if (tappedStatus.favourited == null) return;
-    Status status;
+    Status updatedStatus;
     if (tappedStatus.favourited!) {
-      status = await MastodonRepository.instance.undoFavoriteStatus(
+      updatedStatus = await MastodonRepository.instance.undoFavoriteStatus(
         tappedStatus.id,
       );
     } else {
-      status = await MastodonRepository.instance.favoriteStatus(
+      updatedStatus = await MastodonRepository.instance.favoriteStatus(
         tappedStatus.id,
       );
     }
-    List<Status> statuses = state.statuses;
-    statuses.firstWhere((element) => element.id == status.id);
+    final statuses = state.statuses
+        .map((status) => status.id == updatedStatus.id
+            ? tappedStatus.favourited!
+                ? updatedStatus.copyWith(
+                    favouritesCount: updatedStatus.favouritesCount - 1,
+                  )
+                : updatedStatus
+            : status)
+        .toList();
     state = state.copyWith(statuses: statuses);
   }
 }
