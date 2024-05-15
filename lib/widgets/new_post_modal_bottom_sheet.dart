@@ -22,10 +22,13 @@ class NewPostModalBottomSheet extends StatefulWidget {
 
 class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
   final Color _foregroundColor = AppColors.gray3;
+  static const _maxTextCount = 500;
+
+  final _replyToStatusViewKey = GlobalKey();
   late TextEditingController _controller;
   bool _isLoading = false;
-  static const _maxTextCount = 500;
   int _remainingCount = _maxTextCount;
+  double _replyToStatusViewHeight = 0.0;
 
   Future<void> _onPressedSend() async {
     if (_isLoading) return;
@@ -57,6 +60,13 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
     _controller = TextEditingController(
       text: widget.replyToStatus?.mentionsText,
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final box = _replyToStatusViewKey.currentContext?.findRenderObject()
+          as RenderBox?;
+      setState(() {
+        _replyToStatusViewHeight = box == null ? 0.0 : box.size.height + 16.h;
+      });
+    });
   }
 
   @override
@@ -70,12 +80,12 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
     const minChildSize = 0.24;
     final deviceHeight = MediaQuery.of(context).size.height;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final initialChildSize =
+        (_replyToStatusViewHeight + 200.h + keyboardHeight) / deviceHeight;
     return DraggableScrollableSheet(
       expand: false,
       minChildSize: minChildSize,
-      initialChildSize: keyboardHeight == 0
-          ? minChildSize
-          : (200.h + keyboardHeight) / deviceHeight,
+      initialChildSize: initialChildSize,
       builder: (BuildContext context, ScrollController scrollController) {
         return Stack(
           alignment: Alignment.bottomCenter,
@@ -96,7 +106,10 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
                   child: Column(
                     children: [
                       if (widget.replyToStatus != null) ...{
-                        ReplyToStatusView(status: widget.replyToStatus!),
+                        ReplyToStatusView(
+                          key: _replyToStatusViewKey,
+                          status: widget.replyToStatus!,
+                        ),
                         SizedBox(height: 16.h),
                       },
                       TextField(
