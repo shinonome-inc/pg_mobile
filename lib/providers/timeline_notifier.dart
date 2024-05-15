@@ -54,6 +54,16 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     } finally {
       _setLoading(false);
     }
+    if (inReplyToId != null) {
+      List<Status> statuses = state.statuses
+          .map(
+            (status) => status.id == inReplyToId
+                ? status.copyWith(repliesCount: status.repliesCount + 1)
+                : status,
+          )
+          .toList();
+      state = state.copyWith(statuses: statuses);
+    }
     state = state.copyWith(
       statuses: [postedStatus, ...state.statuses],
     );
