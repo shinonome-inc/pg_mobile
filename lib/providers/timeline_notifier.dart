@@ -35,11 +35,11 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     state = state.copyWith(statuses: statuses);
   }
 
-  Future<Status?> postStatus({
+  Future<void> postStatus({
     required String text,
     String? inReplyToId,
   }) async {
-    if (state.isLoading) return null;
+    if (state.isLoading) return;
     _setLoading(true);
     Status postedStatus;
     try {
@@ -67,7 +67,6 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     state = state.copyWith(
       statuses: [postedStatus, ...state.statuses],
     );
-    return postedStatus;
   }
 
   Future<void> onTapBoost(Status tappedStatus) async {
