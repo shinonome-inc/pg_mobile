@@ -5,6 +5,7 @@ import 'package:pg_mobile/debug/debug_loding_view.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
+import 'package:pg_mobile/widgets/reply_to_status_view.dart';
 
 class NewPostModalBottomSheet extends StatefulWidget {
   const NewPostModalBottomSheet({
@@ -94,6 +95,10 @@ class _NewPostModalBottomSheetState extends State<NewPostModalBottomSheet> {
                       EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                   child: Column(
                     children: [
+                      if (widget.replyToStatus != null) ...{
+                        ReplyToStatusView(status: widget.replyToStatus!),
+                        SizedBox(height: 16.h),
+                      },
                       TextField(
                         controller: _controller,
                         keyboardType: TextInputType.multiline,
