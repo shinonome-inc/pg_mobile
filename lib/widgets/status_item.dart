@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
@@ -11,6 +13,7 @@ import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
 import 'package:pg_mobile/widgets/status_link_preview.dart';
 import 'package:pg_mobile/widgets/status_media_view.dart';
+import 'package:pg_mobile/widgets/status_menu_action_sheet.dart';
 
 class StatusItem extends ConsumerStatefulWidget {
   const StatusItem({
@@ -34,9 +37,49 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     );
   }
 
+  void _copyLink() {
+    // TODO: リンクをコピー
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _pinToProfile() {
+    // TODO: プロフィールに固定
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _deleteAndReturnToDraft() {
+    // TODO: 削除して下書きに戻す
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _delete() {
+    // TODO: 削除
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _cancel() {
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _onTapMenu(List<StatusMenuAction> statusMenuActions) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => StatusMenuActionSheet(
+        actions: statusMenuActions,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(timelineProvider.notifier);
+    final statusMenuActions = [
+      StatusMenuAction(onPressed: _copyLink, text: 'リンクをコピー'),
+      StatusMenuAction(onPressed: _pinToProfile, text: 'プロフィールに固定'),
+      StatusMenuAction(onPressed: _deleteAndReturnToDraft, text: '削除して下書きに戻す'),
+      StatusMenuAction(onPressed: _delete, text: '削除'),
+      StatusMenuAction(onPressed: _cancel, text: 'キャンセル', isCancel: true),
+    ];
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: const BoxDecoration(
@@ -167,10 +210,12 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                               : AppColors.gray3,
                         ),
                         const Spacer(),
-                        SizedBox(
-                          width: 24.w,
-                          child: const Icon(Icons.more_horiz,
-                              color: AppColors.gray3),
+                        GestureDetector(
+                          onTap: () => _onTapMenu(statusMenuActions),
+                          child: const Icon(
+                            Icons.more_horiz,
+                            color: AppColors.gray3,
+                          ),
                         ),
                         const Spacer(),
                       ],
