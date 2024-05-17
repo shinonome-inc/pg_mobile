@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 
-class StatusMenuActionSheet extends StatelessWidget {
-  const StatusMenuActionSheet({
+class StatusMenuCupertinoActionSheet extends StatelessWidget {
+  const StatusMenuCupertinoActionSheet({
     Key? key,
     required this.actions,
-    required this.isSignedInUser,
   }) : super(key: key);
 
   final List<StatusMenuAction> actions;
-  final bool isSignedInUser;
 
   @override
   Widget build(BuildContext context) {

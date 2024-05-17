@@ -26,3 +26,7 @@ extension StatusMenuActionExtension on StatusMenuAction {
   bool get isCancel => type == StatusMenuActionType.cancel;
   bool get isNotCancel => type != StatusMenuActionType.cancel;
 }
+
+extension StatusMenuActionsExtension on List<StatusMenuAction> {
+  StatusMenuAction get cancelAction => firstWhere((action) => action.isCancel);
+}

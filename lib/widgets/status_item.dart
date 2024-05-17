@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,6 @@ import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_footer_item.dart';
 import 'package:pg_mobile/widgets/status_link_preview.dart';
 import 'package:pg_mobile/widgets/status_media_view.dart';
-import 'package:pg_mobile/widgets/status_menu_action_sheet.dart';
 
 class StatusItem extends ConsumerStatefulWidget {
   const StatusItem({
@@ -72,16 +70,16 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     NavigatorUtil.popScreen(context);
   }
 
-  void _onTapMenu(List<StatusMenuAction> statusMenuActions) {
+  void _onTapMenu(List<StatusMenuAction> actions) {
     final signedInUser = ref.watch(signedInUserProvider);
     final isSignedInUser = widget.status.account.id == signedInUser.id;
-    showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext context) => StatusMenuActionSheet(
-        statusMenuActions: statusMenuActions,
-        isSignedInUser: isSignedInUser,
-      ),
-    );
+    actions.removeWhere((action) {
+      final isUnnecessary = isSignedInUser
+          ? action.isOnlyNotSignedInUser
+          : action.isOnlySignedInUser;
+      return isUnnecessary;
+    });
+    NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
   }
 
   @override
