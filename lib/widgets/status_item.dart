@@ -20,10 +20,12 @@ class StatusItem extends ConsumerStatefulWidget {
     Key? key,
     required this.status,
     this.reblogAccount,
+    required this.signedInUser,
   }) : super(key: key);
 
   final Status status;
   final Account? reblogAccount;
+  final Account signedInUser;
 
   @override
   ConsumerState<StatusItem> createState() => _StatusItemState();
@@ -57,6 +59,16 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     NavigatorUtil.popScreen(context);
   }
 
+  void _mute() {
+    // TODO: ミュート
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _block() {
+    // TODO: ブロック
+    NavigatorUtil.popScreen(context);
+  }
+
   void _cancel() {
     NavigatorUtil.popScreen(context);
   }
@@ -65,7 +77,8 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => StatusMenuActionSheet(
-        actions: statusMenuActions,
+        statusMenuActions: statusMenuActions,
+        isSignedInUser: widget.status.account.id == widget.signedInUser.id,
       ),
     );
   }
@@ -74,11 +87,41 @@ class _StatusItemState extends ConsumerState<StatusItem> {
   Widget build(BuildContext context) {
     final notifier = ref.read(timelineProvider.notifier);
     final statusMenuActions = [
-      StatusMenuAction(onPressed: _copyLink, text: 'リンクをコピー'),
-      StatusMenuAction(onPressed: _pinToProfile, text: 'プロフィールに固定'),
-      StatusMenuAction(onPressed: _deleteAndReturnToDraft, text: '削除して下書きに戻す'),
-      StatusMenuAction(onPressed: _delete, text: '削除'),
-      StatusMenuAction(onPressed: _cancel, text: 'キャンセル', isCancel: true),
+      StatusMenuAction(
+        onPressed: _copyLink,
+        text: 'リンクをコピー',
+        type: StatusMenuActionType.common,
+      ),
+      StatusMenuAction(
+        onPressed: _pinToProfile,
+        text: 'プロフィールに固定',
+        type: StatusMenuActionType.onlySignedInUser,
+      ),
+      StatusMenuAction(
+        onPressed: _deleteAndReturnToDraft,
+        text: '削除して下書きに戻す',
+        type: StatusMenuActionType.onlySignedInUser,
+      ),
+      StatusMenuAction(
+        onPressed: _delete,
+        text: '削除',
+        type: StatusMenuActionType.onlySignedInUser,
+      ),
+      StatusMenuAction(
+        onPressed: _mute,
+        text: '${widget.status.account.username}さんをミュート',
+        type: StatusMenuActionType.onlyNotSignedInUser,
+      ),
+      StatusMenuAction(
+        onPressed: _block,
+        text: '${widget.status.account.username}さんをブロック',
+        type: StatusMenuActionType.onlyNotSignedInUser,
+      ),
+      StatusMenuAction(
+        onPressed: _cancel,
+        text: 'キャンセル',
+        type: StatusMenuActionType.cancel,
+      ),
     ];
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),

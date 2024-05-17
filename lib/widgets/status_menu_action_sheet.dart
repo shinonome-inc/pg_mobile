@@ -4,23 +4,38 @@ import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 class StatusMenuActionSheet extends StatelessWidget {
   const StatusMenuActionSheet({
     Key? key,
-    required this.actions,
+    required this.statusMenuActions,
+    required this.isSignedInUser,
   }) : super(key: key);
 
-  final List<StatusMenuAction> actions;
+  final List<StatusMenuAction> statusMenuActions;
+  final bool isSignedInUser;
 
   @override
   Widget build(BuildContext context) {
     const style = TextStyle(color: CupertinoColors.systemBlue);
-    final cancelAction = actions.firstWhere((action) => action.isCancel);
+    print('isSignedInUser: $isSignedInUser');
+    for (var item in statusMenuActions) {
+      print(item.type);
+    }
+    final actions = statusMenuActions.where(
+      (action) =>
+          action.isCommon ||
+          (isSignedInUser
+              ? action.isOnlySignedInUser
+              : action.isOnlyNotSignedInUser),
+    );
+    final cancelAction = statusMenuActions.firstWhere(
+      (action) => action.isCancel,
+    );
     return CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
-        for (var actions in actions)
-          if (!actions.isCancel)
+        for (var action in actions)
+          if (action.isNotCancel)
             CupertinoActionSheetAction(
-              onPressed: actions.onPressed,
+              onPressed: action.onPressed,
               child: Text(
-                actions.text,
+                action.text,
                 style: style,
               ),
             ),

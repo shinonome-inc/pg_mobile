@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
+import 'package:pg_mobile/providers/timeline_notifier.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/widgets/status_item.dart';
 
 class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
@@ -16,6 +19,16 @@ class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
 class _DebugFavoriteStatusListPageState
     extends ConsumerState<DebugFavoriteStatusListPage> {
   final ScrollController _scrollController = ScrollController();
+  Account signedInUser = defaultAccount;
+
+  Future<void> _fetchedSignedInUser() async {
+    final notifier = ref.read(timelineProvider.notifier);
+    notifier.setLoading(true);
+    setState(() async {
+      signedInUser = await MastodonRepository.instance.fetchCredentialAccount();
+    });
+    notifier.setLoading(false);
+  }
 
   @override
   void initState() {
@@ -27,12 +40,13 @@ class _DebugFavoriteStatusListPageState
             .fetchFavoriteStatusList();
       }
     });
+    _fetchedSignedInUser();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final favoriteStatusList = ref.watch(
+    final statuses = ref.watch(
       favoriteStatusListProvider.select((value) => value.favoriteStatusList),
     );
     return Scaffold(
@@ -41,14 +55,17 @@ class _DebugFavoriteStatusListPageState
       ),
       body: ListView.builder(
         controller: _scrollController,
-        itemCount: favoriteStatusList.length + 1,
+        itemCount: statuses.length + 1,
         itemBuilder: (BuildContext context, int index) {
-          if (index == favoriteStatusList.length) {
+          if (index == statuses.length) {
             return const Center(
               child: CupertinoActivityIndicator(color: AppColors.white),
             );
           }
-          return StatusItem(status: favoriteStatusList[index]);
+          return StatusItem(
+            status: statuses[index],
+            signedInUser: signedInUser,
+          );
         },
       ),
     );
