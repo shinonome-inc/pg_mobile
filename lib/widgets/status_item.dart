@@ -6,6 +6,7 @@ import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
+import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
@@ -20,12 +21,10 @@ class StatusItem extends ConsumerStatefulWidget {
     Key? key,
     required this.status,
     this.reblogAccount,
-    required this.signedInUser,
   }) : super(key: key);
 
   final Status status;
   final Account? reblogAccount;
-  final Account signedInUser;
 
   @override
   ConsumerState<StatusItem> createState() => _StatusItemState();
@@ -74,11 +73,13 @@ class _StatusItemState extends ConsumerState<StatusItem> {
   }
 
   void _onTapMenu(List<StatusMenuAction> statusMenuActions) {
+    final signedInUser = ref.watch(signedInUserProvider);
+    final isSignedInUser = widget.status.account.id == signedInUser.id;
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => StatusMenuActionSheet(
         statusMenuActions: statusMenuActions,
-        isSignedInUser: widget.status.account.id == widget.signedInUser.id,
+        isSignedInUser: isSignedInUser,
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/widgets/status_item.dart';
 
@@ -11,13 +10,11 @@ class StatusView extends StatelessWidget {
     required this.statuses,
     required this.controller,
     required this.onRefresh,
-    required this.signedInUser,
   }) : super(key: key);
 
   final List<Status> statuses;
   final ScrollController? controller;
   final Future<void> Function() onRefresh;
-  final Account signedInUser;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,6 @@ class StatusView extends StatelessWidget {
             return StatusItem(
               status: status.reblog == null ? status : status.reblog!,
               reblogAccount: status.reblog == null ? null : status.account,
-              signedInUser: signedInUser,
             );
           },
         ),

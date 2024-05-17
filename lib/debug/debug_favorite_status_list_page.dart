@@ -64,7 +64,6 @@ class _DebugFavoriteStatusListPageState
           }
           return StatusItem(
             status: statuses[index],
-            signedInUser: signedInUser,
           );
         },
       ),
