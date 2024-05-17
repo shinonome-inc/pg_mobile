@@ -18,6 +18,7 @@ class StatusMenuCupertinoActionSheet extends StatelessWidget {
           if (action.isNotCancel)
             CupertinoActionSheetAction(
               onPressed: action.onPressed,
+              isDestructiveAction: action.isDestructiveAction,
               child: Text(
                 action.text,
                 style: style,

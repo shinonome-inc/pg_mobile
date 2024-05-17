@@ -100,11 +100,13 @@ class _StatusItemState extends ConsumerState<StatusItem> {
         onPressed: _deleteAndReturnToDraft,
         text: '削除して下書きに戻す',
         type: StatusMenuActionType.onlySignedInUser,
+        isDestructiveAction: true,
       ),
       StatusMenuAction(
         onPressed: _delete,
         text: '削除',
         type: StatusMenuActionType.onlySignedInUser,
+        isDestructiveAction: true,
       ),
       StatusMenuAction(
         onPressed: _mute,
@@ -115,11 +117,13 @@ class _StatusItemState extends ConsumerState<StatusItem> {
         onPressed: _block,
         text: '${widget.status.account.username}さんをブロック',
         type: StatusMenuActionType.onlyNotSignedInUser,
+        isDestructiveAction: true,
       ),
       StatusMenuAction(
         onPressed: _cancel,
         text: 'キャンセル',
         type: StatusMenuActionType.cancel,
+        isDestructiveAction: true,
       ),
     ];
     return Container(

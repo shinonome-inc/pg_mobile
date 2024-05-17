@@ -34,6 +34,11 @@ class StatusMenuMaterialActionsSheet extends StatelessWidget {
               ),
               child: Text(
                 action.text,
+                style: TextStyle(
+                  color: action.isDestructiveAction
+                      ? AppColors.red
+                      : AppColors.gray6,
+                ),
               ),
             ),
           )

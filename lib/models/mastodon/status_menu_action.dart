@@ -15,6 +15,7 @@ class StatusMenuAction with _$StatusMenuAction {
     required void Function() onPressed,
     required String text,
     required StatusMenuActionType type,
+    @Default(false) bool isDestructiveAction,
   }) = _StatusMenuAction;
 }
 
