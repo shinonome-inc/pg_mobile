@@ -39,3 +39,26 @@ class Account with _$Account {
   factory Account.fromJson(Map<String, dynamic> json) =>
       _$AccountFromJson(json);
 }
+
+final Account defaultAccount = Account(
+  id: '',
+  username: '',
+  acct: '',
+  displayName: '',
+  url: '',
+  note: '',
+  avatar: '',
+  avatarStatic: '',
+  header: '',
+  headerStatic: '',
+  locked: false,
+  fields: [],
+  emojis: [],
+  bot: false,
+  group: false,
+  createdAt: DateTime(0),
+  lastStatusAt: DateTime(0),
+  statusesCount: 0,
+  followersCount: 0,
+  followingCount: 0,
+);
