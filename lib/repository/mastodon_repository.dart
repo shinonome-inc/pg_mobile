@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
-import 'package:pg_mobile/models/mastodon/credential_account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/secure_storage_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -159,10 +158,10 @@ class MastodonRepository {
     }
   }
 
-  Future<CredentialAccount> fetchCredentialAccount() async {
+  Future<Account> fetchCredentialAccount() async {
     final response = await _dio.get('/api/v1/accounts/verify_credentials');
     if (response.statusCode == 200) {
-      final credentialAccount = CredentialAccount.fromJson(response.data);
+      final credentialAccount = Account.fromJson(response.data);
       return credentialAccount;
     } else {
       throw Exception(

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
+import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_view.dart';
 
 class DebugHomeTimelinePage extends ConsumerStatefulWidget {
@@ -21,16 +24,18 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
 
   @override
   void initState() {
-    final notifier = ref.read(timelineProvider.notifier);
+    final timelineNotifier = ref.read(timelineProvider.notifier);
+    final signedInUserNotifier = ref.read(signedInUserProvider.notifier);
     Future(() async {
-      await notifier.fetchTimeline();
+      await signedInUserNotifier.fetchUser();
+      await timelineNotifier.fetchTimeline();
     });
     _scrollController = ScrollController();
     _scrollController.addListener(() async {
       // スクロールして一番下に行ったら、次のページの分のStatusを取得して表示
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
-        await notifier.fetchTimeline();
+        await timelineNotifier.fetchTimeline();
       }
     });
     super.initState();
@@ -40,8 +45,18 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
   Widget build(BuildContext context) {
     final state = ref.watch(timelineProvider);
     final notifier = ref.read(timelineProvider.notifier);
+    final signedInUser = ref.watch(signedInUserProvider);
     return Scaffold(
       appBar: AppBar(
+        leading: state.isLoading
+            ? const SizedBox.shrink()
+            : NetworkImageContainer(
+                padding: EdgeInsets.only(left: 16.w, top: 8.h, bottom: 8.h),
+                width: 32.h,
+                height: 32.h,
+                imageUrl: signedInUser.avatar,
+                borderRadius: BorderRadius.circular(32.r),
+              ),
         title: const Text('Home'),
       ),
       body: state.isLoading && state.statuses.isEmpty

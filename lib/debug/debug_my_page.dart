@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/models/mastodon/credential_account.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 
 class DebugMyPage extends StatefulWidget {
-  final CredentialAccount credentialAccount;
+  final Account credentialAccount;
 
   const DebugMyPage({Key? key, required this.credentialAccount})
       : super(key: key);

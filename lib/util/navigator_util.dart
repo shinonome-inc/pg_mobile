@@ -1,10 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 import 'package:pg_mobile/widgets/network_gifv_preview.dart';
 import 'package:pg_mobile/widgets/network_image_preview.dart';
 import 'package:pg_mobile/widgets/network_video_preview.dart';
 import 'package:pg_mobile/widgets/new_post_modal_bottom_sheet.dart';
+import 'package:pg_mobile/widgets/status_menu_cupertino_action_sheet.dart';
+import 'package:pg_mobile/widgets/status_menu_material_action_sheet.dart';
 import 'package:video_player/video_player.dart';
 
 class NavigatorUtil {
@@ -92,5 +96,26 @@ class NavigatorUtil {
         return NewPostModalBottomSheet(replyToStatus: replyToStatus);
       },
     );
+  }
+
+  static void showStatusMenuActionSheet(
+    BuildContext context, {
+    required List<StatusMenuAction> actions,
+  }) {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) => StatusMenuCupertinoActionSheet(
+          actions: actions,
+        ),
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) => StatusMenuMaterialActionsSheet(
+          actions: actions,
+        ),
+      );
+    }
   }
 }

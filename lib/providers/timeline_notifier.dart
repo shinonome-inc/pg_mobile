@@ -15,7 +15,7 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     state = defaultTimeline;
   }
 
-  void _setLoading(bool value) {
+  void setLoading(bool value) {
     state = state.copyWith(isLoading: value);
   }
 
@@ -27,9 +27,9 @@ class TimelineNotifier extends StateNotifier<Timeline> {
 
   Future<void> fetchTimeline() async {
     if (state.isLoading) return;
-    _setLoading(true);
+    setLoading(true);
     final fetchedStatuses = await MastodonRepository.instance.fetchStatus();
-    _setLoading(false);
+    setLoading(false);
     final statuses = [...state.statuses];
     statuses.addAll(fetchedStatuses);
     state = state.copyWith(statuses: statuses);
@@ -40,7 +40,7 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     String? inReplyToId,
   }) async {
     if (state.isLoading) return;
-    _setLoading(true);
+    setLoading(true);
     Status postedStatus;
     try {
       postedStatus = await MastodonRepository.instance.postNewStatus(
@@ -52,7 +52,7 @@ class TimelineNotifier extends StateNotifier<Timeline> {
     } catch (e) {
       throw Exception('Failed to send: $e');
     } finally {
-      _setLoading(false);
+      setLoading(false);
     }
     if (inReplyToId != null) {
       List<Status> statuses = state.statuses

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
+import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
@@ -34,9 +36,96 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     );
   }
 
+  void _copyLink() {
+    // TODO: リンクをコピー
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _pinToProfile() {
+    // TODO: プロフィールに固定
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _deleteAndReturnToDraft() {
+    // TODO: 削除して下書きに戻す
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _delete() {
+    // TODO: 削除
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _mute() {
+    // TODO: ミュート
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _block() {
+    // TODO: ブロック
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _cancel() {
+    NavigatorUtil.popScreen(context);
+  }
+
+  void _onTapMenu(List<StatusMenuAction> actions) {
+    final signedInUser = ref.watch(signedInUserProvider);
+    final isSignedInUser = widget.status.account.id == signedInUser.id;
+    actions.removeWhere((action) {
+      final isUnnecessary = isSignedInUser
+          ? action.isOnlyNotSignedInUser
+          : action.isOnlySignedInUser;
+      return isUnnecessary;
+    });
+    NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(timelineProvider.notifier);
+    final statusMenuActions = [
+      StatusMenuAction(
+        onPressed: _copyLink,
+        text: 'リンクをコピー',
+        type: StatusMenuActionType.common,
+      ),
+      StatusMenuAction(
+        onPressed: _pinToProfile,
+        text: 'プロフィールに固定',
+        type: StatusMenuActionType.onlySignedInUser,
+      ),
+      StatusMenuAction(
+        onPressed: _deleteAndReturnToDraft,
+        text: '削除して下書きに戻す',
+        type: StatusMenuActionType.onlySignedInUser,
+        isDestructiveAction: true,
+      ),
+      StatusMenuAction(
+        onPressed: _delete,
+        text: '削除',
+        type: StatusMenuActionType.onlySignedInUser,
+        isDestructiveAction: true,
+      ),
+      StatusMenuAction(
+        onPressed: _mute,
+        text: '${widget.status.account.username}さんをミュート',
+        type: StatusMenuActionType.onlyNotSignedInUser,
+      ),
+      StatusMenuAction(
+        onPressed: _block,
+        text: '${widget.status.account.username}さんをブロック',
+        type: StatusMenuActionType.onlyNotSignedInUser,
+        isDestructiveAction: true,
+      ),
+      StatusMenuAction(
+        onPressed: _cancel,
+        text: 'キャンセル',
+        type: StatusMenuActionType.cancel,
+        isDestructiveAction: true,
+      ),
+    ];
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
       decoration: const BoxDecoration(
@@ -167,10 +256,12 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                               : AppColors.gray3,
                         ),
                         const Spacer(),
-                        SizedBox(
-                          width: 24.w,
-                          child: const Icon(Icons.more_horiz,
-                              color: AppColors.gray3),
+                        GestureDetector(
+                          onTap: () => _onTapMenu(statusMenuActions),
+                          child: const Icon(
+                            Icons.more_horiz,
+                            color: AppColors.gray3,
+                          ),
                         ),
                         const Spacer(),
                       ],
