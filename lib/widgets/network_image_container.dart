@@ -6,6 +6,7 @@ class NetworkImageContainer extends StatelessWidget {
   const NetworkImageContainer({
     Key? key,
     required this.imageUrl,
+    this.padding,
     this.width,
     this.height,
     this.backgroundColor,
@@ -17,6 +18,7 @@ class NetworkImageContainer extends StatelessWidget {
   }) : super(key: key);
 
   final String imageUrl;
+  final EdgeInsetsGeometry? padding;
   final double? width;
   final double? height;
   final String errorImagePath;
@@ -31,6 +33,7 @@ class NetworkImageContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: padding,
         width: width,
         height: height,
         decoration: BoxDecoration(
