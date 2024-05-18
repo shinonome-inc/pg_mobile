@@ -55,6 +55,7 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
                       ),
                       StatusItem(
                         status: widget.selectedStatus,
+                        showDetails: true,
                       ),
                       ListView.builder(
                         itemCount: state.descendants.length,
