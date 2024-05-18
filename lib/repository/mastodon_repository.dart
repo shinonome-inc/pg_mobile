@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
+import 'package:pg_mobile/models/mastodon/context.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/secure_storage_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -184,6 +185,17 @@ class MastodonRepository {
       return statuses.map((status) => Status.fromJson(status)).toList();
     } on DioException catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future<Context> fetchThread(String statusId) async {
+    final response = await _dio.get('/api/v1/statuses/$statusId/context');
+    if (response.statusCode == 200) {
+      return Context.fromJson(response.data);
+    } else {
+      throw Exception(
+        'Failed to fetch statuses in thread with status code ${response.statusCode}',
+      );
     }
   }
 
