@@ -25,7 +25,7 @@ class ThreadNotifier extends StateNotifier<ThreadState> {
     _setLoading(true);
     _setError(false);
     try {
-      context = await MastodonRepository.instance.fetchStatusesInThread(id);
+      context = await MastodonRepository.instance.fetchThread(id);
     } catch (e) {
       _setError(true);
       throw Exception('Failed to fetch thread statuses: $e');
