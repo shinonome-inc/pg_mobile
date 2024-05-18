@@ -35,6 +35,14 @@ class StatusItem extends ConsumerStatefulWidget {
 class _StatusItemState extends ConsumerState<StatusItem> {
   bool get _hideDetails => !widget.showDetails;
 
+  void _onTapHashtag(String hashtag) {
+    // TODO: ハッシュタグをタップ
+  }
+
+  void _onTapMention(String hashtag) {
+    // TODO: メンションをタップ
+  }
+
   void _onTapReply(Status tappedStatus) {
     NavigatorUtil.showNewPostCreateView(
       context,
@@ -246,14 +254,8 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                       SizedBox(height: 8.h),
                       LinkableText(
                         widget.status.contentText,
-                        onTapMention: (value) {
-                          // TODO: ユーザー画面へ遷移する。
-                          debugPrint('on tap mention: $value');
-                        },
-                        onTapHashtag: (value) {
-                          // TODO: ハッシュタグ画面へ遷移する。
-                          debugPrint('on tap hashtag: $value');
-                        },
+                        onTapMention: (value) => _onTapMention(value),
+                        onTapHashtag: (value) => _onTapHashtag(value),
                       ),
                       SizedBox(height: 8.h),
                       if (widget.status.mediaAttachments.isNotEmpty) ...{
