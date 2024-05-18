@@ -31,14 +31,17 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(threadProvider);
+    final notifier = ref.read(threadProvider.notifier);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('スレッド'),
+      ),
       body: state.isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : RefreshIndicator(
-              onRefresh: () async {},
+              onRefresh: () async => notifier.reload(widget.selectedStatus.id),
               child: Scrollbar(
                 child: SingleChildScrollView(
                   child: Column(

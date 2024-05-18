@@ -11,6 +11,10 @@ final threadProvider =
 class ThreadNotifier extends StateNotifier<ThreadState> {
   ThreadNotifier() : super(defaultThreadState);
 
+  void _reset() {
+    state = defaultThreadState;
+  }
+
   void _setLoading(bool value) {
     state = state.copyWith(isLoading: value);
   }
@@ -33,5 +37,10 @@ class ThreadNotifier extends StateNotifier<ThreadState> {
       _setLoading(false);
     }
     state = state.copyWith(context: context);
+  }
+
+  Future<void> reload(String id) async {
+    _reset();
+    await fetchThreadStatuses(id);
   }
 }
