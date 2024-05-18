@@ -3,7 +3,11 @@ import 'package:intl/intl.dart';
 class DateFormatter {
   DateFormatter._();
 
-  static String formatPastDate(DateTime dateTime) {
+  static String formatStatusDetail(DateTime dateTime) {
+    return DateFormat('yyyy/MM/dd HH:mm').format(dateTime);
+  }
+
+  static String formatTimeAgoDate(DateTime dateTime) {
     final now = DateTime.now();
     final diff = now.difference(dateTime);
     if (diff.inSeconds < 1) {

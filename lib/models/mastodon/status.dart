@@ -56,11 +56,12 @@ class Status with _$Status {
 }
 
 extension StatusExtension on Status {
-  String get createdAtText {
-    final DateTime dateTime = DateTime.parse(createdAt).toLocal();
-    final String createdAtText = DateFormatter.formatPastDate(dateTime);
-    return createdAtText;
-  }
+  DateTime get _createdAt => DateTime.parse(createdAt).toLocal();
+
+  String get createdAtText => DateFormatter.formatStatusDetail(_createdAt);
+
+  String get createdAtTimeAgoText =>
+      DateFormatter.formatTimeAgoDate(_createdAt);
 
   String get contentText {
     return parse(
