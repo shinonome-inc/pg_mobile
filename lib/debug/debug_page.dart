@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/debug/debug_alert_dialog_page.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
 import 'package:pg_mobile/debug/debug_favorite_status_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
@@ -69,10 +70,7 @@ class _DebugPageState extends ConsumerState<DebugPage> {
             },
           ),
           _button("通知画面", onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SignInPage()),
-            );
+            NavigatorUtil.pushScreen(context, const SignInPage());
           }),
           _button(
             'ホームタイムライン画面',
@@ -83,20 +81,19 @@ class _DebugPageState extends ConsumerState<DebugPage> {
           _button(
             'searchBar',
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const DebugSearchBarPage()),
-              );
+              NavigatorUtil.pushScreen(context, const DebugSearchBarPage());
             },
           ),
           _button(
             'PGN',
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DebugPGNPage(),
-                ),
-              );
+              NavigatorUtil.pushScreen(context, const DebugPGNPage());
+            },
+          ),
+          _button(
+            'Alert Dialog',
+            onPressed: () {
+              NavigatorUtil.pushScreen(context, const DebugAlertDialogPage());
             },
           ),
           _button(
@@ -133,12 +130,10 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               MastodonRepository.instance
                   .fetchFollowerList()
                   .then((followerModelList) {
-                Navigator.push(
+                NavigatorUtil.pushScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => DebugFollowerListPage(
-                      followerList: followerModelList,
-                    ),
+                  DebugFollowerListPage(
+                    followerList: followerModelList,
                   ),
                 );
               });
