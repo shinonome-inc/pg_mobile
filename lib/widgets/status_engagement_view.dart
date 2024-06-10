@@ -51,19 +51,21 @@ class StatusDetailsEngagementView extends StatelessWidget {
               ),
             ),
             SizedBox(width: 16.w),
-            RichText(
-              text: TextSpan(
-                recognizer: TapGestureRecognizer()..onTap = onTapFavorite,
-                children: [
-                  TextSpan(
-                    text: status.favouritesCount.toString(),
-                    style: emphasisStyle,
-                  ),
-                  TextSpan(
-                    text: '件のお気に入り',
-                    style: normalStyle,
-                  ),
-                ],
+            InkWell(
+              onTap: onTapFavorite,
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: status.favouritesCount.toString(),
+                      style: emphasisStyle,
+                    ),
+                    TextSpan(
+                      text: '件のお気に入り',
+                      style: normalStyle,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
