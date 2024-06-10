@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/debug/debug_favorite_user_list_page.dart';
 import 'package:pg_mobile/debug/debug_thread_page.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
+import 'package:pg_mobile/providers/favorite_user_list_notifier.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
@@ -88,8 +90,13 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     // TODO: ブーストを押したユーザー一覧を表示する画面へ遷移
   }
 
-  void _onTapEngagementFavorite() {
-    // TODO: お気に入りを押したユーザー一覧を表示する画面へ遷移
+  void _onTapEngagementFavorite(String statusId) {
+    // 画面のチラつきを防ぐために今までのデータをリセットする
+    ref.read(favoriteUserListProvider.notifier).resetData();
+    NavigatorUtil.pushScreen(
+      context,
+      DebugFavoriteUserListPage(statusId: statusId),
+    );
   }
 
   void _onTapMenu(List<StatusMenuAction> actions) {
@@ -277,7 +284,8 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                         StatusDetailsEngagementView(
                           status: widget.status,
                           onTapReblog: _onTapEngagementReblog,
-                          onTapFavorite: _onTapEngagementFavorite,
+                          onTapFavorite: () =>
+                              _onTapEngagementFavorite(widget.status.id),
                         ),
                         SizedBox(height: 8.h),
                       },

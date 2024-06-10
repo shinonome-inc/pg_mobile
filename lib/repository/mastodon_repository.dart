@@ -277,4 +277,16 @@ class MastodonRepository {
       );
     }
   }
+
+  Future<List<Account>> fetchFavoriteUserList(String statusId) async {
+    final response =
+        await _dio.get('/api/v1/statuses/$statusId/favourited_by?limit=80');
+    if (response.statusCode == 200) {
+      final accountList = List<dynamic>.from(response.data);
+      return accountList.map((account) => Account.fromJson(account)).toList();
+    } else {
+      throw Exception(
+          'Failed to load favorite user list status code ${response.statusCode}');
+    }
+  }
 }
