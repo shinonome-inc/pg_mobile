@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pg_mobile/extensions/media_attachment_extension.dart';
 import 'package:pg_mobile/models/mastodon/media_attachment.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';

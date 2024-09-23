@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/debug/debug_pix_text.dart';
+import 'package:pg_mobile/extensions/pgn_user_extension.dart';
 import 'package:pg_mobile/models/pgn/pgn_user.dart';
 
 class DebugPGNUserItem extends StatelessWidget {

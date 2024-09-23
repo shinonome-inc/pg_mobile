@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pg_mobile/models/mastodon/context.dart';
-import 'package:pg_mobile/models/mastodon/status.dart';
 
 part 'thread_state.freezed.dart';
 
@@ -18,8 +17,3 @@ const ThreadState defaultThreadState = ThreadState(
   hasError: false,
   context: defaultContext,
 );
-
-extension ThreadStateExtension on ThreadState {
-  List<Status> get ancestors => context.ancestors;
-  List<Status> get descendants => context.descendants;
-}
