@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pg_mobile/models/pgn_rank.dart';
+import 'package:pg_mobile/models/enums/pgn_rank.dart';
 import 'package:pg_mobile/util/pgn_util.dart';
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:pg_mobile/models/media_type.dart';
+import 'package:pg_mobile/models/enums/media_type.dart';
 
 /// 画像や動画などのメディアに関するユーティリティークラスです。
 class MediaUtil {

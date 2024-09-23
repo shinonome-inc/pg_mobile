@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
-import 'package:pg_mobile/models/pgn_unit.dart';
-import 'package:pg_mobile/models/pgn_user.dart';
+import 'package:pg_mobile/models/enums/pgn_unit.dart';
+import 'package:pg_mobile/models/pgn/pgn_user.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
 
 class PGNRepository {

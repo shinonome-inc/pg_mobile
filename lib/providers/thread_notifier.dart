@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/models/mastodon/context.dart';
-import 'package:pg_mobile/models/thread_state.dart';
+import 'package:pg_mobile/models/states/thread_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 
 final threadProvider =

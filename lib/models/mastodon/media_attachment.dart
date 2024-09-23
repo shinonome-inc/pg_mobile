@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pg_mobile/models/attachment_media_type.dart';
+import 'package:pg_mobile/models/enums/attachment_media_type.dart';
 
 part 'media_attachment.freezed.dart';
 part 'media_attachment.g.dart';

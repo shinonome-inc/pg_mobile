@@ -1,4 +1,4 @@
-import 'package:pg_mobile/models/pgn_rank.dart';
+import 'package:pg_mobile/models/enums/pgn_rank.dart';
 
 class PGNUtil {
   PGNUtil._();
