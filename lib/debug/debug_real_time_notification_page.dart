@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:pg_mobile/models/mastodon/notification.dart' as notification;
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -89,8 +90,9 @@ class DebugRealTimeNotificationPage extends StatefulWidget {
 
 class _DebugRealTimeNotificationPageState
     extends State<DebugRealTimeNotificationPage> {
-  List<String> nameList = [];
+  final notifications = [];
   late final WebSocketChannel channel;
+
   @override
   void initState() {
     super.initState();
@@ -103,9 +105,10 @@ class _DebugRealTimeNotificationPageState
     channel.stream.listen((data) {
       Map<String, dynamic> body = json.decode(data);
       Map<String, dynamic> payloadData = json.decode(body["payload"]);
+      final result = notification.Notification.fromJson(payloadData);
       if (mounted) {
         setState(() {
-          nameList.add(payloadData['account']['username']);
+          notifications.add(result);
         });
       }
     });
@@ -119,9 +122,9 @@ class _DebugRealTimeNotificationPageState
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: nameList.length,
+        itemCount: notifications.length,
         itemBuilder: (BuildContext context, int index) {
-          return Text(nameList[index]);
+          return Text(notifications[index].id);
         },
       ),
     );
