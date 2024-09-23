@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pg_mobile/extensions/status_menu_action_extension.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 
 class StatusMenuCupertinoActionSheet extends StatelessWidget {

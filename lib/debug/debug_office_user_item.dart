@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pg_mobile/models/office_user.dart';
+import 'package:pg_mobile/models/office/office_user.dart';
 
 class DebugOfficeUserItem extends StatelessWidget {
   const DebugOfficeUserItem({Key? key, required this.user}) : super(key: key);

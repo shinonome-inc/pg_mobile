@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pg_mobile/extensions/thread_state_extension.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/models/thread_state.dart';
 import 'package:pg_mobile/providers/thread_notifier.dart';
 import 'package:pg_mobile/widgets/status_item.dart';
 

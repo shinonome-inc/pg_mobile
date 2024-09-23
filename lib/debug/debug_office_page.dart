@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_office_user_item.dart';
-import 'package:pg_mobile/models/office.dart';
-import 'package:pg_mobile/models/office_user.dart';
+import 'package:pg_mobile/models/office/office.dart';
+import 'package:pg_mobile/models/office/office_user.dart';
 import 'package:pg_mobile/repository/firestore_repository.dart';
 
 class DebugOfficePage extends StatefulWidget {

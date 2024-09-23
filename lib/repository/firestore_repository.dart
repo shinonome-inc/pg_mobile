@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pg_mobile/constants/collections.dart';
-import 'package:pg_mobile/models/office.dart';
-import 'package:pg_mobile/models/office_user.dart';
+import 'package:pg_mobile/models/office/office.dart';
+import 'package:pg_mobile/models/office/office_user.dart';
 
 class FirestoreRepository {
   FirestoreRepository._();
