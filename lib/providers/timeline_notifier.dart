@@ -1,18 +1,18 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/models/mastodon/timeline.dart';
+import 'package:pg_mobile/models/states/timeline_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 
 final timelineProvider =
-    StateNotifierProvider<TimelineNotifier, Timeline>((ref) {
+    StateNotifierProvider<TimelineNotifier, TimelineState>((ref) {
   return TimelineNotifier();
 });
 
-class TimelineNotifier extends StateNotifier<Timeline> {
-  TimelineNotifier() : super(defaultTimeline);
+class TimelineNotifier extends StateNotifier<TimelineState> {
+  TimelineNotifier() : super(defaultTimelineState);
 
   void reset() {
-    state = defaultTimeline;
+    state = defaultTimelineState;
   }
 
   void setLoading(bool value) {

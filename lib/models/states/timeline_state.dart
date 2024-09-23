@@ -1,17 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 
-part 'timeline.freezed.dart';
+part 'timeline_state.freezed.dart';
 
 @freezed
-class Timeline with _$Timeline {
-  const factory Timeline({
+class TimelineState with _$TimelineState {
+  const factory TimelineState({
     required bool isLoading,
     required List<Status> statuses,
-  }) = _Timeline;
+  }) = _TimelineState;
 }
 
-const Timeline defaultTimeline = Timeline(
+const TimelineState defaultTimelineState = TimelineState(
   isLoading: false,
   statuses: [],
 );
