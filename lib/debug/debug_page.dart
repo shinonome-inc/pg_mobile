@@ -110,6 +110,7 @@ class _DebugPageState extends ConsumerState<DebugPage> {
             onPressed: () {
               MastodonRepository.instance.fetchFollowerList().then(
                 (followerModelList) {
+                  if (!context.mounted) return;
                   NavigatorUtil.pushScreen(
                     context,
                     DebugFollowerListPage(followerList: followerModelList),
@@ -133,6 +134,7 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               MastodonRepository.instance
                   .fetchFollowerList()
                   .then((followerModelList) {
+                if (!context.mounted) return;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -160,9 +162,9 @@ class _DebugPageState extends ConsumerState<DebugPage> {
             'お気に入り一覧画面',
             onPressed: () async {
               await ref
-                  .read(favoriteStatusListProvider.notifier)
+                  .read(favoriteStatusListNotifierProvider.notifier)
                   .fetchFavoriteStatusList();
-              if (!mounted) return;
+              if (!context.mounted) return;
               NavigatorUtil.pushScreen(
                   context, const DebugFavoriteStatusListPage());
             },
@@ -172,7 +174,7 @@ class _DebugPageState extends ConsumerState<DebugPage> {
             onPressed: () async {
               final credentialAccount =
                   await MastodonRepository.instance.fetchCredentialAccount();
-              if (!mounted) return;
+              if (!context.mounted) return;
               NavigatorUtil.pushScreen(
                 context,
                 DebugMyPage(credentialAccount: credentialAccount),

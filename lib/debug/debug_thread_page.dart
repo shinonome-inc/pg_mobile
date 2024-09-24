@@ -7,9 +7,9 @@ import 'package:pg_mobile/widgets/status_item.dart';
 
 class DebugThreadPage extends ConsumerStatefulWidget {
   const DebugThreadPage({
-    Key? key,
+    super.key,
     required this.selectedStatus,
-  }) : super(key: key);
+  });
 
   final Status selectedStatus;
 
@@ -22,7 +22,7 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
   void initState() {
     super.initState();
     Future(() {
-      ref.read(threadProvider.notifier).fetchThreadStatuses(
+      ref.read(threadNotifierProvider.notifier).fetchThreadStatuses(
             widget.selectedStatus.id,
           );
     });
@@ -30,8 +30,8 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(threadProvider);
-    final notifier = ref.read(threadProvider.notifier);
+    final state = ref.watch(threadNotifierProvider);
+    final notifier = ref.read(threadNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('スレッド'),
