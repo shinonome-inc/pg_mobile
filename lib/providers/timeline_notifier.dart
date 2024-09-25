@@ -1,6 +1,7 @@
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/states/timeline_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/util/status_util.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'timeline_notifier.g.dart';
@@ -20,6 +21,25 @@ class TimelineNotifier extends _$TimelineNotifier {
     state = state.copyWith(isLoading: value);
   }
 
+  void setStatuses(List<Status> statuses) {
+    state = state.copyWith(statuses: statuses);
+  }
+
+  void setStatus(Status status) {
+    final statuses = state.statuses.map((element) {
+      return element.id == status.id ? status : element;
+    }).toList();
+    setStatuses(statuses);
+  }
+
+  void addStatuses(List<Status> statuses) {
+    setStatuses([...statuses, ...state.statuses]);
+  }
+
+  void addStatus(Status status) {
+    setStatuses([status, ...state.statuses]);
+  }
+
   Future<void> onRefresh() async {
     if (state.isLoading) return;
     reset();
@@ -31,9 +51,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     setLoading(true);
     final fetchedStatuses = await MastodonRepository.instance.fetchStatus();
     setLoading(false);
-    final statuses = [...state.statuses];
-    statuses.addAll(fetchedStatuses);
-    state = state.copyWith(statuses: statuses);
+    addStatuses(fetchedStatuses);
   }
 
   Future<void> postStatus({
@@ -56,22 +74,19 @@ class TimelineNotifier extends _$TimelineNotifier {
       setLoading(false);
     }
     if (inReplyToId != null) {
-      List<Status> statuses = state.statuses
-          .map(
-            (status) => status.id == inReplyToId
-                ? status.copyWith(repliesCount: status.repliesCount + 1)
-                : status,
-          )
-          .toList();
-      state = state.copyWith(statuses: statuses);
+      final repliedStatus = StatusUtil.findStatusFromId(
+        state.statuses,
+        inReplyToId,
+      );
+      setStatus(
+        repliedStatus.copyWith(repliesCount: repliedStatus.favouritesCount + 1),
+      );
     }
-    state = state.copyWith(
-      statuses: [postedStatus, ...state.statuses],
-    );
+    addStatus(postedStatus);
   }
 
   Future<void> onTapBoost(Status tappedStatus) async {
-    if (tappedStatus.reblogged == null) return;
+    if (tappedStatus.reblogged == null || state.isLoading) return;
     Status status;
     if (tappedStatus.reblogged!) {
       status = await MastodonRepository.instance.undoBoostStatus(
@@ -82,13 +97,11 @@ class TimelineNotifier extends _$TimelineNotifier {
         tappedStatus.id,
       );
     }
-    List<Status> statuses = state.statuses;
-    statuses.firstWhere((element) => element.id == status.id);
-    state = state.copyWith(statuses: statuses);
+    setStatus(status);
   }
 
   Future<void> onTapFavorite(Status tappedStatus) async {
-    if (tappedStatus.favourited == null) return;
+    if (tappedStatus.favourited == null || state.isLoading) return;
     Status status;
     if (tappedStatus.favourited!) {
       status = await MastodonRepository.instance.undoFavoriteStatus(
@@ -99,8 +112,6 @@ class TimelineNotifier extends _$TimelineNotifier {
         tappedStatus.id,
       );
     }
-    List<Status> statuses = state.statuses;
-    statuses.firstWhere((element) => element.id == status.id);
-    state = state.copyWith(statuses: statuses);
+    setStatus(status);
   }
 }
