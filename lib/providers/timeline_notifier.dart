@@ -87,6 +87,7 @@ class TimelineNotifier extends _$TimelineNotifier {
 
   Future<void> onTapBoost(Status tappedStatus) async {
     if (tappedStatus.reblogged == null || state.isLoading) return;
+    setLoading(true);
     Status status;
     if (tappedStatus.reblogged!) {
       status = await MastodonRepository.instance.undoBoostStatus(
@@ -97,11 +98,13 @@ class TimelineNotifier extends _$TimelineNotifier {
         tappedStatus.id,
       );
     }
+    setLoading(false);
     setStatus(status);
   }
 
   Future<void> onTapFavorite(Status tappedStatus) async {
     if (tappedStatus.favourited == null || state.isLoading) return;
+    setLoading(true);
     Status status;
     if (tappedStatus.favourited!) {
       status = await MastodonRepository.instance.undoFavoriteStatus(
@@ -112,6 +115,7 @@ class TimelineNotifier extends _$TimelineNotifier {
         tappedStatus.id,
       );
     }
+    setLoading(false);
     setStatus(status);
   }
 }
