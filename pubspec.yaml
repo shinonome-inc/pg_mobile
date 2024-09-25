@@ -62,6 +62,7 @@ dependencies:
   flick_video_player: ^0.8.0
   uuid: ^4.4.0
   link_preview_generator: ^1.2.0
+  test: ^1.25.7
 
 dev_dependencies:
   flutter_test:
