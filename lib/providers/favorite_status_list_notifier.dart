@@ -8,7 +8,7 @@ part 'favorite_status_list_notifier.g.dart';
 class favoriteStatusListNotifier extends _$favoriteStatusListNotifier {
   @override
   FavoriteStatusListState build() {
-    return defaultStatusListState;
+    return initialStatusListState;
   }
 
   Future<void> fetchFavoriteStatusList() async {

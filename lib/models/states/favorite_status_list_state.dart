@@ -10,6 +10,6 @@ class FavoriteStatusListState with _$FavoriteStatusListState {
   }) = _FavoriteStatusListState;
 }
 
-const FavoriteStatusListState defaultStatusListState = FavoriteStatusListState(
+const FavoriteStatusListState initialStatusListState = FavoriteStatusListState(
   favoriteStatusList: [],
 );

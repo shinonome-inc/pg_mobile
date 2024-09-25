@@ -9,11 +9,11 @@ part 'thread_notifier.g.dart';
 class ThreadNotifier extends _$ThreadNotifier {
   @override
   ThreadState build() {
-    return defaultThreadState;
+    return initialThreadState;
   }
 
   void _reset() {
-    state = defaultThreadState;
+    state = initialThreadState;
   }
 
   void _setLoading(bool value) {

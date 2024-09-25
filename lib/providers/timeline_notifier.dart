@@ -10,11 +10,11 @@ part 'timeline_notifier.g.dart';
 class TimelineNotifier extends _$TimelineNotifier {
   @override
   TimelineState build() {
-    return defaultTimelineState;
+    return initialTimelineState;
   }
 
   void reset() {
-    state = defaultTimelineState;
+    state = initialTimelineState;
   }
 
   void setLoading(bool value) {
