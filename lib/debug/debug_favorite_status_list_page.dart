@@ -19,7 +19,7 @@ class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
 class _DebugFavoriteStatusListPageState
     extends ConsumerState<DebugFavoriteStatusListPage> {
   final ScrollController _scrollController = ScrollController();
-  Account signedInUser = defaultAccount;
+  Account signedInUser = initialAccount;
 
   Future<void> _fetchedSignedInUser() async {
     final notifier = ref.read(timelineNotifierProvider.notifier);

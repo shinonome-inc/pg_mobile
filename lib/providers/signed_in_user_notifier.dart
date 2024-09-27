@@ -8,11 +8,7 @@ part 'signed_in_user_notifier.g.dart';
 class SignedInUserNotifier extends _$SignedInUserNotifier {
   @override
   Account build() {
-    return defaultAccount;
-  }
-
-  void reset() {
-    state = defaultAccount;
+    return initialAccount;
   }
 
   Future<void> fetchUser() async {
