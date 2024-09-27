@@ -13,7 +13,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     return initialTimelineState;
   }
 
-  void reset() {
+  void _reset() {
     state = initialTimelineState;
   }
 
@@ -21,28 +21,28 @@ class TimelineNotifier extends _$TimelineNotifier {
     state = state.copyWith(isLoading: value);
   }
 
-  void setStatuses(List<Status> statuses) {
+  void _setStatuses(List<Status> statuses) {
     state = state.copyWith(statuses: statuses);
   }
 
-  void setStatus(Status status) {
+  void _setStatus(Status status) {
     final statuses = state.statuses.map((element) {
       return element.id == status.id ? status : element;
     }).toList();
-    setStatuses(statuses);
+    _setStatuses(statuses);
   }
 
-  void addStatuses(List<Status> statuses) {
-    setStatuses([...statuses, ...state.statuses]);
+  void _addStatuses(List<Status> statuses) {
+    _setStatuses([...statuses, ...state.statuses]);
   }
 
-  void addStatus(Status status) {
-    setStatuses([status, ...state.statuses]);
+  void _addStatus(Status status) {
+    _setStatuses([status, ...state.statuses]);
   }
 
   Future<void> onRefresh() async {
     if (state.isLoading) return;
-    reset();
+    _reset();
     await fetchTimeline();
   }
 
@@ -51,7 +51,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     setLoading(true);
     final fetchedStatuses = await MastodonRepository.instance.fetchStatus();
     setLoading(false);
-    addStatuses(fetchedStatuses);
+    _addStatuses(fetchedStatuses);
   }
 
   Future<void> postStatus({
@@ -78,11 +78,11 @@ class TimelineNotifier extends _$TimelineNotifier {
         state.statuses,
         inReplyToId,
       );
-      setStatus(
+      _setStatus(
         repliedStatus.copyWith(repliesCount: repliedStatus.favouritesCount + 1),
       );
     }
-    addStatus(postedStatus);
+    _addStatus(postedStatus);
   }
 
   Future<void> onTapBoost(Status tappedStatus) async {
@@ -99,7 +99,7 @@ class TimelineNotifier extends _$TimelineNotifier {
       );
     }
     setLoading(false);
-    setStatus(status);
+    _setStatus(status);
   }
 
   Future<void> onTapFavorite(Status tappedStatus) async {
@@ -116,6 +116,6 @@ class TimelineNotifier extends _$TimelineNotifier {
       );
     }
     setLoading(false);
-    setStatus(status);
+    _setStatus(status);
   }
 }
