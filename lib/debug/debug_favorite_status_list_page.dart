@@ -47,8 +47,7 @@ class _DebugFavoriteStatusListPageState
   @override
   Widget build(BuildContext context) {
     final statuses = ref.watch(
-      favoriteStatusListNotifierProvider
-          .select((value) => value.favoriteStatusList),
+      favoriteStatusListNotifierProvider.select((value) => value.statuses),
     );
     return Scaffold(
       appBar: AppBar(

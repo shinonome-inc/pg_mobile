@@ -5,17 +5,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'favorite_status_list_notifier.g.dart';
 
 @riverpod
-class favoriteStatusListNotifier extends _$favoriteStatusListNotifier {
+class FavoriteStatusListNotifier extends _$FavoriteStatusListNotifier {
   @override
   FavoriteStatusListState build() {
-    return initialStatusListState;
+    return initialFavoriteStatusListState;
   }
 
   Future<void> fetchFavoriteStatusList() async {
-    final newFavoriteStatusList =
+    final statuses =
         await MastodonRepository.instance.fetchFavoriteStatusList();
-    final currentFavoriteStatusList = [...state.favoriteStatusList];
-    currentFavoriteStatusList.addAll(newFavoriteStatusList);
-    state = state.copyWith(favoriteStatusList: currentFavoriteStatusList);
+    state = state.copyWith(statuses: statuses);
   }
 }
