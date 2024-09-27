@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pg_mobile/models/mastodon/account.dart';
+import 'package:pg_mobile/models/states/favorite_status_list_state.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
 
 import '../provider_container.dart';
@@ -11,7 +11,7 @@ void main() {
       final notifier =
           container.read(favoriteStatusListNotifierProvider.notifier);
 
-      expect(notifier.state, initialAccount);
+      expect(notifier.state, initialFavoriteStatusListState);
     });
   });
 }
