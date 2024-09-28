@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
             scrollbarTheme: ScrollbarThemeData(
               radius: Radius.circular(8.r),
               interactive: true,
-              thumbColor: MaterialStateProperty.all(AppColors.gray3),
+              thumbColor: WidgetStateProperty.all(AppColors.gray3),
             ),
           ),
           home: child,
