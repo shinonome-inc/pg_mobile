@@ -11,9 +11,9 @@ import 'package:pg_mobile/widgets/reply_to_status_view.dart';
 
 class NewPostModalBottomSheet extends ConsumerStatefulWidget {
   const NewPostModalBottomSheet({
-    Key? key,
+    super.key,
     required this.replyToStatus,
-  }) : super(key: key);
+  });
 
   final Status? replyToStatus;
 
@@ -33,7 +33,7 @@ class _NewPostModalBottomSheetState
   double _replyToStatusViewHeight = 0.0;
 
   Future<void> _onPressedSend() async {
-    final notifier = ref.read(timelineProvider.notifier);
+    final notifier = ref.read(timelineNotifierProvider.notifier);
     await notifier.postStatus(
       text: _controller.text,
       inReplyToId: widget.replyToStatus?.id,
@@ -66,7 +66,7 @@ class _NewPostModalBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    final bool isLoading = ref.watch(timelineProvider.select(
+    final bool isLoading = ref.watch(timelineNotifierProvider.select(
       (value) => value.isLoading,
     ));
     const minChildSize = 0.24;

@@ -6,10 +6,11 @@ part 'favorite_status_list_state.freezed.dart';
 @freezed
 class FavoriteStatusListState with _$FavoriteStatusListState {
   const factory FavoriteStatusListState({
-    required List<Status> favoriteStatusList,
+    required List<Status> statuses,
   }) = _FavoriteStatusListState;
 }
 
-const FavoriteStatusListState defaultStatusListState = FavoriteStatusListState(
-  favoriteStatusList: [],
+const FavoriteStatusListState initialFavoriteStatusListState =
+    FavoriteStatusListState(
+  statuses: [],
 );

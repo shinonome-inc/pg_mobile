@@ -1,5 +1,6 @@
 import 'package:html/parser.dart';
 import 'package:pg_mobile/constants/patterns.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_mention.dart';
 
 /// ステータスに関するユーティリティクラスです。
@@ -33,4 +34,8 @@ class StatusUtil {
     }
     return mentionsText;
   }
+
+  /// 指定されたIDを持つ投稿を取得する。
+  static Status findStatusFromId(List<Status> statuses, String id) =>
+      statuses.firstWhere((element) => element.id == id);
 }

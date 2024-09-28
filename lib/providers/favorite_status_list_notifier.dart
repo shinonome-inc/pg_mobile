@@ -1,22 +1,19 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pg_mobile/models/states/favorite_status_list_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final favoriteStatusListProvider =
-    StateNotifierProvider<FavoriteStatusListNotifier, FavoriteStatusListState>(
-        (ref) {
-  return FavoriteStatusListNotifier();
-});
+part 'favorite_status_list_notifier.g.dart';
 
-class FavoriteStatusListNotifier
-    extends StateNotifier<FavoriteStatusListState> {
-  FavoriteStatusListNotifier() : super(defaultStatusListState);
+@riverpod
+class FavoriteStatusListNotifier extends _$FavoriteStatusListNotifier {
+  @override
+  FavoriteStatusListState build() {
+    return initialFavoriteStatusListState;
+  }
 
   Future<void> fetchFavoriteStatusList() async {
-    final newFavoriteStatusList =
+    final statuses =
         await MastodonRepository.instance.fetchFavoriteStatusList();
-    final currentFavoriteStatusList = [...state.favoriteStatusList];
-    currentFavoriteStatusList.addAll(newFavoriteStatusList);
-    state = state.copyWith(favoriteStatusList: currentFavoriteStatusList);
+    state = state.copyWith(statuses: statuses);
   }
 }

@@ -12,7 +12,7 @@ class ThreadState with _$ThreadState {
   }) = _ThreadState;
 }
 
-const ThreadState defaultThreadState = ThreadState(
+const ThreadState initialThreadState = ThreadState(
   isLoading: false,
   hasError: false,
   context: defaultContext,

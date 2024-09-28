@@ -11,7 +11,7 @@ class TimelineState with _$TimelineState {
   }) = _TimelineState;
 }
 
-const TimelineState defaultTimelineState = TimelineState(
+const TimelineState initialTimelineState = TimelineState(
   isLoading: false,
   statuses: [],
 );

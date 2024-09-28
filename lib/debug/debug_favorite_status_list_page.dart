@@ -9,7 +9,7 @@ import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/widgets/status_item.dart';
 
 class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
-  const DebugFavoriteStatusListPage({Key? key}) : super(key: key);
+  const DebugFavoriteStatusListPage({super.key});
 
   @override
   ConsumerState<DebugFavoriteStatusListPage> createState() =>
@@ -19,10 +19,10 @@ class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
 class _DebugFavoriteStatusListPageState
     extends ConsumerState<DebugFavoriteStatusListPage> {
   final ScrollController _scrollController = ScrollController();
-  Account signedInUser = defaultAccount;
+  Account signedInUser = initialAccount;
 
   Future<void> _fetchedSignedInUser() async {
-    final notifier = ref.read(timelineProvider.notifier);
+    final notifier = ref.read(timelineNotifierProvider.notifier);
     notifier.setLoading(true);
     setState(() async {
       signedInUser = await MastodonRepository.instance.fetchCredentialAccount();
@@ -36,7 +36,7 @@ class _DebugFavoriteStatusListPageState
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
         await ref
-            .read(favoriteStatusListProvider.notifier)
+            .read(favoriteStatusListNotifierProvider.notifier)
             .fetchFavoriteStatusList();
       }
     });
@@ -47,7 +47,7 @@ class _DebugFavoriteStatusListPageState
   @override
   Widget build(BuildContext context) {
     final statuses = ref.watch(
-      favoriteStatusListProvider.select((value) => value.favoriteStatusList),
+      favoriteStatusListNotifierProvider.select((value) => value.statuses),
     );
     return Scaffold(
       appBar: AppBar(

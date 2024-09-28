@@ -20,11 +20,11 @@ import 'package:pg_mobile/widgets/status_media_view.dart';
 
 class StatusItem extends ConsumerStatefulWidget {
   const StatusItem({
-    Key? key,
+    super.key,
     required this.status,
     this.reblogAccount,
     this.showDetails = false,
-  }) : super(key: key);
+  });
 
   final Status status;
   final Account? reblogAccount;
@@ -95,7 +95,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
   }
 
   void _onTapMenu(List<StatusMenuAction> actions) {
-    final signedInUser = ref.watch(signedInUserProvider);
+    final signedInUser = ref.watch(signedInUserNotifierProvider);
     final isSignedInUser = widget.status.account.id == signedInUser.id;
     actions.removeWhere((action) {
       final isUnnecessary = isSignedInUser
@@ -108,7 +108,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = ref.read(timelineProvider.notifier);
+    final notifier = ref.read(timelineNotifierProvider.notifier);
     final statusMenuActions = [
       StatusMenuAction(
         onPressed: _copyLink,

@@ -1,18 +1,19 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/models/mastodon/context.dart';
 import 'package:pg_mobile/models/states/thread_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final threadProvider =
-    StateNotifierProvider<ThreadNotifier, ThreadState>((ref) {
-  return ThreadNotifier();
-});
+part 'thread_notifier.g.dart';
 
-class ThreadNotifier extends StateNotifier<ThreadState> {
-  ThreadNotifier() : super(defaultThreadState);
+@riverpod
+class ThreadNotifier extends _$ThreadNotifier {
+  @override
+  ThreadState build() {
+    return initialThreadState;
+  }
 
   void _reset() {
-    state = defaultThreadState;
+    state = initialThreadState;
   }
 
   void _setLoading(bool value) {

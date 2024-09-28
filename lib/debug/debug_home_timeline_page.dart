@@ -24,8 +24,9 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
 
   @override
   void initState() {
-    final timelineNotifier = ref.read(timelineProvider.notifier);
-    final signedInUserNotifier = ref.read(signedInUserProvider.notifier);
+    final timelineNotifier = ref.read(timelineNotifierProvider.notifier);
+    final signedInUserNotifier =
+        ref.read(signedInUserNotifierProvider.notifier);
     Future(() async {
       await signedInUserNotifier.fetchUser();
       await timelineNotifier.fetchTimeline();
@@ -43,9 +44,9 @@ class _DebugHomeTimelinePageState extends ConsumerState<DebugHomeTimelinePage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(timelineProvider);
-    final notifier = ref.read(timelineProvider.notifier);
-    final signedInUser = ref.watch(signedInUserProvider);
+    final state = ref.watch(timelineNotifierProvider);
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    final signedInUser = ref.watch(signedInUserNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         leading: state.isLoading

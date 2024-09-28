@@ -1,27 +1,48 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/states/timeline_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/util/status_util.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final timelineProvider =
-    StateNotifierProvider<TimelineNotifier, TimelineState>((ref) {
-  return TimelineNotifier();
-});
+part 'timeline_notifier.g.dart';
 
-class TimelineNotifier extends StateNotifier<TimelineState> {
-  TimelineNotifier() : super(defaultTimelineState);
+@riverpod
+class TimelineNotifier extends _$TimelineNotifier {
+  @override
+  TimelineState build() {
+    return initialTimelineState;
+  }
 
-  void reset() {
-    state = defaultTimelineState;
+  void _reset() {
+    state = initialTimelineState;
   }
 
   void setLoading(bool value) {
     state = state.copyWith(isLoading: value);
   }
 
+  void _setStatuses(List<Status> statuses) {
+    state = state.copyWith(statuses: statuses);
+  }
+
+  void _setStatus(Status status) {
+    final statuses = state.statuses.map((element) {
+      return element.id == status.id ? status : element;
+    }).toList();
+    _setStatuses(statuses);
+  }
+
+  void _addStatuses(List<Status> statuses) {
+    _setStatuses([...statuses, ...state.statuses]);
+  }
+
+  void _addStatus(Status status) {
+    _setStatuses([status, ...state.statuses]);
+  }
+
   Future<void> onRefresh() async {
     if (state.isLoading) return;
-    reset();
+    _reset();
     await fetchTimeline();
   }
 
@@ -30,9 +51,7 @@ class TimelineNotifier extends StateNotifier<TimelineState> {
     setLoading(true);
     final fetchedStatuses = await MastodonRepository.instance.fetchStatus();
     setLoading(false);
-    final statuses = [...state.statuses];
-    statuses.addAll(fetchedStatuses);
-    state = state.copyWith(statuses: statuses);
+    _addStatuses(fetchedStatuses);
   }
 
   Future<void> postStatus({
@@ -55,22 +74,20 @@ class TimelineNotifier extends StateNotifier<TimelineState> {
       setLoading(false);
     }
     if (inReplyToId != null) {
-      List<Status> statuses = state.statuses
-          .map(
-            (status) => status.id == inReplyToId
-                ? status.copyWith(repliesCount: status.repliesCount + 1)
-                : status,
-          )
-          .toList();
-      state = state.copyWith(statuses: statuses);
+      final repliedStatus = StatusUtil.findStatusFromId(
+        state.statuses,
+        inReplyToId,
+      );
+      _setStatus(
+        repliedStatus.copyWith(repliesCount: repliedStatus.favouritesCount + 1),
+      );
     }
-    state = state.copyWith(
-      statuses: [postedStatus, ...state.statuses],
-    );
+    _addStatus(postedStatus);
   }
 
   Future<void> onTapBoost(Status tappedStatus) async {
-    if (tappedStatus.reblogged == null) return;
+    if (tappedStatus.reblogged == null || state.isLoading) return;
+    setLoading(true);
     Status status;
     if (tappedStatus.reblogged!) {
       status = await MastodonRepository.instance.undoBoostStatus(
@@ -81,13 +98,13 @@ class TimelineNotifier extends StateNotifier<TimelineState> {
         tappedStatus.id,
       );
     }
-    List<Status> statuses = state.statuses;
-    statuses.firstWhere((element) => element.id == status.id);
-    state = state.copyWith(statuses: statuses);
+    setLoading(false);
+    _setStatus(status);
   }
 
   Future<void> onTapFavorite(Status tappedStatus) async {
-    if (tappedStatus.favourited == null) return;
+    if (tappedStatus.favourited == null || state.isLoading) return;
+    setLoading(true);
     Status status;
     if (tappedStatus.favourited!) {
       status = await MastodonRepository.instance.undoFavoriteStatus(
@@ -98,8 +115,7 @@ class TimelineNotifier extends StateNotifier<TimelineState> {
         tappedStatus.id,
       );
     }
-    List<Status> statuses = state.statuses;
-    statuses.firstWhere((element) => element.id == status.id);
-    state = state.copyWith(statuses: statuses);
+    setLoading(false);
+    _setStatus(status);
   }
 }

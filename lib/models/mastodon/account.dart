@@ -40,7 +40,7 @@ class Account with _$Account {
       _$AccountFromJson(json);
 }
 
-final Account defaultAccount = Account(
+final Account initialAccount = Account(
   id: '',
   username: '',
   acct: '',
