@@ -89,11 +89,11 @@ class TimelineNotifier extends _$TimelineNotifier {
     if (status.reblogged == null || state.isLoading) return;
     setLoading(true);
     if (status.reblogged!) {
-      final undoBoostedStatus = status.copyWith(
+      final unboostedStatus = status.copyWith(
         reblogged: false,
         reblogsCount: status.reblogsCount - 1,
       );
-      _setStatus(undoBoostedStatus);
+      _setStatus(unboostedStatus);
       await MastodonRepository.instance.undoBoostStatus(
         status.id,
       );
@@ -114,11 +114,11 @@ class TimelineNotifier extends _$TimelineNotifier {
     if (status.favourited == null || state.isLoading) return;
     setLoading(true);
     if (status.favourited!) {
-      final undoFavouritedStatus = status.copyWith(
+      final unfavouritedStatus = status.copyWith(
         favourited: false,
         favouritesCount: status.favouritesCount - 1,
       );
-      _setStatus(undoFavouritedStatus);
+      _setStatus(unfavouritedStatus);
       await MastodonRepository.instance.undoFavoriteStatus(
         status.id,
       );
