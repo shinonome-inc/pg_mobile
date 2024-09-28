@@ -31,3 +31,4 @@ linter:
 analyzer:
   errors:
     invalid_annotation_target: ignore
+    use_super_parameters: false # Flutterバージョンの変更に伴う大量のwarning修正コスト削減のため無効化
