@@ -85,38 +85,53 @@ class TimelineNotifier extends _$TimelineNotifier {
     _addStatus(postedStatus);
   }
 
-  Future<void> onTapBoost(Status tappedStatus) async {
-    if (tappedStatus.reblogged == null || state.isLoading) return;
+  Future<void> onTapBoost(Status status) async {
+    if (status.reblogged == null || state.isLoading) return;
     setLoading(true);
-    Status status;
-    if (tappedStatus.reblogged!) {
-      status = await MastodonRepository.instance.undoBoostStatus(
-        tappedStatus.id,
+    if (status.reblogged!) {
+      final unboostedStatus = status.copyWith(
+        reblogged: false,
+        reblogsCount: status.reblogsCount - 1,
+      );
+      _setStatus(unboostedStatus);
+      await MastodonRepository.instance.undoBoostStatus(
+        status.id,
       );
     } else {
-      status = await MastodonRepository.instance.boostStatus(
-        tappedStatus.id,
+      final boostedStatus = status.copyWith(
+        reblogged: true,
+        reblogsCount: status.reblogsCount + 1,
+      );
+      _setStatus(boostedStatus);
+      await MastodonRepository.instance.boostStatus(
+        status.id,
       );
     }
     setLoading(false);
-    _setStatus(status);
   }
 
-  Future<void> onTapFavorite(Status tappedStatus) async {
-    if (tappedStatus.favourited == null || state.isLoading) return;
+  Future<void> onTapFavorite(Status status) async {
+    if (status.favourited == null || state.isLoading) return;
     setLoading(true);
-    Status status;
-    if (tappedStatus.favourited!) {
-      status = await MastodonRepository.instance.undoFavoriteStatus(
-        tappedStatus.id,
+    if (status.favourited!) {
+      final unfavouritedStatus = status.copyWith(
+        favourited: false,
+        favouritesCount: status.favouritesCount - 1,
       );
-      status = status.copyWith(favouritesCount: status.favouritesCount - 1);
+      _setStatus(unfavouritedStatus);
+      await MastodonRepository.instance.undoFavoriteStatus(
+        status.id,
+      );
     } else {
-      status = await MastodonRepository.instance.favoriteStatus(
-        tappedStatus.id,
+      final favouritedStatus = status.copyWith(
+        favourited: true,
+        favouritesCount: status.favouritesCount + 1,
+      );
+      _setStatus(favouritedStatus);
+      await MastodonRepository.instance.favoriteStatus(
+        status.id,
       );
     }
     setLoading(false);
-    _setStatus(status);
   }
 }
