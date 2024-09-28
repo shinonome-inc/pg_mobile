@@ -93,9 +93,17 @@ class TimelineNotifier extends _$TimelineNotifier {
       status = await MastodonRepository.instance.undoBoostStatus(
         tappedStatus.id,
       );
+      status = status.copyWith(reblogsCount: status.reblogsCount - 1);
+      print(
+        'reblogged: ${status.reblogged}, reblogsCount: ${status.reblogsCount}',
+      );
     } else {
       status = await MastodonRepository.instance.boostStatus(
         tappedStatus.id,
+      );
+      status = status.copyWith(reblogsCount: status.reblogsCount + 1);
+      print(
+        'reblogged: ${status.reblogged}, reblogsCount: ${status.reblogsCount}',
       );
     }
     setLoading(false);
