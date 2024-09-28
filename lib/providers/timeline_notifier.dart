@@ -110,21 +110,28 @@ class TimelineNotifier extends _$TimelineNotifier {
     setLoading(false);
   }
 
-  Future<void> onTapFavorite(Status tappedStatus) async {
-    if (tappedStatus.favourited == null || state.isLoading) return;
+  Future<void> onTapFavorite(Status status) async {
+    if (status.favourited == null || state.isLoading) return;
     setLoading(true);
-    Status status;
-    if (tappedStatus.favourited!) {
-      status = await MastodonRepository.instance.undoFavoriteStatus(
-        tappedStatus.id,
+    if (status.favourited!) {
+      final undoFavouritedStatus = status.copyWith(
+        favourited: false,
+        favouritesCount: status.favouritesCount - 1,
       );
-      status = status.copyWith(favouritesCount: status.favouritesCount - 1);
+      _setStatus(undoFavouritedStatus);
+      await MastodonRepository.instance.undoFavoriteStatus(
+        status.id,
+      );
     } else {
-      status = await MastodonRepository.instance.favoriteStatus(
-        tappedStatus.id,
+      final favouritedStatus = status.copyWith(
+        favourited: true,
+        favouritesCount: status.favouritesCount + 1,
+      );
+      _setStatus(favouritedStatus);
+      await MastodonRepository.instance.favoriteStatus(
+        status.id,
       );
     }
     setLoading(false);
-    _setStatus(status);
   }
 }
