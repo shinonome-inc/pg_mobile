@@ -110,6 +110,7 @@ class TimelineNotifier extends _$TimelineNotifier {
       status = await MastodonRepository.instance.undoFavoriteStatus(
         tappedStatus.id,
       );
+      status = status.copyWith(favouritesCount: status.favouritesCount - 1);
     } else {
       status = await MastodonRepository.instance.favoriteStatus(
         tappedStatus.id,
