@@ -44,6 +44,7 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
               onRefresh: () async => notifier.reload(widget.selectedStatus.id),
               child: Scrollbar(
                 child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
                     children: [
                       ListView.builder(
