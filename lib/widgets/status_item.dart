@@ -4,13 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/debug/debug_thread_page.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
-import 'package:pg_mobile/extensions/status_menu_action_extension.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
+import 'package:pg_mobile/util/status_menu_action_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status_boost_label.dart';
@@ -99,62 +99,26 @@ class _StatusItemState extends ConsumerState<StatusItem> {
   }
 
   void _onTapMenu(List<StatusMenuAction> actions) {
-    final signedInUser = ref.watch(signedInUserNotifierProvider);
-    final isSignedInUser = _status.account.id == signedInUser.id;
-    actions.removeWhere((action) {
-      final isUnnecessary = isSignedInUser
-          ? action.isOnlyNotSignedInUser
-          : action.isOnlySignedInUser;
-      return isUnnecessary;
-    });
     NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
   }
 
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(timelineNotifierProvider.notifier);
+    final signedInUser = ref.watch(signedInUserNotifierProvider);
+    final isSignedInUser = _status.account.id == signedInUser.id;
     final textTheme = Theme.of(context).textTheme;
-    final statusMenuActions = [
-      StatusMenuAction(
-        onPressed: _copyLink,
-        text: 'リンクをコピー',
-        type: StatusMenuActionType.common,
-      ),
-      StatusMenuAction(
-        onPressed: _pinToProfile,
-        text: 'プロフィールに固定',
-        type: StatusMenuActionType.onlySignedInUser,
-      ),
-      StatusMenuAction(
-        onPressed: _deleteAndReturnToDraft,
-        text: '削除して下書きに戻す',
-        type: StatusMenuActionType.onlySignedInUser,
-        isDestructiveAction: true,
-      ),
-      StatusMenuAction(
-        onPressed: _delete,
-        text: '削除',
-        type: StatusMenuActionType.onlySignedInUser,
-        isDestructiveAction: true,
-      ),
-      StatusMenuAction(
-        onPressed: _mute,
-        text: '${_status.account.username}さんをミュート',
-        type: StatusMenuActionType.onlyNotSignedInUser,
-      ),
-      StatusMenuAction(
-        onPressed: _block,
-        text: '${_status.account.username}さんをブロック',
-        type: StatusMenuActionType.onlyNotSignedInUser,
-        isDestructiveAction: true,
-      ),
-      StatusMenuAction(
-        onPressed: _cancel,
-        text: 'キャンセル',
-        type: StatusMenuActionType.cancel,
-        isDestructiveAction: true,
-      ),
-    ];
+    final statusMenuActions = StatusMenuActionUtil.getStatusMenuActions(
+      status: _status,
+      isSignedInUser: isSignedInUser,
+      onCopyLink: _copyLink,
+      onPinToProfile: _pinToProfile,
+      onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
+      onDelete: _delete,
+      onMute: _mute,
+      onBlock: _block,
+      onCancel: _cancel,
+    );
     return GestureDetector(
       onTap: () {
         NavigatorUtil.pushScreen(
