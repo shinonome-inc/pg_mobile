@@ -13,8 +13,9 @@ import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
+import 'package:pg_mobile/widgets/status_boost_label.dart';
 import 'package:pg_mobile/widgets/status_engagement_view.dart';
-import 'package:pg_mobile/widgets/status_footer_item.dart';
+import 'package:pg_mobile/widgets/status_footer.dart';
 import 'package:pg_mobile/widgets/status_link_preview.dart';
 import 'package:pg_mobile/widgets/status_media_view.dart';
 
@@ -175,27 +176,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (widget.reblogAccount != null)
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 40.w),
-                      const Icon(
-                        Icons.repeat,
-                        color: AppColors.gray3,
-                      ),
-                      Text(
-                        '${widget.reblogAccount!.username}さんがブースト',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: AppColors.gray3),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                ],
-              ),
+              StatusBoostLabel(name: widget.reblogAccount?.displayName ?? ''),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -283,48 +264,14 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                         ),
                         SizedBox(height: 8.h),
                       },
-                      Row(
-                        children: [
-                          StatusFooterItem(
-                            onTap: () => _onTapReply(widget.status),
-                            iconData: Icons.reply,
-                            count: widget.status.repliesCount,
-                            color: AppColors.gray3,
-                          ),
-                          const Spacer(),
-                          StatusFooterItem(
-                            onTap: () => notifier.onTapBoost(widget.status),
-                            iconData: Icons.repeat,
-                            count: widget.showDetails
-                                ? null
-                                : widget.status.reblogsCount,
-                            color: widget.status.reblogged!
-                                ? AppColors.blue
-                                : AppColors.gray3,
-                          ),
-                          const Spacer(),
-                          StatusFooterItem(
-                            onTap: () => notifier.onTapFavorite(widget.status),
-                            iconData: widget.status.favourited!
-                                ? Icons.star
-                                : Icons.star_border,
-                            count: widget.showDetails
-                                ? null
-                                : widget.status.favouritesCount,
-                            color: widget.status.favourited!
-                                ? AppColors.yellow
-                                : AppColors.gray3,
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                            onTap: () => _onTapMenu(statusMenuActions),
-                            child: const Icon(
-                              Icons.more_horiz,
-                              color: AppColors.gray3,
-                            ),
-                          ),
-                          const Spacer(),
-                        ],
+                      StatusFooter(
+                        status: widget.status,
+                        showDetails: widget.showDetails,
+                        onTapReply: () => _onTapReply(widget.status),
+                        onTapBoost: () => notifier.onTapBoost(widget.status),
+                        onTapFavorite: () =>
+                            notifier.onTapFavorite(widget.status),
+                        onTapMenu: () => _onTapMenu(statusMenuActions),
                       ),
                     ],
                   ),
