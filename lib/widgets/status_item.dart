@@ -36,7 +36,10 @@ class StatusItem extends ConsumerStatefulWidget {
 }
 
 class _StatusItemState extends ConsumerState<StatusItem> {
+  bool get _showDetails => widget.showDetails;
   bool get _hideDetails => !widget.showDetails;
+  Status get _status => widget.status;
+  Account? get _reblogAccount => widget.reblogAccount;
 
   void _onTapHashtag(String hashtag) {
     // TODO: ハッシュタグをタップ
@@ -97,7 +100,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
 
   void _onTapMenu(List<StatusMenuAction> actions) {
     final signedInUser = ref.watch(signedInUserNotifierProvider);
-    final isSignedInUser = widget.status.account.id == signedInUser.id;
+    final isSignedInUser = _status.account.id == signedInUser.id;
     actions.removeWhere((action) {
       final isUnnecessary = isSignedInUser
           ? action.isOnlyNotSignedInUser
@@ -110,6 +113,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
   @override
   Widget build(BuildContext context) {
     final notifier = ref.read(timelineNotifierProvider.notifier);
+    final textTheme = Theme.of(context).textTheme;
     final statusMenuActions = [
       StatusMenuAction(
         onPressed: _copyLink,
@@ -135,12 +139,12 @@ class _StatusItemState extends ConsumerState<StatusItem> {
       ),
       StatusMenuAction(
         onPressed: _mute,
-        text: '${widget.status.account.username}さんをミュート',
+        text: '${_status.account.username}さんをミュート',
         type: StatusMenuActionType.onlyNotSignedInUser,
       ),
       StatusMenuAction(
         onPressed: _block,
-        text: '${widget.status.account.username}さんをブロック',
+        text: '${_status.account.username}さんをブロック',
         type: StatusMenuActionType.onlyNotSignedInUser,
         isDestructiveAction: true,
       ),
@@ -155,7 +159,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
       onTap: () {
         NavigatorUtil.pushScreen(
           context,
-          DebugThreadPage(selectedStatus: widget.status),
+          DebugThreadPage(selectedStatus: _status),
         );
       },
       child: Container(
@@ -164,24 +168,24 @@ class _StatusItemState extends ConsumerState<StatusItem> {
           border: Border(
             top: BorderSide(
               color: AppColors.gray2,
-              width: widget.showDetails ? 4.h : 0.0,
+              width: _showDetails ? 4.h : 0.0,
             ),
             bottom: BorderSide(
               color: AppColors.gray2,
-              width: widget.showDetails ? 4.h : 1.h,
+              width: _showDetails ? 4.h : 1.h,
             ),
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (widget.reblogAccount != null)
-              StatusBoostLabel(name: widget.reblogAccount?.displayName ?? ''),
+            if (_reblogAccount != null)
+              StatusBoostLabel(name: _reblogAccount?.displayName ?? ''),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 NetworkImageContainer(
-                  imageUrl: widget.status.account.avatar,
+                  imageUrl: _status.account.avatar,
                   width: 56.w,
                   height: 56.w,
                   boxShape: BoxShape.circle,
@@ -197,80 +201,74 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                           Row(
                             children: [
                               Text(
-                                widget.status.account.displayName,
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                _status.account.displayName,
+                                style: textTheme.bodyMedium,
                               ),
                               if (_hideDetails) ...{
                                 SizedBox(width: 8.w),
                                 Expanded(
                                   child: Text(
-                                    '@${widget.status.account.username}',
+                                    '@${_status.account.username}',
                                     overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
+                                    style: textTheme.bodyMedium!
                                         .copyWith(color: AppColors.gray3),
                                   ),
                                 ),
                                 Text(
-                                  widget.status.createdAtTimeAgoText,
+                                  _status.createdAtTimeAgoText,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
+                                  style: textTheme.bodyMedium!
                                       .copyWith(color: AppColors.gray3),
                                 ),
                               }
                             ],
                           ),
-                          if (widget.showDetails)
+                          if (_showDetails)
                             Text(
-                              '@${widget.status.account.username}',
+                              '@${_status.account.username}',
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
+                              style: textTheme.bodyMedium!
                                   .copyWith(color: AppColors.gray3),
                             ),
                         ],
                       ),
                       SizedBox(height: 8.h),
                       LinkableText(
-                        widget.status.contentText,
+                        _status.contentText,
                         onTapMention: (value) => _onTapMention(value),
                         onTapHashtag: (value) => _onTapHashtag(value),
                       ),
                       SizedBox(height: 8.h),
-                      if (widget.status.mediaAttachments.isNotEmpty) ...{
-                        SizedBox(
+                      if (_status.mediaAttachments.isNotEmpty)
+                        Container(
                           height: 160.h,
+                          margin: EdgeInsets.only(bottom: 8.h),
                           child: StatusMediaView(
-                            mediaAttachments: widget.status.mediaAttachments,
+                            mediaAttachments: _status.mediaAttachments,
                           ),
                         ),
-                        SizedBox(height: 8.h),
-                      },
-                      if (widget.status.showLinkPreview) ...{
-                        StatusLinkPreview(
-                          url: widget.status.urls.first,
+                      if (_status.showLinkPreview)
+                        Container(
+                          margin: EdgeInsets.only(bottom: 8.h),
+                          child: StatusLinkPreview(
+                            url: _status.urls.first,
+                          ),
                         ),
-                        SizedBox(height: 8.h),
-                      },
-                      if (widget.showDetails) ...{
-                        StatusDetailsEngagementView(
-                          status: widget.status,
-                          onTapReblog: _onTapEngagementReblog,
-                          onTapFavorite: _onTapEngagementFavorite,
+                      if (_showDetails)
+                        Container(
+                          margin: EdgeInsets.only(bottom: 8.h),
+                          child: StatusDetailsEngagementView(
+                            status: _status,
+                            onTapReblog: _onTapEngagementReblog,
+                            onTapFavorite: _onTapEngagementFavorite,
+                          ),
                         ),
-                        SizedBox(height: 8.h),
-                      },
                       StatusFooter(
-                        status: widget.status,
-                        showDetails: widget.showDetails,
-                        onTapReply: () => _onTapReply(widget.status),
-                        onTapBoost: () => notifier.onTapBoost(widget.status),
-                        onTapFavorite: () =>
-                            notifier.onTapFavorite(widget.status),
+                        status: _status,
+                        showDetails: _showDetails,
+                        onTapReply: () => _onTapReply(_status),
+                        onTapBoost: () => notifier.onTapBoost(_status),
+                        onTapFavorite: () => notifier.onTapFavorite(_status),
                         onTapMenu: () => _onTapMenu(statusMenuActions),
                       ),
                     ],
