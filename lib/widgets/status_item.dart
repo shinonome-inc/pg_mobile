@@ -56,6 +56,16 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     );
   }
 
+  Future<void> _onTapBoost(Status status) async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.onTapBoost(status);
+  }
+
+  Future<void> _onTapFavorite(Status status) async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.onTapFavorite(status);
+  }
+
   void _copyLink() {
     // TODO: リンクをコピー
     NavigatorUtil.popScreen(context);
@@ -104,7 +114,6 @@ class _StatusItemState extends ConsumerState<StatusItem> {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = ref.read(timelineNotifierProvider.notifier);
     final signedInUser = ref.watch(signedInUserNotifierProvider);
     final isSignedInUser = _status.account.id == signedInUser.id;
     final textTheme = Theme.of(context).textTheme;
@@ -231,8 +240,8 @@ class _StatusItemState extends ConsumerState<StatusItem> {
                         status: _status,
                         showDetails: _showDetails,
                         onTapReply: () => _onTapReply(_status),
-                        onTapBoost: () => notifier.onTapBoost(_status),
-                        onTapFavorite: () => notifier.onTapFavorite(_status),
+                        onTapBoost: () => _onTapBoost(_status),
+                        onTapFavorite: () => _onTapFavorite(_status),
                         onTapMenu: () => _onTapMenu(statusMenuActions),
                       ),
                     ],
