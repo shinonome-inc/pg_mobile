@@ -278,12 +278,9 @@ class MastodonRepository {
     }
   }
 
-  Future<Status> deleteStatus(String id) async {
+  Future<void> deleteStatus(String id) async {
     final response = await _dio.delete('/api/v1/statuses/$id');
-    if (response.statusCode == 200) {
-      final status = Status.fromJson(response.data);
-      return status;
-    } else {
+    if (response.statusCode != 200) {
       throw Exception(
         'Failed to delete status with status code ${response.statusCode}',
       );
