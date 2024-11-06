@@ -134,4 +134,15 @@ class TimelineNotifier extends _$TimelineNotifier {
     }
     setLoading(false);
   }
+
+  Future<void> deleteStatus(Status status) async {
+    if (state.isLoading) return;
+    setLoading(true);
+    await MastodonRepository.instance.deleteStatus(status.id);
+    final deletedStatuses = state.statuses.where((element) {
+      return element.id != status.id;
+    }).toList();
+    _setStatuses(deletedStatuses);
+    setLoading(false);
+  }
 }
