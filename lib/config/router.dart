@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pg_mobile/config/env.dart';
+import 'package:pg_mobile/debug/debug_page.dart';
 import 'package:pg_mobile/pages/boost_user_list/boost_user_list_page.dart';
 import 'package:pg_mobile/pages/create_status/create_status_page.dart';
 import 'package:pg_mobile/pages/favorite_user_list/favorite_user_list_page.dart';
@@ -18,6 +20,7 @@ import 'package:pg_mobile/pages/user/user_page.dart';
 
 /// アプリ内の画面に関する列挙型。
 enum AppPage {
+  debug, // TODO: 技術調査用なので、本実装が始まったら削除する。
   launch,
   top,
   signIn,
@@ -36,6 +39,8 @@ enum AppPage {
 
   String get path {
     switch (this) {
+      case AppPage.debug:
+        return '/debug';
       case AppPage.launch:
         return '/';
       case AppPage.top:
@@ -71,6 +76,8 @@ enum AppPage {
 
   Widget get child {
     switch (this) {
+      case AppPage.debug:
+        return const DebugPage();
       case AppPage.launch:
         return const LaunchPage();
       case AppPage.top:
@@ -109,7 +116,7 @@ enum AppPage {
 ///
 /// ルーティングする画面の追加・削除・変更を行う場合は、列挙型`AppPage`を変更する。
 final router = GoRouter(
-  initialLocation: AppPage.launch.path,
+  initialLocation: Env.useDebugMode ? AppPage.debug.path : AppPage.launch.path,
   routes: [
     for (final page in AppPage.values)
       GoRoute(
