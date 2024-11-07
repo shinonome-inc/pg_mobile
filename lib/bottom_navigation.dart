@@ -4,7 +4,7 @@ import 'package:pg_mobile/pages/home/home_view.dart';
 import 'package:pg_mobile/pages/notifications/notifications_view.dart';
 import 'package:pg_mobile/pages/user/user_view.dart';
 
-enum NavigationMenu { home, notifications, office, rank, user }
+enum NavigationMenu { home, notifications, user }
 
 final baseTabViewProvider =
     StateProvider<NavigationMenu>((ref) => NavigationMenu.home);

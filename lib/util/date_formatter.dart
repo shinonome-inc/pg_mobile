@@ -26,9 +26,4 @@ class DateFormatter {
       return DateFormat('yyyy/MM/dd').format(dateTime);
     }
   }
-
-  static String formatPGNDate(DateTime dateTime) {
-    final formatter = DateFormat('yyyy-MM-dd');
-    return formatter.format(dateTime);
-  }
 }
