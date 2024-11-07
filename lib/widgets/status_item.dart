@@ -81,8 +81,8 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     NavigatorUtil.popScreen(context);
   }
 
-  Future<void> _delete(Status status) async {
-    await ref.read(timelineNotifierProvider.notifier).deleteStatus(status);
+  void _delete() {
+    // TODO: 削除
     NavigatorUtil.popScreen(context);
   }
 
@@ -123,7 +123,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
       onCopyLink: _copyLink,
       onPinToProfile: _pinToProfile,
       onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
-      onDelete: () => _delete(_status),
+      onDelete: _delete,
       onMute: _mute,
       onBlock: _block,
       onCancel: _cancel,
