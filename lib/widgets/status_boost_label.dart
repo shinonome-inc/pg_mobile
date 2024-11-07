@@ -20,7 +20,7 @@ class StatusBoostLabel extends StatelessWidget {
           ),
           SizedBox(width: 8.w),
           Text(
-            '${name}さんがブースト',
+            '$nameさんがブースト',
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium!
