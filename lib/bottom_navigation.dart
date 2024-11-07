@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/pages/home/home_view.dart';
 import 'package:pg_mobile/pages/notifications/notifications_view.dart';
-import 'package:pg_mobile/pages/office/office_view.dart';
-import 'package:pg_mobile/pages/rank/rank_view.dart';
 import 'package:pg_mobile/pages/user/user_view.dart';
 
 enum NavigationMenu { home, notifications, office, rank, user }
@@ -17,8 +15,6 @@ class BottomNavigation extends ConsumerWidget {
   final screens = [
     const HomeView(),
     const NotificationsView(),
-    const OfficeView(),
-    const RankView(),
     const UserView(),
   ];
 
@@ -26,8 +22,6 @@ class BottomNavigation extends ConsumerWidget {
     const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
     const BottomNavigationBarItem(
         icon: Icon(Icons.notifications), label: 'Notifications'),
-    const BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Office'),
-    const BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Rank'),
     const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'User'),
   ];
 
