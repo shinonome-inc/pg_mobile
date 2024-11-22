@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pg_mobile/config/router.dart';
 
 class FollowingListPage extends ConsumerStatefulWidget {
   const FollowingListPage({super.key});
@@ -11,6 +13,18 @@ class FollowingListPage extends ConsumerStatefulWidget {
 class _FollowingListPageState extends ConsumerState<FollowingListPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Following List Page'),
+      ),
+      body: Center(
+        child: TextButton(
+          onPressed: () {
+            context.push(AppPage.user.path);
+          },
+          child: const Text('User'),
+        ),
+      ),
+    );
   }
 }

@@ -11,6 +11,10 @@ class CreateStatusPage extends ConsumerStatefulWidget {
 class _CreateStatusPageState extends ConsumerState<CreateStatusPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Create Status Page'),
+      ),
+    );
   }
 }
