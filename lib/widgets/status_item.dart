@@ -81,8 +81,10 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     NavigatorUtil.popScreen(context);
   }
 
-  void _delete() {
-    // TODO: 削除
+  Future<void> _delete() async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.deleteStatus(widget.status);
+    if (!mounted) return;
     NavigatorUtil.popScreen(context);
   }
 
