@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pg_mobile/config/router.dart';
+import 'package:pg_mobile/models/enums/app_page.dart';
 
 class FollowerListPage extends ConsumerStatefulWidget {
   const FollowerListPage({super.key});
