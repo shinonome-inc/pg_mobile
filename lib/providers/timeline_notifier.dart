@@ -145,4 +145,18 @@ class TimelineNotifier extends _$TimelineNotifier {
     _setStatuses(deletedStatuses);
     setLoading(false);
   }
+
+  Future<void> pinStatusToProfile(Status status) async {
+    if (state.isLoading) return;
+    setLoading(true);
+    await MastodonRepository.instance.pinStatusToProfile(status.id);
+    setLoading(false);
+  }
+
+  Future<void> unpinStatusToProfile(Status status) async {
+    if (state.isLoading) return;
+    setLoading(true);
+    await MastodonRepository.instance.unpinStatusToProfile(status.id);
+    setLoading(false);
+  }
 }
