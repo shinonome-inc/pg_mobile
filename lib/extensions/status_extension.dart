@@ -14,4 +14,6 @@ extension StatusExtension on Status {
 
   bool get containsUrl => urls.isNotEmpty;
   bool get showLinkPreview => containsUrl && mediaAttachments.isEmpty;
+
+  bool get isPinnedToProfile => pinned ?? false;
 }
