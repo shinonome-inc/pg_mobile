@@ -57,8 +57,15 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     NavigatorUtil.popScreen(context);
   }
 
-  void _pinToProfile() {
-    // TODO: プロフィールに固定
+  Future<void> _pinToProfile() async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.pinStatusToProfile(widget.status);
+    NavigatorUtil.popScreen(context);
+  }
+
+  Future<void> _unpinToProfile() async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.unpinStatusToProfile(widget.status);
     NavigatorUtil.popScreen(context);
   }
 
@@ -118,8 +125,9 @@ class _StatusItemState extends ConsumerState<StatusItem> {
         type: StatusMenuActionType.common,
       ),
       StatusMenuAction(
-        onPressed: _pinToProfile,
-        text: 'プロフィールに固定',
+        onPressed:
+            widget.status.isPinnedToProfile ? _unpinToProfile : _pinToProfile,
+        text: widget.status.isPinnedToProfile ? 'プロフィールへの固定を解除' : 'プロフィールに固定',
         type: StatusMenuActionType.onlySignedInUser,
       ),
       StatusMenuAction(
