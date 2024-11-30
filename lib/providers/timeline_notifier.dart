@@ -1,4 +1,5 @@
 import 'package:pg_mobile/extensions/status_extension.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/states/timeline_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
@@ -164,6 +165,17 @@ class TimelineNotifier extends _$TimelineNotifier {
     final unpinnedStatus =
         await MastodonRepository.instance.unpinStatusToProfile(status.id);
     _setStatus(unpinnedStatus);
+    setLoading(false);
+  }
+
+  Future<void> muteAccount(Account account) async {
+    if (state.isLoading) return;
+    setLoading(true);
+    await MastodonRepository.instance.muteAccount(account.id);
+    final filteredStatuses = state.statuses.where((status) {
+      return status.account.id != account.id;
+    }).toList();
+    _setStatuses(filteredStatuses);
     setLoading(false);
   }
 }
