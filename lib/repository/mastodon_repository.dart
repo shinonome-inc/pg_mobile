@@ -286,4 +286,22 @@ class MastodonRepository {
       );
     }
   }
+
+  Future<void> pinStatusToProfile(String id) async {
+    final response = await _dio.post('/api/v1/statuses/$id/pin');
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to pin status to profile with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<void> unpinStatusToProfile(String id) async {
+    final response = await _dio.post('/api/v1/statuses/$id/unpin');
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Failed to unpin status from profile with status code ${response.statusCode}',
+      );
+    }
+  }
 }
