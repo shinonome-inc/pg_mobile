@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/extensions/status_menu_action_extension.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
@@ -26,7 +27,7 @@ class StatusMenuActionUtil {
       ),
       StatusMenuAction(
         onPressed: onPinToProfile,
-        text: 'プロフィールに固定',
+        text: status.isPinnedToProfile ? 'プロフィールへの固定を解除' : 'プロフィールに固定',
         type: StatusMenuActionType.onlySignedInUser,
       ),
       StatusMenuAction(

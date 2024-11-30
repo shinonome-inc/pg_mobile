@@ -1,3 +1,4 @@
+import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/states/timeline_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
@@ -143,6 +144,26 @@ class TimelineNotifier extends _$TimelineNotifier {
       return element.id != status.id;
     }).toList();
     _setStatuses(deletedStatuses);
+    setLoading(false);
+  }
+
+  Future<void> pinStatusToProfile(Status status) async {
+    if (state.isLoading) return;
+    if (status.isPinnedToProfile) return;
+    setLoading(true);
+    final pinnedStatus =
+        await MastodonRepository.instance.pinStatusToProfile(status.id);
+    _setStatus(pinnedStatus);
+    setLoading(false);
+  }
+
+  Future<void> unpinStatusToProfile(Status status) async {
+    if (state.isLoading) return;
+    if (!status.isPinnedToProfile) return;
+    setLoading(true);
+    final unpinnedStatus =
+        await MastodonRepository.instance.unpinStatusToProfile(status.id);
+    _setStatus(unpinnedStatus);
     setLoading(false);
   }
 }

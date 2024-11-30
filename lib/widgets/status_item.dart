@@ -36,10 +36,10 @@ class StatusItem extends ConsumerStatefulWidget {
 }
 
 class _StatusItemState extends ConsumerState<StatusItem> {
-  bool get _showDetails => widget.showDetails;
   bool get _hideDetails => !widget.showDetails;
-  Status get _status => widget.status;
   Account? get _reblogAccount => widget.reblogAccount;
+  Status get _status => widget.status;
+  bool get _showDetails => widget.showDetails;
 
   void _onTapHashtag(String hashtag) {
     // TODO: ハッシュタグをタップ
@@ -71,8 +71,17 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     NavigatorUtil.popScreen(context);
   }
 
-  void _pinToProfile() {
-    // TODO: プロフィールに固定
+  Future<void> _pinToProfile() async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.pinStatusToProfile(widget.status);
+    if (!mounted) return;
+    NavigatorUtil.popScreen(context);
+  }
+
+  Future<void> _unpinToProfile() async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.unpinStatusToProfile(widget.status);
+    if (!mounted) return;
     NavigatorUtil.popScreen(context);
   }
 
@@ -123,7 +132,8 @@ class _StatusItemState extends ConsumerState<StatusItem> {
       status: _status,
       isSignedInUser: isSignedInUser,
       onCopyLink: _copyLink,
-      onPinToProfile: _pinToProfile,
+      onPinToProfile:
+          _status.isPinnedToProfile ? _unpinToProfile : _pinToProfile,
       onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
       onDelete: _delete,
       onMute: _mute,
@@ -134,7 +144,7 @@ class _StatusItemState extends ConsumerState<StatusItem> {
       onTap: () {
         NavigatorUtil.pushScreen(
           context,
-          DebugThreadPage(selectedStatus: _status),
+          DebugThreadPage(selectedStatus: widget.status),
         );
       },
       child: Container(
@@ -143,11 +153,11 @@ class _StatusItemState extends ConsumerState<StatusItem> {
           border: Border(
             top: BorderSide(
               color: AppColors.gray2,
-              width: _showDetails ? 4.h : 0.0,
+              width: widget.showDetails ? 4.h : 0.0,
             ),
             bottom: BorderSide(
               color: AppColors.gray2,
-              width: _showDetails ? 4.h : 1.h,
+              width: widget.showDetails ? 4.h : 1.h,
             ),
           ),
         ),
