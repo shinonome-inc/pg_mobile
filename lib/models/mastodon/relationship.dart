@@ -22,7 +22,7 @@ class Relationship with _$Relationship {
     required bool muting,
     required bool mutingNotifications,
     required bool requested,
-    required bool requestedBy,
+    required bool? requestedBy,
     required bool domainBlocking,
     required bool endorsed,
     required String note,
