@@ -74,12 +74,14 @@ class _StatusItemState extends ConsumerState<StatusItem> {
   Future<void> _pinToProfile() async {
     final notifier = ref.read(timelineNotifierProvider.notifier);
     await notifier.pinStatusToProfile(widget.status);
+    if (!mounted) return;
     NavigatorUtil.popScreen(context);
   }
 
   Future<void> _unpinToProfile() async {
     final notifier = ref.read(timelineNotifierProvider.notifier);
     await notifier.unpinStatusToProfile(widget.status);
+    if (!mounted) return;
     NavigatorUtil.popScreen(context);
   }
 
