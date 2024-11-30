@@ -97,8 +97,10 @@ class _StatusItemState extends ConsumerState<StatusItem> {
     NavigatorUtil.popScreen(context);
   }
 
-  void _mute() {
-    // TODO: ミュート
+  Future<void> _mute() async {
+    final notifier = ref.read(timelineNotifierProvider.notifier);
+    await notifier.muteAccount(widget.status.account);
+    if (!mounted) return;
     NavigatorUtil.popScreen(context);
   }
 
