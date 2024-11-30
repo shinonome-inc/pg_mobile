@@ -1,7 +1,7 @@
 import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/models/states/timeline_state.dart';
+import 'package:pg_mobile/pages/timeline/timeline_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/util/status_util.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

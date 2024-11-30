@@ -20,7 +20,7 @@ class _LaunchPageState extends ConsumerState<LaunchPage> {
       final isSignedIn = await notifier.isSignedIn();
       if (!mounted) return;
       if (isSignedIn) {
-        context.go(AppPage.statusList.path);
+        context.go(AppPage.timeline.path);
         return;
       }
       context.go(AppPage.top.path);

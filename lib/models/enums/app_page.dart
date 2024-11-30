@@ -12,7 +12,7 @@ import 'package:pg_mobile/pages/notifications/notification_page.dart';
 import 'package:pg_mobile/pages/settings/settings_page.dart';
 import 'package:pg_mobile/pages/sign_in/sign_in_page.dart';
 import 'package:pg_mobile/pages/status_detail/status_detail_page.dart';
-import 'package:pg_mobile/pages/status_list/status_list_page.dart';
+import 'package:pg_mobile/pages/timeline/timeline_page.dart';
 import 'package:pg_mobile/pages/top/top_page.dart';
 import 'package:pg_mobile/pages/user/user_page.dart';
 
@@ -22,7 +22,7 @@ enum AppPage {
   launch,
   top,
   signIn,
-  statusList,
+  timeline,
   statusDetail,
   createStatus,
   user,
@@ -45,8 +45,8 @@ enum AppPage {
         return '/top';
       case AppPage.signIn:
         return '/sign_in';
-      case AppPage.statusList:
-        return '/status_list';
+      case AppPage.timeline:
+        return '/timeline';
       case AppPage.statusDetail:
         return '/status_detail';
       case AppPage.createStatus:
@@ -82,8 +82,8 @@ enum AppPage {
         return const TopPage();
       case AppPage.signIn:
         return const SignInPage();
-      case AppPage.statusList:
-        return const StatusListPage();
+      case AppPage.timeline:
+        return const TimelinePage();
       case AppPage.statusDetail:
         return const StatusDetailPage();
       case AppPage.createStatus:

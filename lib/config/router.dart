@@ -5,7 +5,7 @@ import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/widgets/layout_scaffold.dart';
 
 final _bottomNavigationPages = <AppPage>[
-  AppPage.statusList,
+  AppPage.timeline,
   AppPage.notification,
   AppPage.user,
   AppPage.settings,

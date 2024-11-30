@@ -5,7 +5,7 @@ import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/debug/debug_loding_view.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/providers/timeline_notifier.dart';
+import 'package:pg_mobile/pages/timeline/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/reply_to_status_view.dart';
 

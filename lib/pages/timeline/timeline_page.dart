@@ -4,20 +4,20 @@ import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
+import 'package:pg_mobile/pages/timeline/timeline_notifier.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
-import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/util/status_menu_action_util.dart';
 import 'package:pg_mobile/widgets/status/status_item.dart';
 
-class StatusListPage extends ConsumerStatefulWidget {
-  const StatusListPage({super.key});
+class TimelinePage extends ConsumerStatefulWidget {
+  const TimelinePage({super.key});
 
   @override
   ConsumerState createState() => _StatusListPageState();
 }
 
-class _StatusListPageState extends ConsumerState<StatusListPage> {
+class _StatusListPageState extends ConsumerState<TimelinePage> {
   final ScrollController _controller = ScrollController();
 
   void _onTapHashtag(String hashtag) {

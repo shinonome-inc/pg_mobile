@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pg_mobile/models/states/timeline_state.dart';
-import 'package:pg_mobile/providers/timeline_notifier.dart';
+import 'package:pg_mobile/pages/timeline/timeline_notifier.dart';
+import 'package:pg_mobile/pages/timeline/timeline_state.dart';
 
 import '../provider_container.dart';
 
