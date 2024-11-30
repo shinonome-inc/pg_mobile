@@ -7,8 +7,8 @@ import 'package:pg_mobile/widgets/network_gifv_preview.dart';
 import 'package:pg_mobile/widgets/network_image_preview.dart';
 import 'package:pg_mobile/widgets/network_video_preview.dart';
 import 'package:pg_mobile/widgets/new_post_modal_bottom_sheet.dart';
-import 'package:pg_mobile/widgets/status_menu_cupertino_action_sheet.dart';
-import 'package:pg_mobile/widgets/status_menu_material_action_sheet.dart';
+import 'package:pg_mobile/widgets/status/status_menu_cupertino_action_sheet.dart';
+import 'package:pg_mobile/widgets/status/status_menu_material_action_sheet.dart';
 import 'package:video_player/video_player.dart';
 
 class NavigatorUtil {

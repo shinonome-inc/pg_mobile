@@ -8,11 +8,7 @@ import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
-import 'package:pg_mobile/widgets/status_boost_label.dart';
-import 'package:pg_mobile/widgets/status_engagement_view.dart';
-import 'package:pg_mobile/widgets/status_footer.dart';
-import 'package:pg_mobile/widgets/status_link_preview.dart';
-import 'package:pg_mobile/widgets/status_media_view.dart';
+import 'package:pg_mobile/widgets/status/status.dart';
 
 class StatusItem extends StatelessWidget {
   const StatusItem({

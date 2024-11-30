@@ -8,7 +8,7 @@ import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/util/status_menu_action_util.dart';
-import 'package:pg_mobile/widgets/status_item.dart';
+import 'package:pg_mobile/widgets/status/status_item.dart';
 
 class StatusListPage extends ConsumerStatefulWidget {
   const StatusListPage({super.key});

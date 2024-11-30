@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/widgets/status_footer_item.dart';
+import 'package:pg_mobile/widgets/status/status.dart';
 
 class StatusFooter extends StatelessWidget {
   const StatusFooter({
