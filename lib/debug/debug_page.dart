@@ -8,12 +8,9 @@ import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_my_page.dart';
-import 'package:pg_mobile/debug/debug_office_page.dart';
-import 'package:pg_mobile/debug/debug_pgn_page.dart';
 import 'package:pg_mobile/debug/debug_real_time_notification_page.dart';
 import 'package:pg_mobile/debug/debug_search_bar_page.dart';
 import 'package:pg_mobile/debug/debug_text_theme_page.dart';
-import 'package:pg_mobile/debug/location/debug_location_page.dart';
 import 'package:pg_mobile/debug/login_sample/login_sample.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
@@ -53,16 +50,6 @@ class _DebugPageState extends ConsumerState<DebugPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
           _button(
-            'オフィス画面',
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DebugOfficePage(),
-                ),
-              );
-            },
-          ),
-          _button(
             'サインイン画面',
             onPressed: () {
               NavigatorUtil.pushScreen(context, const LoginSample());
@@ -86,16 +73,6 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const DebugSearchBarPage()),
-              );
-            },
-          ),
-          _button(
-            'PGN',
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const DebugPGNPage(),
-                ),
               );
             },
           ),
@@ -178,15 +155,6 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               NavigatorUtil.pushScreen(
                 context,
                 DebugMyPage(credentialAccount: credentialAccount),
-              );
-            },
-          ),
-          _button(
-            '位置情報',
-            onPressed: () {
-              NavigatorUtil.pushScreen(
-                context,
-                const DebugLocationPage(),
               );
             },
           ),

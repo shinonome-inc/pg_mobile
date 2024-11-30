@@ -32,6 +32,12 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(threadNotifierProvider);
     final notifier = ref.read(threadNotifierProvider.notifier);
+    // ancestors, selectedStatus, descendants を結合して1つのリストにまとめる
+    final allStatuses = [
+      ...state.ancestors,
+      widget.selectedStatus,
+      ...state.descendants,
+    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text('スレッド'),
@@ -43,35 +49,14 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
           : RefreshIndicator(
               onRefresh: () async => notifier.reload(widget.selectedStatus.id),
               child: Scrollbar(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        itemCount: state.ancestors.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return StatusItem(
-                            status: state.ancestors.elementAt(index),
-                          );
-                        },
-                      ),
-                      StatusItem(
-                        status: widget.selectedStatus,
-                        showDetails: true,
-                      ),
-                      ListView.builder(
-                        itemCount: state.descendants.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return StatusItem(
-                            status: state.descendants.elementAt(index),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                child: ListView.builder(
+                  itemCount: allStatuses.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return StatusItem(
+                      status: allStatuses[index],
+                      showDetails: allStatuses[index] == widget.selectedStatus,
+                    );
+                  },
                 ),
               ),
             ),
