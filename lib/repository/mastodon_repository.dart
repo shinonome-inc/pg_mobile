@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/context.dart';
+import 'package:pg_mobile/models/mastodon/relationship.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/repository/secure_storage_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -21,7 +22,7 @@ class MastodonRepository {
 
   String? _token;
 
-  static const String _scope = 'read+write';
+  static const String _scope = 'read+write+write:mutes';
 
   static const String _baseUrl = 'https://community.4nonome.com';
   static final String authorizeUrl =
@@ -307,6 +308,31 @@ class MastodonRepository {
     } else {
       throw Exception(
         'Failed to unpin status from profile with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  Future<Relationship> muteAccount(String accountId) async {
+    final response = await _dio.post('/api/v1/accounts/$accountId/mute');
+    if (response.statusCode == 200) {
+      final relationship = Relationship.fromJson(response.data);
+      return relationship;
+    } else {
+      throw Exception(
+        'Failed to mute a account with status code ${response.statusCode}',
+      );
+    }
+  }
+
+  // TODO: ミュート解除機能を追加する。
+  Future<Relationship> unmuteAccount(String accountId) async {
+    final response = await _dio.post('/api/v1/statuses/$accountId/unmute');
+    if (response.statusCode == 200) {
+      final relationship = Relationship.fromJson(response.data);
+      return relationship;
+    } else {
+      throw Exception(
+        'Failed to unmute a account with status code ${response.statusCode}',
       );
     }
   }
