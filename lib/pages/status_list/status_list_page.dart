@@ -119,58 +119,60 @@ class _StatusListPageState extends ConsumerState<StatusListPage> {
     final signedInUser = ref.read(signedInUserNotifierProvider);
     return Scaffold(
       backgroundColor: AppColors.gray1,
-      body: RefreshIndicator(
-        onRefresh: notifier.onRefresh,
-        child: Scrollbar(
-          controller: _controller,
-          child: ListView.builder(
-            controller: _controller,
-            itemCount: state.statuses.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (state.isLoading && state.statuses.isEmpty) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              final status = state.statuses[index];
-              final isSignedInUser = status.account.id == signedInUser.id;
-              final statusMenuActions =
-                  StatusMenuActionUtil.getStatusMenuActions(
-                status: status,
-                isSignedInUser: isSignedInUser,
-                onCopyLink: _copyLink,
-                onPinToProfile: () => status.isPinnedToProfile
-                    ? _unpinToProfile(status)
-                    : _pinToProfile(status),
-                onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
-                onDelete: () => _delete(status),
-                onMute: () => _mute(status),
-                onBlock: () => _block(),
-                onCancel: _cancel,
-              );
-              return StatusItem(
-                status: status,
-                reblogAccount: status.reblog == null ? null : status.account,
-                onTapHashtag: () => _onTapHashtag,
-                onTapMention: () => _onTapMention,
-                onTapReply: () => _onTapReply(status),
-                onTapBoost: () => _onTapBoost(status),
-                onTapFavorite: () => _onTapFavorite(status),
-                onTapMenu: () => _onTapMenu(statusMenuActions),
-                onCopyLink: _copyLink,
-                onPinToProfile: () => isSignedInUser ? _pinToProfile : null,
-                onUnpinToProfile: () => isSignedInUser ? _unpinToProfile : null,
-                onDeleteAndReturnToDraft: () =>
-                    isSignedInUser ? _deleteAndReturnToDraft : null,
-                onDelete: () => isSignedInUser ? _delete : null,
-                onMute: () => _mute,
-                onBlock: _block,
-                onCancel: _cancel,
-              );
-            },
-          ),
-        ),
-      ),
+      body: state.isLoading && state.statuses.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : RefreshIndicator(
+              onRefresh: notifier.onRefresh,
+              child: Scrollbar(
+                controller: _controller,
+                child: ListView.builder(
+                  controller: _controller,
+                  itemCount: state.statuses.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final status = state.statuses[index];
+                    final isSignedInUser = status.account.id == signedInUser.id;
+                    final statusMenuActions =
+                        StatusMenuActionUtil.getStatusMenuActions(
+                      status: status,
+                      isSignedInUser: isSignedInUser,
+                      onCopyLink: _copyLink,
+                      onPinToProfile: () => status.isPinnedToProfile
+                          ? _unpinToProfile(status)
+                          : _pinToProfile(status),
+                      onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
+                      onDelete: () => _delete(status),
+                      onMute: () => _mute(status),
+                      onBlock: () => _block(),
+                      onCancel: _cancel,
+                    );
+                    return StatusItem(
+                      status: status,
+                      reblogAccount:
+                          status.reblog == null ? null : status.account,
+                      onTapHashtag: () => _onTapHashtag,
+                      onTapMention: () => _onTapMention,
+                      onTapReply: () => _onTapReply(status),
+                      onTapBoost: () => _onTapBoost(status),
+                      onTapFavorite: () => _onTapFavorite(status),
+                      onTapMenu: () => _onTapMenu(statusMenuActions),
+                      onCopyLink: _copyLink,
+                      onPinToProfile: () =>
+                          isSignedInUser ? _pinToProfile : null,
+                      onUnpinToProfile: () =>
+                          isSignedInUser ? _unpinToProfile : null,
+                      onDeleteAndReturnToDraft: () =>
+                          isSignedInUser ? _deleteAndReturnToDraft : null,
+                      onDelete: () => isSignedInUser ? _delete : null,
+                      onMute: () => _mute,
+                      onBlock: _block,
+                      onCancel: _cancel,
+                    );
+                  },
+                ),
+              ),
+            ),
     );
   }
 }
