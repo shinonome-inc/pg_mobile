@@ -11,24 +11,34 @@ class LayoutScaffold extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
-  static const _items = [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'User',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.settings),
-      label: 'Settings',
-    ),
-  ];
+  /// 動的にアイコンを生成する。
+  ///
+  /// [currentIndex]が選択されているアイテムのindex。
+  ///
+  /// アイテムが選択されている場合はアイコンをfilledに、選択されていない場合はoutlinedにする。
+  List<BottomNavigationBarItem> _buildItems(int currentIndex) {
+    return [
+      BottomNavigationBarItem(
+        icon: Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined),
+        label: 'タイムライン',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(currentIndex == 1
+            ? Icons.notifications
+            : Icons.notifications_outlined),
+        label: '通知',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(currentIndex == 2 ? Icons.person : Icons.person_outline),
+        label: 'マイページ',
+      ),
+      BottomNavigationBarItem(
+        icon:
+            Icon(currentIndex == 3 ? Icons.settings : Icons.settings_outlined),
+        label: '設定',
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +46,12 @@ class LayoutScaffold extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        backgroundColor: AppColors.gray2,
+        unselectedItemColor: AppColors.gray4,
         selectedItemColor: AppColors.accent,
-        unselectedItemColor: AppColors.gray3,
         currentIndex: navigationShell.currentIndex,
         onTap: (index) => navigationShell.goBranch(index),
-        items: _items,
+        items: _buildItems(navigationShell.currentIndex),
       ),
     );
   }
