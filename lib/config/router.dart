@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/widgets/layout_scaffold.dart';
 
 final _bottomNavigationPages = <AppPage>[
-  AppPage.statusList,
+  AppPage.timeline,
   AppPage.notification,
   AppPage.user,
   AppPage.settings,
@@ -15,7 +14,7 @@ final _bottomNavigationPages = <AppPage>[
 ///
 /// ルーティングする画面の追加・削除・変更を行う場合は、列挙型`AppPage`を変更する。
 final router = GoRouter(
-  initialLocation: Env.useDebugMode ? AppPage.debug.path : AppPage.launch.path,
+  initialLocation: AppPage.launch.path,
   routes: [
     // BottomNavigationBar用のルーティング
     StatefulShellRoute.indexedStack(

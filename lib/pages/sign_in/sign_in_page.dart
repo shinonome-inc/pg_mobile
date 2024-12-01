@@ -17,7 +17,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       body: Center(
         child: TextButton(
           onPressed: () {
-            context.push(AppPage.statusList.path);
+            context.push(AppPage.timeline.path);
           },
           child: const Text('Sign In'),
         ),

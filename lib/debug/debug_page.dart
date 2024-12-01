@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/debug/debug_cached_network_image_page.dart';
 import 'package:pg_mobile/debug/debug_favorite_status_list_page.dart';
 import 'package:pg_mobile/debug/debug_follower_list_page.dart';
-import 'package:pg_mobile/debug/debug_home_timeline_page.dart';
 import 'package:pg_mobile/debug/debug_mastodon_user_page.dart';
 import 'package:pg_mobile/debug/debug_media_page.dart';
 import 'package:pg_mobile/debug/debug_my_page.dart';
@@ -61,12 +60,6 @@ class _DebugPageState extends ConsumerState<DebugPage> {
               MaterialPageRoute(builder: (_) => const SignInPage()),
             );
           }),
-          _button(
-            'ホームタイムライン画面',
-            onPressed: () {
-              NavigatorUtil.pushScreen(context, const DebugHomeTimelinePage());
-            },
-          ),
           _button(
             'searchBar',
             onPressed: () {

@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
+import 'package:pg_mobile/pages/timeline/timeline_notifier.dart';
 import 'package:pg_mobile/providers/favorite_status_list_notifier.dart';
-import 'package:pg_mobile/providers/timeline_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
-import 'package:pg_mobile/widgets/status_item.dart';
 
 class DebugFavoriteStatusListPage extends ConsumerStatefulWidget {
   const DebugFavoriteStatusListPage({super.key});
@@ -62,9 +61,7 @@ class _DebugFavoriteStatusListPageState
               child: CupertinoActivityIndicator(color: AppColors.white),
             );
           }
-          return StatusItem(
-            status: statuses[index],
-          );
+          return null;
         },
       ),
     );

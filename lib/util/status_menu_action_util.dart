@@ -80,13 +80,13 @@ class StatusMenuActionUtil {
   static List<StatusMenuAction> getStatusMenuActions({
     required Status status,
     required bool isSignedInUser,
-    required VoidCallback onCopyLink,
-    required VoidCallback onPinToProfile,
-    required VoidCallback onDeleteAndReturnToDraft,
-    required VoidCallback onDelete,
-    required VoidCallback onMute,
-    required VoidCallback onBlock,
-    required VoidCallback onCancel,
+    required void Function() onCopyLink,
+    required void Function() onPinToProfile,
+    required void Function() onDeleteAndReturnToDraft,
+    required void Function() onDelete,
+    required void Function() onMute,
+    required void Function() onBlock,
+    required void Function() onCancel,
   }) {
     // アクションリスト生成
     final actions = _createStatusMenuActions(

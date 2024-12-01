@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pg_mobile/extensions/thread_state_extension.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/providers/thread_notifier.dart';
-import 'package:pg_mobile/widgets/status_item.dart';
 
 class DebugThreadPage extends ConsumerStatefulWidget {
   const DebugThreadPage({
@@ -52,10 +51,7 @@ class _DebugThreadPageState extends ConsumerState<DebugThreadPage> {
                 child: ListView.builder(
                   itemCount: allStatuses.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return StatusItem(
-                      status: allStatuses[index],
-                      showDetails: allStatuses[index] == widget.selectedStatus,
-                    );
+                    return null;
                   },
                 ),
               ),
