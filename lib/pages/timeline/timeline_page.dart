@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
+import 'package:pg_mobile/models/enums/app_page.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 import 'package:pg_mobile/pages/timeline/timeline_notifier.dart';
@@ -20,12 +23,23 @@ class TimelinePage extends ConsumerStatefulWidget {
 class _StatusListPageState extends ConsumerState<TimelinePage> {
   final ScrollController _controller = ScrollController();
 
+  void _onTapItem(Status status) {
+    context.push(AppPage.statusDetail.path);
+  }
+
+  void _onTapAccount(Account account) {
+    final signedInUser = ref.read(signedInUserNotifierProvider);
+    // FIXME: 現状だと認証中のユーザーアカウント情報が正しく保持されていないため、サインインの処理を修正する必要がある。
+    final isSignedInUser = account.id == signedInUser.id;
+    context.push(isSignedInUser ? AppPage.myPage.path : AppPage.user.path);
+  }
+
   void _onTapHashtag(String hashtag) {
-    // TODO: ハッシュタグをタップ
+    context.push(AppPage.hashTag.path);
   }
 
   void _onTapMention(String hashtag) {
-    // TODO: メンションをタップ
+    context.push(AppPage.user.path);
   }
 
   void _onTapReply(Status tappedStatus) {
@@ -151,6 +165,8 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                       status: status,
                       reblogAccount:
                           status.reblog == null ? null : status.account,
+                      onTapItem: () => _onTapItem(status),
+                      onTapAccount: () => _onTapAccount(status.account),
                       onTapHashtag: () => _onTapHashtag,
                       onTapMention: () => _onTapMention,
                       onTapReply: () => _onTapReply(status),

@@ -15,7 +15,7 @@ class _UserPageState extends ConsumerState<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Page'),
+        title: const Text('User Page'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

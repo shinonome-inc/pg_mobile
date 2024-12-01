@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/debug/debug_thread_page.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status/status.dart';
@@ -16,6 +14,8 @@ class StatusItem extends StatelessWidget {
     required this.status,
     this.reblogAccount,
     this.showDetails = false,
+    required this.onTapItem,
+    required this.onTapAccount,
     required this.onTapHashtag,
     required this.onTapMention,
     required this.onTapReply,
@@ -38,6 +38,8 @@ class StatusItem extends StatelessWidget {
   final Account? reblogAccount;
   final bool showDetails;
 
+  final void Function() onTapItem;
+  final void Function() onTapAccount;
   final void Function() onTapHashtag;
   final void Function() onTapMention;
   final void Function() onTapReply;
@@ -59,12 +61,7 @@ class StatusItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return GestureDetector(
-      onTap: () {
-        NavigatorUtil.pushScreen(
-          context,
-          DebugThreadPage(selectedStatus: status),
-        );
-      },
+      onTap: onTapItem,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
         decoration: BoxDecoration(
@@ -87,11 +84,14 @@ class StatusItem extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                NetworkImageContainer(
-                  imageUrl: status.account.avatar,
-                  width: 56.w,
-                  height: 56.w,
-                  boxShape: BoxShape.circle,
+                GestureDetector(
+                  onTap: onTapAccount,
+                  child: NetworkImageContainer(
+                    imageUrl: status.account.avatar,
+                    width: 56.w,
+                    height: 56.w,
+                    boxShape: BoxShape.circle,
+                  ),
                 ),
                 SizedBox(width: 8.w),
                 Expanded(
