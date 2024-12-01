@@ -107,14 +107,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
     NavigatorUtil.popScreen(context);
   }
 
-  void _onTapEngagementReblog() {
-    // TODO: ブーストを押したユーザー一覧を表示する画面へ遷移
-  }
-
-  void _onTapEngagementFavorite() {
-    // TODO: お気に入りを押したユーザー一覧を表示する画面へ遷移
-  }
-
   void _onTapMenu(List<StatusMenuAction> actions) {
     NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
   }
