@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
@@ -133,6 +134,23 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
     final signedInUser = ref.read(signedInUserNotifierProvider);
     return Scaffold(
       backgroundColor: AppColors.gray1,
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(width: 8.w),
+            const Icon(Icons.home),
+            SizedBox(width: 8.w),
+            const Text('ホーム'),
+            IconButton(
+              onPressed: () {
+                // TODO: タイムラインの種類を切り替える。
+              },
+              icon: const Icon(Icons.keyboard_arrow_down),
+            ),
+          ],
+        ),
+      ),
       body: state.isLoading && state.statuses.isEmpty
           ? const Center(
               child: CircularProgressIndicator(),
@@ -189,6 +207,12 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                 ),
               ),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          NavigatorUtil.showNewPostCreateView(context);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
