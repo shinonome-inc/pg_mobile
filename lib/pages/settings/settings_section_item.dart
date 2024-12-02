@@ -37,26 +37,32 @@ class SettingsSectionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Ink(
-        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
-        height: 48.h,
-        decoration: BoxDecoration(
-          color: AppColors.gray2,
-          borderRadius: BorderRadius.vertical(
-            top: type._isTopRounded ? Radius.circular(8.r) : Radius.zero,
-            bottom: type._isBottomRounded ? Radius.circular(8.r) : Radius.zero,
+    return Column(
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: Ink(
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+            height: 48.h,
+            decoration: BoxDecoration(
+              color: AppColors.gray2,
+              borderRadius: BorderRadius.vertical(
+                top: type._isTopRounded ? Radius.circular(8.r) : Radius.zero,
+                bottom:
+                    type._isBottomRounded ? Radius.circular(8.r) : Radius.zero,
+              ),
+            ),
+            child: Row(
+              children: [
+                title,
+                const Spacer(),
+                action,
+              ],
+            ),
           ),
         ),
-        child: Row(
-          children: [
-            title,
-            const Spacer(),
-            action,
-          ],
-        ),
-      ),
+        if (!type._isBottomRounded) SizedBox(height: 2.h),
+      ],
     );
   }
 }
