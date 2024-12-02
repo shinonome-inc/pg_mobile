@@ -35,22 +35,26 @@ class SettingsSectionItem extends StatelessWidget {
   final Widget action;
   final SettingsSectionItemType type;
 
+  BorderRadius get _borderRadius {
+    return BorderRadius.vertical(
+      top: type._isTopRounded ? Radius.circular(8.r) : Radius.zero,
+      bottom: type._isBottomRounded ? Radius.circular(8.r) : Radius.zero,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         InkWell(
           onTap: onTap,
+          borderRadius: _borderRadius,
           child: Ink(
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
             height: 48.h,
             decoration: BoxDecoration(
               color: AppColors.gray2,
-              borderRadius: BorderRadius.vertical(
-                top: type._isTopRounded ? Radius.circular(8.r) : Radius.zero,
-                bottom:
-                    type._isBottomRounded ? Radius.circular(8.r) : Radius.zero,
-              ),
+              borderRadius: _borderRadius,
             ),
             child: Row(
               children: [
