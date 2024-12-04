@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/extensions/build_context_extension.dart';
 import 'package:pg_mobile/widgetbook.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -18,11 +17,11 @@ class SettingsSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
           Icon(iconData),
-          SizedBox(width: 16.w),
+          const SizedBox(width: 16.0),
           Text(
             titleText,
             style: context.textTheme.bodyMedium!

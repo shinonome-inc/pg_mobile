@@ -53,7 +53,7 @@ class SettingsSectionItem extends StatelessWidget {
           onTap: onTap,
           borderRadius: _borderRadius,
           child: Ink(
-            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.0),
             height: 48.h,
             decoration: BoxDecoration(
               color: AppColors.gray2,
@@ -84,7 +84,7 @@ Widget settingsSectionItem(BuildContext context) {
     child: SettingsSectionItem(
       title: Text(
         context.knobs.string(
-          label: 'Item text',
+          label: 'Title text',
           initialValue: 'テキスト',
         ),
       ),
