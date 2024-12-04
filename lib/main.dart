@@ -7,6 +7,8 @@ import 'package:pg_mobile/config/router.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:pg_mobile/repository/secure_storage_repository.dart';
 
+import 'constants/sizes.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: Sizes.designSize,
       minTextAdapt: true,
       builder: (_, child) {
         return MaterialApp.router(
