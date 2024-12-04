@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/widgetbook.dart';
+import 'package:widgetbook/widgetbook.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// SettingsSectionItemTypeの種類を表す列挙型。
 enum SettingsSectionItemType {
@@ -69,4 +72,23 @@ class SettingsSectionItem extends StatelessWidget {
       ],
     );
   }
+}
+
+@widgetbook.UseCase(
+  name: 'SettingsSectionItemDefault',
+  type: SettingsSectionItem,
+  path: '[widgets]/pages/settings',
+)
+Widget settingsSectionItem(BuildContext context) {
+  return WidgetbookWrapper(
+    child: SettingsSectionItem(
+      title: Text(
+        context.knobs.string(
+          label: 'Item text',
+          initialValue: 'テキスト',
+        ),
+      ),
+      action: const Icon(Icons.arrow_forward_ios),
+    ),
+  );
 }
