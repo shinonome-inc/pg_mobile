@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/pages/settings/settings_notifier.dart';
 import 'package:pg_mobile/pages/settings/settings_section.dart';
 import 'package:pg_mobile/pages/settings/settings_section_header.dart';
 import 'package:pg_mobile/pages/settings/settings_section_item.dart';
@@ -16,6 +17,8 @@ class SettingsPage extends ConsumerStatefulWidget {
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(settingsNotifierProvider);
+    final notifier = ref.read(settingsNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.gray1,
       appBar: AppBar(
@@ -74,30 +77,30 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     type: SettingsSectionItemType.top,
                     title: const Text('いいね'),
                     action: Switch(
-                      value: true,
-                      onChanged: (value) {},
+                      value: state.enableLikesNotification,
+                      onChanged: notifier.switchEnableLikesNotification,
                     ),
                   ),
                   SettingsSectionItem(
                     title: const Text('ブースト'),
                     action: Switch(
-                      value: true,
-                      onChanged: (value) {},
+                      value: state.enableReblogsNotification,
+                      onChanged: notifier.switchEnableReblogsNotification,
                     ),
                   ),
                   SettingsSectionItem(
                     title: const Text('メンション'),
                     action: Switch(
-                      value: true,
-                      onChanged: (value) {},
+                      value: state.enableMentionsNotification,
+                      onChanged: notifier.switchEnableMentionsNotification,
                     ),
                   ),
                   SettingsSectionItem(
                     type: SettingsSectionItemType.bottom,
                     title: const Text('フォロー'),
                     action: Switch(
-                      value: true,
-                      onChanged: (value) {},
+                      value: state.enableFollowsNotification,
+                      onChanged: notifier.switchEnableFollowsNotification,
                     ),
                   ),
                 ],
