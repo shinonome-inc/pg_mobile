@@ -64,5 +64,11 @@ ThemeData appTheme() {
       interactive: true,
       thumbColor: WidgetStateProperty.all(AppColors.gray3),
     ),
+    popupMenuTheme: PopupMenuThemeData(
+      color: AppColors.gray1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+    ),
   );
 }
