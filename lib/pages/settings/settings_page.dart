@@ -158,7 +158,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     onTap: () {},
                     title: const Text('アプリバージョン'),
                     action: switch (appVersion) {
-                      AsyncData(:final value) => Text('v ${value}'),
+                      AsyncData(:final value) => Text('v $value'),
                       _ => const Text('v'),
                     },
                   ),
