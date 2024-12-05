@@ -8,6 +8,14 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'settings_notifier.g.dart';
 
 @riverpod
+
+/// アプリのバージョンを管理するためのProvider。
+///
+/// アプリバージョンを取得するためだけにSettingsNotifierのstateをSettingsState型からFuture<SettingsState>型に変更するのを防ぐため、
+/// appVersionだけSettingsNotifierのstateから切り離してappVersionProviderを作成している。
+///
+/// [fetchPackageInfo]はデフォルトでは[PackageInfo.fromPlatform]が設定されているが、テスト時にモックを設定するために引数として受け取ることができる。
+///
 Future<String> appVersion(
   Ref ref, {
   Future<PackageInfo> Function() fetchPackageInfo = PackageInfo.fromPlatform,
