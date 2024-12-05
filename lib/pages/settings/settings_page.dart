@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/pages/settings/settings_notifier.dart';
 import 'package:pg_mobile/pages/settings/settings_section.dart';
@@ -18,6 +19,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(settingsNotifierProvider);
+    final appVersion = ref.watch(
+      appVersionProvider(fetchPackageInfo: PackageInfo.fromPlatform),
+    );
     final notifier = ref.read(settingsNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.gray1,
@@ -116,7 +120,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     type: SettingsSectionItemType.top,
                     onTap: () {},
                     title: const Text('アプリバージョン'),
-                    action: const Text('v1.0.0'),
+                    action: switch (appVersion) {
+                      AsyncData(:final value) => Text('v ${value}'),
+                      _ => const Text('v'),
+                    },
                   ),
                   SettingsSectionItem(
                     onTap: () {},
