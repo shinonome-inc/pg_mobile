@@ -59,6 +59,14 @@ class SettingsNotifier extends _$SettingsNotifier {
     state = state.copyWith(enableFollowsNotification: enable);
   }
 
+  void selectDefaultTimelineType(TimelineType timelineType) {
+    _setDefaultTimelineType(timelineType);
+  }
+
+  void selectDefaultPublishingLevel(PublishingLevel publishingLevel) {
+    _setDefaultPublishingLevel(publishingLevel);
+  }
+
   void switchEnableLikesNotification(bool enable) {
     _setEnableLikesNotification(enable);
   }

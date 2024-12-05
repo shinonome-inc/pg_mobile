@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/models/enums/publishing_level.dart';
+import 'package:pg_mobile/models/enums/timeline_type.dart';
 import 'package:pg_mobile/pages/settings/settings_notifier.dart';
 import 'package:pg_mobile/pages/settings/settings_section.dart';
 import 'package:pg_mobile/pages/settings/settings_section_header.dart';
 import 'package:pg_mobile/pages/settings/settings_section_item.dart';
+import 'package:pg_mobile/widgets/label/publishing_level_label.dart';
+import 'package:pg_mobile/widgets/label/timeline_type_label.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -15,6 +19,34 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
+  /// TimelineTypeのPopupMenuItemを構築する
+  List<PopupMenuEntry<TimelineType>> _buildTimelineTypePopupMenuItems(
+    BuildContext context,
+  ) {
+    return TimelineType.values
+        .map(
+          (timelineType) => PopupMenuItem<TimelineType>(
+            value: timelineType,
+            child: TimelineTypeLabel(timelineType: timelineType),
+          ),
+        )
+        .toList();
+  }
+
+  /// PublishingLevelのPopupMenuItemを構築する
+  List<PopupMenuEntry<PublishingLevel>> _buildPublishingLevelPopupMenuItems(
+    BuildContext context,
+  ) {
+    return PublishingLevel.values
+        .map(
+          (publishingLevel) => PopupMenuItem<PublishingLevel>(
+            value: publishingLevel,
+            child: PublishingLevelLabel(publishingLevel: publishingLevel),
+          ),
+        )
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(settingsNotifierProvider);
@@ -37,32 +69,40 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   titleText: 'タイムライン',
                 ),
                 items: [
-                  SettingsSectionItem(
-                    onTap: () {},
-                    type: SettingsSectionItemType.top,
-                    title: const Text('デフォルトのタイムライン'),
-                    action: Row(
-                      children: [
-                        const Icon(Icons.public),
-                        SizedBox(width: 8.w),
-                        const Text('ローカル'),
-                        SizedBox(width: 8.w),
-                        const Icon(Icons.arrow_forward_ios),
-                      ],
+                  PopupMenuButton<TimelineType>(
+                    initialValue: state.defaultTimelineType,
+                    onSelected: notifier.selectDefaultTimelineType,
+                    itemBuilder: _buildTimelineTypePopupMenuItems,
+                    child: SettingsSectionItem(
+                      type: SettingsSectionItemType.top,
+                      title: const Text('デフォルトのタイムライン'),
+                      action: Row(
+                        children: [
+                          TimelineTypeLabel(
+                            timelineType: state.defaultTimelineType,
+                          ),
+                          SizedBox(width: 8.w),
+                          const Icon(Icons.arrow_forward_ios),
+                        ],
+                      ),
                     ),
                   ),
-                  SettingsSectionItem(
-                    onTap: () {},
-                    type: SettingsSectionItemType.bottom,
-                    title: const Text('デフォルトの公開範囲'),
-                    action: Row(
-                      children: [
-                        const Icon(Icons.public),
-                        SizedBox(width: 8.w),
-                        const Text('ローカル'),
-                        SizedBox(width: 8.w),
-                        const Icon(Icons.arrow_forward_ios),
-                      ],
+                  PopupMenuButton<PublishingLevel>(
+                    initialValue: state.defaultPublishingLevel,
+                    onSelected: notifier.selectDefaultPublishingLevel,
+                    itemBuilder: _buildPublishingLevelPopupMenuItems,
+                    child: SettingsSectionItem(
+                      type: SettingsSectionItemType.bottom,
+                      title: const Text('デフォルトの公開範囲'),
+                      action: Row(
+                        children: [
+                          PublishingLevelLabel(
+                            publishingLevel: state.defaultPublishingLevel,
+                          ),
+                          SizedBox(width: 8.w),
+                          const Icon(Icons.arrow_forward_ios),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -123,12 +163,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     },
                   ),
                   SettingsSectionItem(
-                    onTap: () {},
+                    onTap: () {
+                      // TODO: 利用規約のWebページに遷移する。
+                    },
                     title: const Text('利用規約'),
                     action: const Icon(Icons.arrow_forward_ios),
                   ),
                   SettingsSectionItem(
-                    onTap: () {},
+                    onTap: () {
+                      // TODO: プライバシーポリシーのWebページに遷移する。
+                    },
                     type: SettingsSectionItemType.bottom,
                     title: const Text('プライバシーポリシー'),
                     action: const Icon(Icons.arrow_forward_ios),
@@ -143,7 +187,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 ),
                 items: [
                   SettingsSectionItem(
-                    onTap: () {},
+                    onTap: () {
+                      // TODO: ログアウトする。
+                    },
                     type: SettingsSectionItemType.single,
                     title: const Text('ログアウトする'),
                     action: const Icon(Icons.arrow_forward_ios),

@@ -13,7 +13,7 @@ class SettingsSection extends StatelessWidget {
   });
 
   final SettingsSectionHeader header;
-  final List<SettingsSectionItem> items;
+  final List<Widget> items;
 
   @override
   Widget build(BuildContext context) {
