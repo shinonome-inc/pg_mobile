@@ -50,7 +50,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(settingsNotifierProvider);
-    final appVersion = ref.watch(appVersionProvider());
+    final appVersion = ref.watch(appVersionProvider()).value;
     final notifier = ref.read(settingsNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.gray1,
@@ -155,12 +155,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 items: [
                   SettingsSectionItem(
                     type: SettingsSectionItemType.top,
-                    onTap: () {},
                     title: const Text('アプリバージョン'),
-                    action: switch (appVersion) {
-                      AsyncData(:final value) => Text('v $value'),
-                      _ => const Text('v'),
-                    },
+                    action: Text('v $appVersion'),
                   ),
                   SettingsSectionItem(
                     onTap: () {
