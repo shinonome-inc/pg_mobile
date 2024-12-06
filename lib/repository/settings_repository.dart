@@ -32,7 +32,7 @@ class SettingsRepository {
     }
   }
 
-  static SettingsRepository get _getInstance {
+  static SettingsRepository get instance {
     if (_instance == null) {
       throw StateError(
         'SettingsRepository is not initialized. Call init() first.',
@@ -41,16 +41,15 @@ class SettingsRepository {
     return _instance!;
   }
 
-  static Future<void> setDefaultTimelineType(TimelineType timelineType) async {
-    await _getInstance._prefs.setString(
+  Future<void> setDefaultTimelineType(TimelineType timelineType) async {
+    await instance._prefs.setString(
       _SettingsKeys.defaultTimelineType,
       timelineType.text,
     );
   }
 
-  static TimelineType? getDefaultTimelineType() {
-    final text =
-        _getInstance._prefs.getString(_SettingsKeys.defaultTimelineType);
+  TimelineType? getDefaultTimelineType() {
+    final text = instance._prefs.getString(_SettingsKeys.defaultTimelineType);
     if (text == null) {
       return null;
     }
@@ -58,17 +57,17 @@ class SettingsRepository {
     return type;
   }
 
-  static Future<void> setDefaultPublishingLevel(
+  Future<void> setDefaultPublishingLevel(
       PublishingLevel publishingLevel) async {
-    await _getInstance._prefs.setString(
+    await instance._prefs.setString(
       _SettingsKeys.defaultPublishingLevel,
       publishingLevel.text,
     );
   }
 
-  static PublishingLevel? getDefaultPublishingLevel() {
+  PublishingLevel? getDefaultPublishingLevel() {
     final text =
-        _getInstance._prefs.getString(_SettingsKeys.defaultPublishingLevel);
+        instance._prefs.getString(_SettingsKeys.defaultPublishingLevel);
     if (text == null) {
       return null;
     }
@@ -76,48 +75,45 @@ class SettingsRepository {
     return level;
   }
 
-  static Future<void> setEnableLikesNotification(bool enable) async {
-    await _getInstance._prefs.setBool(
+  Future<void> setEnableLikesNotification(bool enable) async {
+    await instance._prefs.setBool(
       _SettingsKeys.enableLikesNotification,
       enable,
     );
   }
 
-  static bool? getEnableLikesNotification() {
-    return _getInstance._prefs.getBool(_SettingsKeys.enableLikesNotification);
+  bool? getEnableLikesNotification() {
+    return instance._prefs.getBool(_SettingsKeys.enableLikesNotification);
   }
 
-  static Future<void> setEnableReblogsNotification(bool enable) async {
-    await _getInstance._prefs.setBool(
+  Future<void> setEnableReblogsNotification(bool enable) async {
+    await instance._prefs.setBool(
       _SettingsKeys.enableReblogsNotification,
       enable,
     );
   }
 
-  static bool? getEnableReblogsNotification() {
-    return _getInstance._prefs.getBool(_SettingsKeys.enableReblogsNotification);
+  bool? getEnableReblogsNotification() {
+    return instance._prefs.getBool(_SettingsKeys.enableReblogsNotification);
   }
 
-  static Future<void> setEnableMentionsNotification(bool enable) async {
-    await _getInstance._prefs.setBool(
+  Future<void> setEnableMentionsNotification(bool enable) async {
+    await instance._prefs.setBool(
       _SettingsKeys.enableMentionsNotification,
       enable,
     );
   }
 
-  static bool? getEnableMentionsNotification() {
-    return _getInstance._prefs
-        .getBool(_SettingsKeys.enableMentionsNotification);
+  bool? getEnableMentionsNotification() {
+    return instance._prefs.getBool(_SettingsKeys.enableMentionsNotification);
   }
 
-  static Future<void> setEnableFollowsNotification(bool enable) async {
-    await _getInstance._prefs.setBool(
-      _SettingsKeys.enableFollowsNotification,
-      enable,
-    );
+  Future<void> setEnableFollowsNotification(bool enable) async {
+    await instance._prefs
+        .setBool(_SettingsKeys.enableFollowsNotification, enable);
   }
 
-  static bool? getEnableFollowsNotification() {
-    return _getInstance._prefs.getBool(_SettingsKeys.enableFollowsNotification);
+  bool? getEnableFollowsNotification() {
+    return instance._prefs.getBool(_SettingsKeys.enableFollowsNotification);
   }
 }
