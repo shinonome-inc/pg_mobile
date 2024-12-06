@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
 import 'package:pg_mobile/pages/settings/settings_state.dart';
+import 'package:pg_mobile/repository/settings_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'settings_notifier.g.dart';
@@ -59,27 +60,35 @@ class SettingsNotifier extends _$SettingsNotifier {
     state = state.copyWith(enableFollowsNotification: enable);
   }
 
-  void selectDefaultTimelineType(TimelineType timelineType) {
+  Future<void> selectDefaultTimelineType(TimelineType timelineType) async {
     _setDefaultTimelineType(timelineType);
+    await SettingsRepository.setDefaultTimelineType(timelineType);
   }
 
-  void selectDefaultPublishingLevel(PublishingLevel publishingLevel) {
+  Future<void> selectDefaultPublishingLevel(
+    PublishingLevel publishingLevel,
+  ) async {
     _setDefaultPublishingLevel(publishingLevel);
+    await SettingsRepository.setDefaultPublishingLevel(publishingLevel);
   }
 
-  void switchEnableLikesNotification(bool enable) {
+  Future<void> switchEnableLikesNotification(bool enable) async {
     _setEnableLikesNotification(enable);
+    await SettingsRepository.setEnableLikesNotification(enable);
   }
 
-  void switchEnableReblogsNotification(bool enable) {
+  Future<void> switchEnableReblogsNotification(bool enable) async {
     _setEnableReblogsNotification(enable);
+    await SettingsRepository.setEnableReblogsNotification(enable);
   }
 
-  void switchEnableMentionsNotification(bool enable) {
+  Future<void> switchEnableMentionsNotification(bool enable) async {
     _setEnableMentionsNotification(enable);
+    await SettingsRepository.setEnableMentionsNotification(enable);
   }
 
-  void switchEnableFollowsNotification(bool enable) {
+  Future<void> switchEnableFollowsNotification(bool enable) async {
     _setEnableFollowsNotification(enable);
+    await SettingsRepository.setEnableFollowsNotification(enable);
   }
 }
