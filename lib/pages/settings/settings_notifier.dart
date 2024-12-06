@@ -33,7 +33,29 @@ Future<String> appVersion(
 class SettingsNotifier extends _$SettingsNotifier {
   @override
   SettingsState build() {
-    return initialSettingsState;
+    final state = _readStateFromLocalStorage();
+    return state;
+  }
+
+  SettingsState _readStateFromLocalStorage() {
+    return initialSettingsState.copyWith(
+      defaultTimelineType: SettingsRepository.getDefaultTimelineType() ??
+          initialSettingsState.defaultTimelineType,
+      defaultPublishingLevel: SettingsRepository.getDefaultPublishingLevel() ??
+          initialSettingsState.defaultPublishingLevel,
+      enableLikesNotification:
+          SettingsRepository.getEnableLikesNotification() ??
+              initialSettingsState.enableLikesNotification,
+      enableReblogsNotification:
+          SettingsRepository.getEnableReblogsNotification() ??
+              initialSettingsState.enableReblogsNotification,
+      enableMentionsNotification:
+          SettingsRepository.getEnableMentionsNotification() ??
+              initialSettingsState.enableMentionsNotification,
+      enableFollowsNotification:
+          SettingsRepository.getEnableFollowsNotification() ??
+              initialSettingsState.enableFollowsNotification,
+    );
   }
 
   void _setDefaultTimelineType(TimelineType timelineType) {
