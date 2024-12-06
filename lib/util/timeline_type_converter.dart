@@ -3,6 +3,8 @@ import 'package:pg_mobile/models/enums/timeline_type.dart';
 
 /// [TimelineType]に関する変換を行うクラス。
 class TimelineTypeConverter {
+  TimelineTypeConverter._();
+
   /// テキストと[TimelineType]を紐付けたマップ。
   static final Map<String, TimelineType> _timelineTypeMap = {
     for (var type in TimelineType.values) type.text: type,

@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
+import 'package:pg_mobile/util/timeline_type_converter.dart';
 
 extension TimelineTypeExtension on TimelineType {
-  String get text {
-    switch (this) {
-      case TimelineType.local:
-        return 'ローカル';
-      case TimelineType.home:
-        return 'ホーム';
-      case TimelineType.media:
-        return 'メディア';
-    }
-  }
+  String get text => TimelineTypeConverter.convertTextFromTimelineType(this);
 
   IconData get icon {
     switch (this) {

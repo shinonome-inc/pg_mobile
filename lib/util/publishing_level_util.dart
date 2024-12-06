@@ -3,6 +3,8 @@ import 'package:pg_mobile/models/enums/publishing_level.dart';
 
 /// [PublishingLevel]に関する変換を行うクラス。
 class PublishingLevelConverter {
+  PublishingLevelConverter._();
+
   /// テキストと[PublishingLevel]を紐付けたマップ。
   static final Map<String, PublishingLevel> _publishingLevelMap = {
     for (var type in PublishingLevel.values) type.text: type,

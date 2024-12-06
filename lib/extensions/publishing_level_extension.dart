@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
+import 'package:pg_mobile/util/publishing_level_util.dart';
 
 extension PublishingLevelExtension on PublishingLevel {
-  String get text {
-    switch (this) {
-      case PublishingLevel.public:
-        return 'ローカル';
-      case PublishingLevel.quietPublic:
-        return '未収載';
-      case PublishingLevel.followers:
-        return 'フォロワー限定';
-      case PublishingLevel.specificPeople:
-        return 'DM';
-    }
-  }
+  String get text =>
+      PublishingLevelConverter.convertTextFromPublishingLevel(this);
 
   IconData get icon {
     switch (this) {
