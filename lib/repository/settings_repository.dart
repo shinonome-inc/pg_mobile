@@ -25,13 +25,6 @@ class SettingsRepository {
 
   SettingsRepository._(this._prefs);
 
-  static Future<void> init({SharedPreferences? prefs}) async {
-    if (_instance == null) {
-      final sharedPrefs = prefs ?? await SharedPreferences.getInstance();
-      _instance = SettingsRepository._(sharedPrefs);
-    }
-  }
-
   static SettingsRepository get instance {
     if (_instance == null) {
       throw StateError(
@@ -39,6 +32,13 @@ class SettingsRepository {
       );
     }
     return _instance!;
+  }
+
+  Future<void> init({SharedPreferences? prefs}) async {
+    if (_instance == null) {
+      final sharedPrefs = prefs ?? await SharedPreferences.getInstance();
+      _instance = SettingsRepository._(sharedPrefs);
+    }
   }
 
   Future<void> setDefaultTimelineType(TimelineType timelineType) async {

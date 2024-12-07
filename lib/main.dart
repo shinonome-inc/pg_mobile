@@ -14,7 +14,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
   MastodonRepository.instance.init();
-  SettingsRepository.init();
+  SettingsRepository.instance.init();
   final token = await SecureStorageRepository.readToken();
   final hasSignIn = token != null && token.isNotEmpty;
   if (hasSignIn) {
