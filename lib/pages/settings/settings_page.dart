@@ -50,7 +50,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(settingsNotifierProvider);
-    final appVersion = ref.watch(appVersionProvider()).value;
+    final appVersion = ref.watch(appVersionProvider).value;
     final notifier = ref.read(settingsNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.gray1,
