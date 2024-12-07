@@ -63,6 +63,7 @@ dependencies:
   widgetbook: ^3.10.0
   widgetbook_annotation: ^3.2.0
   package_info_plus: ^8.1.1
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:

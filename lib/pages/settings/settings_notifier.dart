@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
 import 'package:pg_mobile/pages/settings/settings_state.dart';
+import 'package:pg_mobile/repository/settings_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'settings_notifier.g.dart';
@@ -14,14 +15,9 @@ part 'settings_notifier.g.dart';
 /// アプリバージョンを取得するためだけにSettingsNotifierのstateをSettingsState型からFuture<SettingsState>型に変更するのを防ぐため、
 /// appVersionだけSettingsNotifierのstateから切り離してappVersionProviderを作成している。
 ///
-/// [fetchPackageInfo]はデフォルトでは[PackageInfo.fromPlatform]が設定されているが、テスト時にモックを設定するために引数として受け取ることができる。
-///
-Future<String> appVersion(
-  Ref ref, {
-  Future<PackageInfo> Function() fetchPackageInfo = PackageInfo.fromPlatform,
-}) async {
+Future<String> appVersion(Ref ref) async {
   try {
-    final packageInfo = await fetchPackageInfo();
+    final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
   } catch (e) {
     return 'Unknown';
@@ -32,7 +28,31 @@ Future<String> appVersion(
 class SettingsNotifier extends _$SettingsNotifier {
   @override
   SettingsState build() {
-    return initialSettingsState;
+    final state = _readStateFromLocalStorage();
+    return state;
+  }
+
+  SettingsState _readStateFromLocalStorage() {
+    return initialSettingsState.copyWith(
+      defaultTimelineType:
+          SettingsRepository.instance.readDefaultTimelineType() ??
+              initialSettingsState.defaultTimelineType,
+      defaultPublishingLevel:
+          SettingsRepository.instance.readDefaultPublishingLevel() ??
+              initialSettingsState.defaultPublishingLevel,
+      enableLikesNotification:
+          SettingsRepository.instance.readEnableLikesNotification() ??
+              initialSettingsState.enableLikesNotification,
+      enableReblogsNotification:
+          SettingsRepository.instance.readEnableReblogsNotification() ??
+              initialSettingsState.enableReblogsNotification,
+      enableMentionsNotification:
+          SettingsRepository.instance.readEnableMentionsNotification() ??
+              initialSettingsState.enableMentionsNotification,
+      enableFollowsNotification:
+          SettingsRepository.instance.readEnableFollowsNotification() ??
+              initialSettingsState.enableFollowsNotification,
+    );
   }
 
   void _setDefaultTimelineType(TimelineType timelineType) {
@@ -59,27 +79,36 @@ class SettingsNotifier extends _$SettingsNotifier {
     state = state.copyWith(enableFollowsNotification: enable);
   }
 
-  void selectDefaultTimelineType(TimelineType timelineType) {
+  Future<void> selectDefaultTimelineType(TimelineType timelineType) async {
     _setDefaultTimelineType(timelineType);
+    await SettingsRepository.instance.writeDefaultTimelineType(timelineType);
   }
 
-  void selectDefaultPublishingLevel(PublishingLevel publishingLevel) {
+  Future<void> selectDefaultPublishingLevel(
+    PublishingLevel publishingLevel,
+  ) async {
     _setDefaultPublishingLevel(publishingLevel);
+    await SettingsRepository.instance
+        .writeDefaultPublishingLevel(publishingLevel);
   }
 
-  void switchEnableLikesNotification(bool enable) {
+  Future<void> switchEnableLikesNotification(bool enable) async {
     _setEnableLikesNotification(enable);
+    await SettingsRepository.instance.writeEnableLikesNotification(enable);
   }
 
-  void switchEnableReblogsNotification(bool enable) {
+  Future<void> switchEnableReblogsNotification(bool enable) async {
     _setEnableReblogsNotification(enable);
+    await SettingsRepository.instance.writeEnableReblogsNotification(enable);
   }
 
-  void switchEnableMentionsNotification(bool enable) {
+  Future<void> switchEnableMentionsNotification(bool enable) async {
     _setEnableMentionsNotification(enable);
+    await SettingsRepository.instance.writeEnableMentionsNotification(enable);
   }
 
-  void switchEnableFollowsNotification(bool enable) {
+  Future<void> switchEnableFollowsNotification(bool enable) async {
     _setEnableFollowsNotification(enable);
+    await SettingsRepository.instance.writeEnableFollowsNotification(enable);
   }
 }

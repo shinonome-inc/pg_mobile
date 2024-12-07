@@ -13,7 +13,6 @@ class SettingsState with _$SettingsState {
     required bool enableReblogsNotification,
     required bool enableMentionsNotification,
     required bool enableFollowsNotification,
-    required String appVersionText,
   }) = _SettingsState;
 }
 
@@ -24,5 +23,4 @@ const SettingsState initialSettingsState = SettingsState(
   enableReblogsNotification: true,
   enableMentionsNotification: true,
   enableFollowsNotification: true,
-  appVersionText: '',
 );
