@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
@@ -14,7 +15,7 @@ part 'settings_notifier.g.dart';
 /// アプリバージョンを取得するためだけにSettingsNotifierのstateをSettingsState型からFuture<SettingsState>型に変更するのを防ぐため、
 /// appVersionだけSettingsNotifierのstateから切り離してappVersionProviderを作成している。
 ///
-Future<String> appVersion(AppVersionRef ref) async {
+Future<String> appVersion(Ref ref) async {
   try {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
