@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
@@ -15,14 +14,9 @@ part 'settings_notifier.g.dart';
 /// アプリバージョンを取得するためだけにSettingsNotifierのstateをSettingsState型からFuture<SettingsState>型に変更するのを防ぐため、
 /// appVersionだけSettingsNotifierのstateから切り離してappVersionProviderを作成している。
 ///
-/// [fetchPackageInfo]はデフォルトでは[PackageInfo.fromPlatform]が設定されているが、テスト時にモックを設定するために引数として受け取ることができる。
-///
-Future<String> appVersion(
-  Ref ref, {
-  Future<PackageInfo> Function() fetchPackageInfo = PackageInfo.fromPlatform,
-}) async {
+Future<String> appVersion() async {
   try {
-    final packageInfo = await fetchPackageInfo();
+    final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
   } catch (e) {
     return 'Unknown';
