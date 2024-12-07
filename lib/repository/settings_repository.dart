@@ -20,24 +20,19 @@ class _SettingsKeys {
 
 /// 設定情報をSharedPreferenceから入出力するためのRepository。。
 class SettingsRepository {
-  static SettingsRepository? _instance;
-  final SharedPreferences _prefs;
+  SettingsRepository._privateConstructor();
 
-  SettingsRepository._(this._prefs);
+  static final SettingsRepository _instance =
+      SettingsRepository._privateConstructor();
+  static SettingsRepository get instance => _instance;
 
-  static SettingsRepository get instance {
-    if (_instance == null) {
-      throw StateError(
-        'SettingsRepository is not initialized. Call init() first.',
-      );
-    }
-    return _instance!;
-  }
+  late SharedPreferences _prefs;
 
   Future<void> init({SharedPreferences? prefs}) async {
-    if (_instance == null) {
-      final sharedPrefs = prefs ?? await SharedPreferences.getInstance();
-      _instance = SettingsRepository._(sharedPrefs);
+    if (prefs == null) {
+      _prefs = await SharedPreferences.getInstance();
+    } else {
+      _prefs = prefs;
     }
   }
 
