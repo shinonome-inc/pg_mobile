@@ -34,22 +34,22 @@ class SettingsNotifier extends _$SettingsNotifier {
   SettingsState _readStateFromLocalStorage() {
     return initialSettingsState.copyWith(
       defaultTimelineType:
-          SettingsRepository.instance.getDefaultTimelineType() ??
+          SettingsRepository.instance.readDefaultTimelineType() ??
               initialSettingsState.defaultTimelineType,
       defaultPublishingLevel:
-          SettingsRepository.instance.getDefaultPublishingLevel() ??
+          SettingsRepository.instance.readDefaultPublishingLevel() ??
               initialSettingsState.defaultPublishingLevel,
       enableLikesNotification:
-          SettingsRepository.instance.getEnableLikesNotification() ??
+          SettingsRepository.instance.readEnableLikesNotification() ??
               initialSettingsState.enableLikesNotification,
       enableReblogsNotification:
-          SettingsRepository.instance.getEnableReblogsNotification() ??
+          SettingsRepository.instance.readEnableReblogsNotification() ??
               initialSettingsState.enableReblogsNotification,
       enableMentionsNotification:
-          SettingsRepository.instance.getEnableMentionsNotification() ??
+          SettingsRepository.instance.readEnableMentionsNotification() ??
               initialSettingsState.enableMentionsNotification,
       enableFollowsNotification:
-          SettingsRepository.instance.getEnableFollowsNotification() ??
+          SettingsRepository.instance.readEnableFollowsNotification() ??
               initialSettingsState.enableFollowsNotification,
     );
   }
@@ -80,7 +80,7 @@ class SettingsNotifier extends _$SettingsNotifier {
 
   Future<void> selectDefaultTimelineType(TimelineType timelineType) async {
     _setDefaultTimelineType(timelineType);
-    await SettingsRepository.instance.setDefaultTimelineType(timelineType);
+    await SettingsRepository.instance.writeDefaultTimelineType(timelineType);
   }
 
   Future<void> selectDefaultPublishingLevel(
@@ -88,26 +88,26 @@ class SettingsNotifier extends _$SettingsNotifier {
   ) async {
     _setDefaultPublishingLevel(publishingLevel);
     await SettingsRepository.instance
-        .setDefaultPublishingLevel(publishingLevel);
+        .writeDefaultPublishingLevel(publishingLevel);
   }
 
   Future<void> switchEnableLikesNotification(bool enable) async {
     _setEnableLikesNotification(enable);
-    await SettingsRepository.instance.setEnableLikesNotification(enable);
+    await SettingsRepository.instance.writeEnableLikesNotification(enable);
   }
 
   Future<void> switchEnableReblogsNotification(bool enable) async {
     _setEnableReblogsNotification(enable);
-    await SettingsRepository.instance.setEnableReblogsNotification(enable);
+    await SettingsRepository.instance.writeEnableReblogsNotification(enable);
   }
 
   Future<void> switchEnableMentionsNotification(bool enable) async {
     _setEnableMentionsNotification(enable);
-    await SettingsRepository.instance.setEnableMentionsNotification(enable);
+    await SettingsRepository.instance.writeEnableMentionsNotification(enable);
   }
 
   Future<void> switchEnableFollowsNotification(bool enable) async {
     _setEnableFollowsNotification(enable);
-    await SettingsRepository.instance.setEnableFollowsNotification(enable);
+    await SettingsRepository.instance.writeEnableFollowsNotification(enable);
   }
 }

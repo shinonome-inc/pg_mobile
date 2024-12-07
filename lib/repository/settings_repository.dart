@@ -41,14 +41,14 @@ class SettingsRepository {
     }
   }
 
-  Future<void> setDefaultTimelineType(TimelineType timelineType) async {
+  Future<void> writeDefaultTimelineType(TimelineType timelineType) async {
     await instance._prefs.setString(
       _SettingsKeys.defaultTimelineType,
       timelineType.text,
     );
   }
 
-  TimelineType? getDefaultTimelineType() {
+  TimelineType? readDefaultTimelineType() {
     final text = instance._prefs.getString(_SettingsKeys.defaultTimelineType);
     if (text == null) {
       return null;
@@ -57,7 +57,7 @@ class SettingsRepository {
     return type;
   }
 
-  Future<void> setDefaultPublishingLevel(
+  Future<void> writeDefaultPublishingLevel(
       PublishingLevel publishingLevel) async {
     await instance._prefs.setString(
       _SettingsKeys.defaultPublishingLevel,
@@ -65,7 +65,7 @@ class SettingsRepository {
     );
   }
 
-  PublishingLevel? getDefaultPublishingLevel() {
+  PublishingLevel? readDefaultPublishingLevel() {
     final text =
         instance._prefs.getString(_SettingsKeys.defaultPublishingLevel);
     if (text == null) {
@@ -75,45 +75,45 @@ class SettingsRepository {
     return level;
   }
 
-  Future<void> setEnableLikesNotification(bool enable) async {
+  Future<void> writeEnableLikesNotification(bool enable) async {
     await instance._prefs.setBool(
       _SettingsKeys.enableLikesNotification,
       enable,
     );
   }
 
-  bool? getEnableLikesNotification() {
+  bool? readEnableLikesNotification() {
     return instance._prefs.getBool(_SettingsKeys.enableLikesNotification);
   }
 
-  Future<void> setEnableReblogsNotification(bool enable) async {
+  Future<void> writeEnableReblogsNotification(bool enable) async {
     await instance._prefs.setBool(
       _SettingsKeys.enableReblogsNotification,
       enable,
     );
   }
 
-  bool? getEnableReblogsNotification() {
+  bool? readEnableReblogsNotification() {
     return instance._prefs.getBool(_SettingsKeys.enableReblogsNotification);
   }
 
-  Future<void> setEnableMentionsNotification(bool enable) async {
+  Future<void> writeEnableMentionsNotification(bool enable) async {
     await instance._prefs.setBool(
       _SettingsKeys.enableMentionsNotification,
       enable,
     );
   }
 
-  bool? getEnableMentionsNotification() {
+  bool? readEnableMentionsNotification() {
     return instance._prefs.getBool(_SettingsKeys.enableMentionsNotification);
   }
 
-  Future<void> setEnableFollowsNotification(bool enable) async {
+  Future<void> writeEnableFollowsNotification(bool enable) async {
     await instance._prefs
         .setBool(_SettingsKeys.enableFollowsNotification, enable);
   }
 
-  bool? getEnableFollowsNotification() {
+  bool? readEnableFollowsNotification() {
     return instance._prefs.getBool(_SettingsKeys.enableFollowsNotification);
   }
 }
