@@ -14,7 +14,7 @@ part 'settings_notifier.g.dart';
 /// アプリバージョンを取得するためだけにSettingsNotifierのstateをSettingsState型からFuture<SettingsState>型に変更するのを防ぐため、
 /// appVersionだけSettingsNotifierのstateから切り離してappVersionProviderを作成している。
 ///
-Future<String> appVersion() async {
+Future<String> appVersion(AppVersionRef ref) async {
   try {
     final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
