@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
 import 'package:pg_mobile/pages/settings/settings_notifier.dart';
@@ -19,6 +21,12 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
+  Future<void> _onTapSignOut() async {
+    await ref.read(settingsNotifierProvider.notifier).signOut();
+    if (!mounted) return;
+    context.pushReplacement(AppPage.top.path);
+  }
+
   /// TimelineTypeのPopupMenuItemを構築する
   List<PopupMenuEntry<TimelineType>> _buildTimelineTypePopupMenuItems(
     BuildContext context,
@@ -183,9 +191,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 ),
                 items: [
                   SettingsSectionItem(
-                    onTap: () {
-                      // TODO: ログアウトする。
-                    },
+                    onTap: _onTapSignOut,
                     type: SettingsSectionItemType.single,
                     title: const Text('ログアウトする'),
                     action: const Icon(Icons.arrow_forward_ios),
