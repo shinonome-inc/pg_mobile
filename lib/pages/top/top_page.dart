@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/constants/border_radiuses.dart';
 import 'package:pg_mobile/models/enums/app_page.dart';
+import 'package:pg_mobile/pages/top/top_notifier.dart';
 import 'package:pg_mobile/pages/top/top_view.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:pg_mobile/util/web_view_util.dart';
 import 'package:pg_mobile/widgets/scrollable_modal_bottom_sheet.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -18,9 +20,8 @@ class TopPage extends ConsumerStatefulWidget {
 
 class _TopPageState extends ConsumerState<TopPage> {
   late WebViewController _controller;
-  double height = 640;
 
-  void _onTapSignIn() async {
+  Future<void> _onTapSignIn(double webViewHeight) async {
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -32,7 +33,7 @@ class _TopPageState extends ConsumerState<TopPage> {
         return ScrollableModalBottomSheet(
           physics: const NeverScrollableScrollPhysics(),
           child: SizedBox(
-            height: height,
+            height: webViewHeight,
             child: WebViewWidget(controller: _controller),
           ),
         );
@@ -40,44 +41,39 @@ class _TopPageState extends ConsumerState<TopPage> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
+  Future<void> _onPageFinished(String url) async {
+    final notifier = ref.read(topNotifierProvider.notifier);
+    final webViewHeight = await WebViewUtil.calculateWebViewHeight(_controller);
+    notifier.setWebViewHeight(webViewHeight);
+    final accessToken = await notifier.signInFromUrl(url);
+    if (accessToken == null) return;
+    if (!mounted) return;
+    context.pushReplacement(AppPage.timeline.path);
+  }
+
+  void _initializeWebViewController() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setNavigationDelegate(
-          NavigationDelegate(
-            onPageFinished: (String url) async {
-              print('onPageFinished: $url');
-              const String javaScript =
-                  'document.documentElement.scrollHeight;';
-              final result =
-                  await _controller.runJavaScriptReturningResult(javaScript);
-              setState(() {
-                height = double.parse(result.toString());
-              });
-              print('height: $height');
-              final uri = Uri.parse(url);
-              if (uri.queryParameters['code'] == null) return;
-              final accessToken =
-                  await MastodonRepository.instance.obtainToken(uri);
-              print('accessToken: $accessToken');
-              if (accessToken == null) return;
-              if (!mounted) return;
-              context.pushReplacement(AppPage.timeline.path);
-            },
-          ),
+          NavigationDelegate(onPageFinished: _onPageFinished),
         )
         ..loadRequest(Uri.parse(MastodonRepository.authorizeUrl));
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initializeWebViewController();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(topNotifierProvider);
     return Scaffold(
       body: TopView(
-        onTapSignIn: _onTapSignIn,
+        onTapSignIn: () => _onTapSignIn(state.webViewHeight),
       ),
     );
   }
