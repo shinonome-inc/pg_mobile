@@ -42,6 +42,8 @@ class _TopPageState extends ConsumerState<TopPage> {
   }
 
   Future<void> _onPageFinished(String url) async {
+    final isLoading = ref.read(topNotifierProvider).isLoading;
+    if (isLoading) return;
     final notifier = ref.read(topNotifierProvider.notifier);
     final webViewHeight = await WebViewUtil.calculateWebViewHeight(_controller);
     notifier.setWebViewHeight(webViewHeight);

@@ -1,6 +1,5 @@
 import 'package:pg_mobile/pages/top/top_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
-import 'package:pg_mobile/repository/secure_storage_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'top_notifier.g.dart';
@@ -12,7 +11,7 @@ class TopNotifier extends _$TopNotifier {
     return initialTopState;
   }
 
-  void setLoading(bool isLoading) {
+  void _setLoading(bool isLoading) {
     state = state.copyWith(isLoading: isLoading);
   }
 
@@ -27,15 +26,18 @@ class TopNotifier extends _$TopNotifier {
   /// サインインに成功した場合はアクセストークンを返す。
   ///
   Future<String?> signInFromUrl(String url) async {
+    if (state.isLoading) return null;
     final uri = Uri.parse(url);
     if (uri.queryParameters['code'] == null) return null;
-    final accessToken = await MastodonRepository.instance.obtainToken(uri);
+    String? accessToken;
+    _setLoading(true);
+    try {
+      accessToken = await MastodonRepository.instance.obtainToken(uri);
+    } catch (e) {
+      accessToken = null;
+    } finally {
+      _setLoading(false);
+    }
     return accessToken;
-  }
-
-  Future<bool> isSignedIn() async {
-    final token = await SecureStorageRepository.readToken();
-    final isSignedIn = token != null && token.isNotEmpty;
-    return isSignedIn;
   }
 }
