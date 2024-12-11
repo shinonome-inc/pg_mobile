@@ -25,7 +25,7 @@ class MastodonRepository {
     _dio = Dio(options);
   }
 
-  Future<void> setToken(String accessToken) async {
+  void setToken(String accessToken) {
     final headers = {
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
       HttpHeaders.authorizationHeader: 'Bearer $accessToken',
@@ -33,7 +33,7 @@ class MastodonRepository {
     _dio.options.headers.addAll(headers);
   }
 
-  Future<void> reset() async {
+  void reset() {
     _dio.options.headers.addAll({});
   }
 
@@ -52,7 +52,6 @@ class MastodonRepository {
     );
     final body = response.data;
     final accessToken = body['access_token'];
-    await setToken(accessToken);
     return accessToken;
   }
 
@@ -65,9 +64,7 @@ class MastodonRepository {
         'token': token,
       },
     );
-    if (response.statusCode == 200) {
-      await reset();
-    } else {
+    if (response.statusCode != 200) {
       throw Exception(
         'Failed to revoke token with status code ${response.statusCode}',
       );

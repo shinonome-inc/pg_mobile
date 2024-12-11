@@ -3,11 +3,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
 import 'package:pg_mobile/pages/settings/settings_state.dart';
-import 'package:pg_mobile/repository/mastodon_repository.dart';
-import 'package:pg_mobile/repository/secure_storage_repository.dart';
+import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/repository/settings_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 part 'settings_notifier.g.dart';
 
@@ -123,12 +121,9 @@ class SettingsNotifier extends _$SettingsNotifier {
     if (state.isLoading) return;
     _setLoading(true);
     try {
-      final cookieManager = WebViewCookieManager();
-      await cookieManager.clearCookies();
-      await SecureStorageRepository.deleteToken();
-      MastodonRepository.instance.reset();
+      await ref.read(signedInUserNotifierProvider.notifier).signOut();
     } catch (e) {
-      print(e);
+      throw Exception('Failed to sign out: $e');
     } finally {
       _setLoading(false);
     }

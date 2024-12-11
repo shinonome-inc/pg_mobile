@@ -12,6 +12,7 @@ import 'package:pg_mobile/pages/settings/settings_section_header.dart';
 import 'package:pg_mobile/pages/settings/settings_section_item.dart';
 import 'package:pg_mobile/widgets/label/publishing_level_label.dart';
 import 'package:pg_mobile/widgets/label/timeline_type_label.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -22,7 +23,17 @@ class SettingsPage extends ConsumerStatefulWidget {
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   Future<void> _onTapSignOut() async {
-    await ref.read(settingsNotifierProvider.notifier).signOut();
+    final isLoading = ref.read(settingsNotifierProvider).isLoading;
+    if (isLoading) return;
+
+    final cookieManager = WebViewCookieManager();
+    try {
+      await cookieManager.clearCookies();
+      await ref.read(settingsNotifierProvider.notifier).signOut();
+    } catch (e) {
+      return;
+    }
+
     if (!mounted) return;
     context.pushReplacement(AppPage.top.path);
   }

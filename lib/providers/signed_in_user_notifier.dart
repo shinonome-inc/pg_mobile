@@ -12,7 +12,7 @@ class SignedInUserNotifier extends _$SignedInUserNotifier {
     return null;
   }
 
-  void _setSignedInUser(Account user) {
+  void _setSignedInUser(Account? user) {
     state = user;
   }
 
@@ -21,6 +21,15 @@ class SignedInUserNotifier extends _$SignedInUserNotifier {
     _setSignedInUser(user);
     MastodonRepository.instance.setToken(accessToken);
     await SecureStorageRepository.writeToken(accessToken);
+  }
+
+  Future<void> signOut() async {
+    _setSignedInUser(null);
+    final token = await SecureStorageRepository.readToken();
+    if (token == null) return;
+    await MastodonRepository.instance.revokeToken(token);
+    MastodonRepository.instance.reset();
+    await SecureStorageRepository.deleteToken();
   }
 
   Future<void> fetchUser() async {

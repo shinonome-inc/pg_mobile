@@ -5,7 +5,6 @@ import 'package:pg_mobile/config/app_theme.dart';
 import 'package:pg_mobile/config/env.dart';
 import 'package:pg_mobile/config/router.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
-import 'package:pg_mobile/repository/secure_storage_repository.dart';
 import 'package:pg_mobile/repository/settings_repository.dart';
 
 import 'constants/sizes.dart';
@@ -15,11 +14,6 @@ Future<void> main() async {
   debugPrint('Env.useDebugMode: ${Env.useDebugMode}');
   MastodonRepository.instance.init();
   SettingsRepository.instance.init();
-  final token = await SecureStorageRepository.readToken();
-  final hasSignIn = token != null && token.isNotEmpty;
-  if (hasSignIn) {
-    await MastodonRepository.instance.setToken(token);
-  }
   runApp(const ProviderScope(child: MyApp()));
 }
 
