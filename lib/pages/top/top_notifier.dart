@@ -1,4 +1,5 @@
 import 'package:pg_mobile/pages/top/top_state.dart';
+import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -23,21 +24,21 @@ class TopNotifier extends _$TopNotifier {
   ///
   /// [url]にはMastodonの認証画面のURLを指定する。
   ///
-  /// サインインに成功した場合はアクセストークンを返す。
-  ///
-  Future<String?> signInFromUrl(String url) async {
-    if (state.isLoading) return null;
+  Future<void> signInFromUrl(String url) async {
+    if (state.isLoading) return;
+
     final uri = Uri.parse(url);
-    if (uri.queryParameters['code'] == null) return null;
-    String? accessToken;
+    if (uri.queryParameters['code'] == null) return;
+
     _setLoading(true);
     try {
-      accessToken = await MastodonRepository.instance.obtainToken(uri);
+      final accessToken = await MastodonRepository.instance.obtainToken(uri);
+      if (accessToken == null) return;
+      await ref.read(signedInUserNotifierProvider.notifier).signIn(accessToken);
     } catch (e) {
-      accessToken = null;
+      throw Exception('Failed to sign in: $e');
     } finally {
       _setLoading(false);
     }
-    return accessToken;
   }
 }

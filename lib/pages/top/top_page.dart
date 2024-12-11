@@ -47,8 +47,11 @@ class _TopPageState extends ConsumerState<TopPage> {
     final notifier = ref.read(topNotifierProvider.notifier);
     final webViewHeight = await WebViewUtil.calculateWebViewHeight(_controller);
     notifier.setWebViewHeight(webViewHeight);
-    final accessToken = await notifier.signInFromUrl(url);
-    if (accessToken == null) return;
+    try {
+      await notifier.signInFromUrl(url);
+    } catch (e) {
+      return;
+    }
     if (!mounted) return;
     context.pushReplacement(AppPage.timeline.path);
   }
