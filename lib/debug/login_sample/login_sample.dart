@@ -38,7 +38,6 @@ class _LoginSampleState extends State<LoginSample> {
     if (_isLoading) return;
     _setLoading(true);
     final instance = MastodonRepository.instance;
-    await instance.revokeToken();
     _setSignIn(false);
     _setLoading(false);
   }

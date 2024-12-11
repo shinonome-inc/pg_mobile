@@ -19,7 +19,7 @@ class SignedInUserNotifier extends _$SignedInUserNotifier {
   Future<void> signIn(String accessToken) async {
     final user = await MastodonRepository.instance.fetchCredentialAccount();
     _setSignedInUser(user);
-    MastodonRepository.instance.set(accessToken);
+    MastodonRepository.instance.setToken(accessToken);
     await SecureStorageRepository.writeToken(accessToken);
   }
 

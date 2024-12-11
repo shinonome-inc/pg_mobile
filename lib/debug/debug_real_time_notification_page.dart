@@ -21,7 +21,7 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(MastodonRepository.authorizeUrl))
+      ..loadRequest(Uri.parse(MastodonRepository.instance.authorizeUrl))
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (String url) async {

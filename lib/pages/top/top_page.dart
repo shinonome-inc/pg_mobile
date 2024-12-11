@@ -63,7 +63,7 @@ class _TopPageState extends ConsumerState<TopPage> {
         ..setNavigationDelegate(
           NavigationDelegate(onPageFinished: _onPageFinished),
         )
-        ..loadRequest(Uri.parse(MastodonRepository.authorizeUrl));
+        ..loadRequest(Uri.parse(MastodonRepository.instance.authorizeUrl));
     });
   }
 

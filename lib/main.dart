@@ -18,7 +18,7 @@ Future<void> main() async {
   final token = await SecureStorageRepository.readToken();
   final hasSignIn = token != null && token.isNotEmpty;
   if (hasSignIn) {
-    await MastodonRepository.instance.set(token);
+    await MastodonRepository.instance.setToken(token);
   }
   runApp(const ProviderScope(child: MyApp()));
 }

@@ -31,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
           );
         },
       ))
-      ..loadRequest(Uri.parse(MastodonRepository.authorizeUrl));
+      ..loadRequest(Uri.parse(MastodonRepository.instance.authorizeUrl));
   }
 
   @override
