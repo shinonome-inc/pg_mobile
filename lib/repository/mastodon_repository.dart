@@ -21,38 +21,47 @@ class MastodonRepository {
       '${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}&scope=$_scope';
 
   void init() {
-    BaseOptions options = BaseOptions(baseUrl: Env.mastodonInstanceUrl);
+    BaseOptions options = BaseOptions(
+      baseUrl: Env.mastodonInstanceUrl,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
+      },
+    );
     _dio = Dio(options);
   }
 
   void setToken(String accessToken) {
-    final headers = {
-      HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
-      HttpHeaders.authorizationHeader: 'Bearer $accessToken',
-    };
-    _dio.options.headers.addAll(headers);
+    _dio.options.headers[HttpHeaders.authorizationHeader] =
+        'Bearer $accessToken';
   }
 
   void reset() {
-    _dio.options.headers.addAll({});
+    _dio.options.headers.remove(HttpHeaders.authorizationHeader);
   }
 
-  Future<String?> obtainToken(Uri uri) async {
-    final code = uri.queryParameters['code'];
+  Future<String?> obtainToken(String code) async {
+    final requestData = {
+      'client_id': Env.mastodonClientId,
+      'client_secret': Env.mastodonClientSecret,
+      'grant_type': 'authorization_code',
+      'code': code,
+      'redirect_uri': Env.mastodonRedirectUri,
+      'scopes': _scope,
+    };
     final response = await _dio.post(
       '/oauth/token',
-      data: {
-        'client_id': Env.mastodonClientId,
-        'client_secret': Env.mastodonClientSecret,
-        'grant_type': 'authorization_code',
-        'code': code,
-        'redirect_uri': Env.mastodonRedirectUri,
-        'scopes': _scope,
-      },
+      data: requestData,
     );
-    final body = response.data;
-    final accessToken = body['access_token'];
-    return accessToken;
+    if (response.statusCode == 200) {
+      final body = response.data;
+      final accessToken = body['access_token'];
+      return accessToken;
+    } else {
+      print('data: ${response.data}');
+      throw Exception(
+        'Failed to obtain token with status code ${response.statusCode}',
+      );
+    }
   }
 
   Future<void> revokeToken(String token) async {
