@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/constants/border_radiuses.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// スクロール可能なModalBottomSheetのWidget。
 class ScrollableModalBottomSheet extends StatelessWidget {
@@ -62,4 +63,22 @@ class _ScrollableModalBottomSheetHeader extends StatelessWidget {
       ),
     );
   }
+}
+
+@widgetbook.UseCase(
+  name: 'ScrollableModalBottomSheet',
+  type: ScrollableModalBottomSheet,
+  path: '[common]/widgets',
+)
+Widget timelineTypeLabelMedia(BuildContext context) {
+  return ScrollableModalBottomSheet(
+    child: Expanded(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        color: AppColors.gray1,
+        alignment: Alignment.center,
+        child: Text('ScrollableModalBottomSheet'),
+      ),
+    ),
+  );
 }
