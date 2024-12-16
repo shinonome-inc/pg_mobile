@@ -6,7 +6,6 @@ import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/context.dart';
 import 'package:pg_mobile/models/mastodon/relationship.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/repository/secure_storage_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class MastodonRepository {
@@ -15,72 +14,65 @@ class MastodonRepository {
   static final MastodonRepository _instance =
       MastodonRepository._privateConstructor();
   static MastodonRepository get instance => _instance;
+
   late Dio _dio;
-  Dio get dio => _dio;
-  Map<String, dynamic>? _headers;
-  Map<String, dynamic>? get headers => _headers;
-
-  String? _token;
-
-  static const String _scope = 'read+write+write:mutes';
-
-  static const String _baseUrl = 'https://community.4nonome.com';
-  static final String authorizeUrl =
-      '$_baseUrl/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}&scope=$_scope';
+  static const _scope = 'read+write+write:mutes';
+  final authorizeUrl =
+      '${Env.mastodonInstanceUrl}/oauth/authorize?response_type=code&client_id=${Env.mastodonClientId}&redirect_uri=${Env.mastodonRedirectUri}&scope=$_scope';
 
   void init() {
-    BaseOptions options = BaseOptions(baseUrl: _baseUrl);
+    BaseOptions options = BaseOptions(
+      baseUrl: Env.mastodonInstanceUrl,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
+      },
+    );
     _dio = Dio(options);
   }
 
-  Future<void> set(String accessToken) async {
-    _headers = {
-      HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
-      HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+  void setToken(String accessToken) {
+    _dio.options.headers[HttpHeaders.authorizationHeader] =
+        'Bearer $accessToken';
+  }
+
+  void reset() {
+    _dio.options.headers.remove(HttpHeaders.authorizationHeader);
+  }
+
+  Future<String?> obtainToken(String code) async {
+    final requestData = {
+      'client_id': Env.mastodonClientId,
+      'client_secret': Env.mastodonClientSecret,
+      'grant_type': 'authorization_code',
+      'code': code,
+      'redirect_uri': Env.mastodonRedirectUri,
+      'scopes': _scope,
     };
-    _dio.options.headers.addAll(_headers!);
-    _token = accessToken;
-    await SecureStorageRepository.writeToken(accessToken);
-  }
-
-  Future<void> reset() async {
-    _headers = {};
-    _dio.options.headers.addAll(_headers!);
-    _token = null;
-    await SecureStorageRepository.deleteToken();
-  }
-
-  Future<String?> obtainToken(Uri uri) async {
-    final code = uri.queryParameters['code'];
     final response = await _dio.post(
       '/oauth/token',
-      data: {
-        'client_id': Env.mastodonClientId,
-        'client_secret': Env.mastodonClientSecret,
-        'grant_type': 'authorization_code',
-        'code': code,
-        'redirect_uri': Env.mastodonRedirectUri,
-        'scopes': _scope,
-      },
+      data: requestData,
     );
-    final body = response.data;
-    final accessToken = body['access_token'];
-    await set(accessToken);
-    return accessToken;
+    if (response.statusCode == 200) {
+      final body = response.data;
+      final accessToken = body['access_token'];
+      return accessToken;
+    } else {
+      throw Exception(
+        'Failed to obtain token with status code ${response.statusCode}',
+      );
+    }
   }
 
-  Future<void> revokeToken() async {
+  Future<void> revokeToken(String token) async {
     final response = await _dio.post(
       '/oauth/revoke',
       data: {
         'client_id': Env.mastodonClientId,
         'client_secret': Env.mastodonClientSecret,
-        'token': _token,
+        'token': token,
       },
     );
-    if (response.statusCode == 200) {
-      await reset();
-    } else {
+    if (response.statusCode != 200) {
       throw Exception(
         'Failed to revoke token with status code ${response.statusCode}',
       );

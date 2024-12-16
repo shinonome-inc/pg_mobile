@@ -21,14 +21,16 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(MastodonRepository.authorizeUrl))
+      ..loadRequest(Uri.parse(MastodonRepository.instance.authorizeUrl))
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (String url) async {
             final uri = Uri.parse(url);
+            final code = uri.queryParameters['code'];
+            if (code == null) return;
             if (uri.queryParameters['code'] != null) {
               final accessToken =
-                  await MastodonRepository.instance.obtainToken(uri);
+                  await MastodonRepository.instance.obtainToken(code);
               if (accessToken != null) {
                 if (!mounted) return;
                 Navigator.push(

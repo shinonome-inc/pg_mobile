@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pg_mobile/models/enums/publishing_level.dart';
 import 'package:pg_mobile/models/enums/timeline_type.dart';
 import 'package:pg_mobile/pages/settings/settings_state.dart';
+import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/repository/settings_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -53,6 +54,10 @@ class SettingsNotifier extends _$SettingsNotifier {
           SettingsRepository.instance.readEnableFollowsNotification() ??
               initialSettingsState.enableFollowsNotification,
     );
+  }
+
+  void _setLoading(bool isLoading) {
+    state = state.copyWith(isLoading: isLoading);
   }
 
   void _setDefaultTimelineType(TimelineType timelineType) {
@@ -110,5 +115,17 @@ class SettingsNotifier extends _$SettingsNotifier {
   Future<void> switchEnableFollowsNotification(bool enable) async {
     _setEnableFollowsNotification(enable);
     await SettingsRepository.instance.writeEnableFollowsNotification(enable);
+  }
+
+  Future<void> signOut() async {
+    if (state.isLoading) return;
+    _setLoading(true);
+    try {
+      await ref.read(signedInUserNotifierProvider.notifier).signOut();
+    } catch (e) {
+      throw Exception('Failed to sign out: $e');
+    } finally {
+      _setLoading(false);
+    }
   }
 }

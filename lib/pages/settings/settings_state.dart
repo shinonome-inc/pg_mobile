@@ -7,6 +7,7 @@ part 'settings_state.freezed.dart';
 @freezed
 class SettingsState with _$SettingsState {
   const factory SettingsState({
+    required bool isLoading,
     required TimelineType defaultTimelineType,
     required PublishingLevel defaultPublishingLevel,
     required bool enableLikesNotification,
@@ -17,6 +18,7 @@ class SettingsState with _$SettingsState {
 }
 
 const SettingsState initialSettingsState = SettingsState(
+  isLoading: false,
   defaultTimelineType: TimelineType.local,
   defaultPublishingLevel: PublishingLevel.public,
   enableLikesNotification: true,

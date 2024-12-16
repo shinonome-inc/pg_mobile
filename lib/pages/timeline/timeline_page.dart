@@ -31,7 +31,8 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
   void _onTapAccount(Account account) {
     final signedInUser = ref.read(signedInUserNotifierProvider);
     // FIXME: 現状だと認証中のユーザーアカウント情報が正しく保持されていないため、サインインの処理を修正する必要がある。
-    final isSignedInUser = account.id == signedInUser.id;
+    final isSignedInUser =
+        signedInUser != null && account.id == signedInUser.id;
     context.push(isSignedInUser ? AppPage.myPage.path : AppPage.user.path);
   }
 
@@ -156,7 +157,8 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                   itemCount: state.statuses.length,
                   itemBuilder: (BuildContext context, int index) {
                     final status = state.statuses[index];
-                    final isSignedInUser = status.account.id == signedInUser.id;
+                    final isSignedInUser = signedInUser != null &&
+                        status.account.id == signedInUser.id;
                     final statusMenuActions =
                         StatusMenuActionUtil.getStatusMenuActions(
                       status: status,
