@@ -20,19 +20,16 @@ class TopNotifier extends _$TopNotifier {
     state = state.copyWith(webViewHeight: webViewHeight);
   }
 
-  /// URLからサインインする。
+  /// 認証コードを用いてサインインを行う。
   ///
-  /// [url]にはMastodonの認証画面のURLを指定する。
+  /// [code]にはMastodonの認証用のリダイレクトURLに含まれるcodeを指定する。
   ///
-  Future<void> signInFromUrl(String url) async {
+  Future<void> signInFromCode(String code) async {
     if (state.isLoading) return;
-
-    final uri = Uri.parse(url);
-    if (uri.queryParameters['code'] == null) return;
 
     _setLoading(true);
     try {
-      final accessToken = await MastodonRepository.instance.obtainToken(uri);
+      final accessToken = await MastodonRepository.instance.obtainToken(code);
       if (accessToken == null) return;
       await ref.read(signedInUserNotifierProvider.notifier).signIn(accessToken);
     } catch (e) {

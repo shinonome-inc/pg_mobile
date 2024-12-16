@@ -42,13 +42,19 @@ class _TopPageState extends ConsumerState<TopPage> {
   }
 
   Future<void> _onPageFinished(String url) async {
-    final isLoading = ref.read(topNotifierProvider).isLoading;
-    if (isLoading) return;
     final notifier = ref.read(topNotifierProvider.notifier);
     final webViewHeight = await WebViewUtil.calculateWebViewHeight(_controller);
     notifier.setWebViewHeight(webViewHeight);
+
+    final isLoading = ref.read(topNotifierProvider).isLoading;
+    if (isLoading) return;
+
+    final uri = Uri.parse(url);
+    final code = uri.queryParameters['code'];
+    if (code == null) return;
+
     try {
-      await notifier.signInFromUrl(url);
+      await notifier.signInFromCode(code);
     } catch (e) {
       return;
     }
@@ -57,14 +63,17 @@ class _TopPageState extends ConsumerState<TopPage> {
   }
 
   void _initializeWebViewController() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller = WebViewController()
-        ..setJavaScriptMode(JavaScriptMode.unrestricted)
-        ..setNavigationDelegate(
-          NavigationDelegate(onPageFinished: _onPageFinished),
-        )
-        ..loadRequest(Uri.parse(MastodonRepository.instance.authorizeUrl));
-    });
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: _onPageFinished,
+          onHttpError: (error) => debugPrint('onHttpError: $error'),
+          onWebResourceError: (error) =>
+              debugPrint('onWebResourceError: ${error.description}'),
+        ),
+      )
+      ..loadRequest(Uri.parse(MastodonRepository.instance.authorizeUrl));
   }
 
   @override

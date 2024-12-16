@@ -26,9 +26,11 @@ class _SignInPageState extends State<SignInPage> {
         NavigationDelegate(
           onPageFinished: (String url) async {
             final uri = Uri.parse(url);
+            final code = uri.queryParameters['code'];
+            if (code == null) return;
             if (uri.queryParameters['code'] != null) {
               final accessToken =
-                  await MastodonRepository.instance.obtainToken(uri);
+                  await MastodonRepository.instance.obtainToken(code);
               if (accessToken != null) {
                 if (!mounted) return;
                 Navigator.push(
