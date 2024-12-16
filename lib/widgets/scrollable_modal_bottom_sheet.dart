@@ -77,7 +77,7 @@ Widget timelineTypeLabelMedia(BuildContext context) {
         height: MediaQuery.of(context).size.height,
         color: AppColors.gray1,
         alignment: Alignment.center,
-        child: Text('ScrollableModalBottomSheet'),
+        child: const Text('ScrollableModalBottomSheet'),
       ),
     ),
   );
