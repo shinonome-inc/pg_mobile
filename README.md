@@ -11,6 +11,11 @@ fvm flutter pub get
 fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
+## Widgetbookの立ち上げ
+```
+flutter run -d chrome -t lib/widgetbook.dart
+```
+
 ## ブランチ運用
 - main
 - develop
