@@ -57,7 +57,6 @@ class MastodonRepository {
       final accessToken = body['access_token'];
       return accessToken;
     } else {
-      print('data: ${response.data}');
       throw Exception(
         'Failed to obtain token with status code ${response.statusCode}',
       );
