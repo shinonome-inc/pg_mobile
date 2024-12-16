@@ -5,7 +5,8 @@ class WebViewUtil {
 
   /// JavaScriptを実行してWebViewの高さを取得する。
   static Future<double> calculateWebViewHeight(
-      WebViewController controller) async {
+    WebViewController controller,
+  ) async {
     const javaScript = 'document.documentElement.scrollHeight;';
     final result = await controller.runJavaScriptReturningResult(javaScript);
     final height = double.parse(result.toString());
