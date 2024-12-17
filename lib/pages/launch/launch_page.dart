@@ -13,22 +13,17 @@ class LaunchPage extends ConsumerStatefulWidget {
 
 class _LaunchPageState extends ConsumerState<LaunchPage> {
   @override
-  void initState() {
-    super.initState();
-    Future(() async {
-      final notifier = ref.read(launchNotifierProvider.notifier);
-      final isSignedIn = await notifier.isSignedIn();
-      if (!mounted) return;
-      if (isSignedIn) {
-        context.go(AppPage.timeline.path);
-        return;
-      }
-      context.go(AppPage.top.path);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final asyncState = ref.watch(launchNotifierProvider);
+    final hasData = asyncState.hasValue && asyncState.value != null;
+    if (hasData) {
+      final state = asyncState.value!;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go(
+          state.isSignedIn ? AppPage.timeline.path : AppPage.top.path,
+        );
+      });
+    }
     return const Scaffold(
       body: Center(
         child: Text('Launch Page'),
