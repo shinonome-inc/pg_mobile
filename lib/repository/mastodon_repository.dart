@@ -181,6 +181,19 @@ class MastodonRepository {
     }
   }
 
+  Future<List<Status>> fetchAccountStatuses(String accountId) async {
+    print('accountId: $accountId');
+    final response = await _dio.get('/api/v1/accounts/$accountId/statuses');
+    if (response.statusCode == 200) {
+      final statuses = List<dynamic>.from(response.data);
+      return statuses.map((status) => Status.fromJson(status)).toList();
+    } else {
+      throw Exception(
+        'Failed to fetch account statuses in thread with status code ${response.statusCode}',
+      );
+    }
+  }
+
   Future<Context> fetchThread(String statusId) async {
     final response = await _dio.get('/api/v1/statuses/$statusId/context');
     if (response.statusCode == 200) {
