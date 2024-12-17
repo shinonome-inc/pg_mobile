@@ -9,6 +9,7 @@ class NetworkImageContainer extends StatelessWidget {
     this.padding,
     this.width,
     this.height,
+    this.aspectRatio,
     this.backgroundColor,
     this.errorImagePath = ImagePaths.error,
     this.boxShape = BoxShape.rectangle,
@@ -21,6 +22,7 @@ class NetworkImageContainer extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final double? width;
   final double? height;
+  final double? aspectRatio;
   final String errorImagePath;
   final Color? backgroundColor;
   final BoxShape boxShape;
@@ -30,6 +32,39 @@ class NetworkImageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget image = CachedNetworkImage(
+      fit: fit,
+      imageUrl: imageUrl,
+      imageBuilder: (context, imageProvider) => Container(
+        decoration: BoxDecoration(
+          shape: boxShape,
+          borderRadius: borderRadius,
+          image: DecorationImage(
+            fit: fit,
+            image: imageProvider,
+          ),
+        ),
+      ),
+      errorWidget: (context, url, error) => Container(
+        decoration: BoxDecoration(
+          shape: boxShape,
+          borderRadius: borderRadius,
+          image: DecorationImage(
+            fit: fit,
+            image: AssetImage(errorImagePath),
+          ),
+        ),
+      ),
+    );
+
+    // アスペクト比が指定されている場合、`AspectRatio`で包む
+    if (aspectRatio != null) {
+      image = AspectRatio(
+        aspectRatio: aspectRatio!,
+        child: image,
+      );
+    }
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -40,30 +75,7 @@ class NetworkImageContainer extends StatelessWidget {
           shape: boxShape,
           color: backgroundColor,
         ),
-        child: CachedNetworkImage(
-          fit: fit,
-          imageUrl: imageUrl,
-          imageBuilder: (context, imageProvider) => Container(
-            decoration: BoxDecoration(
-              shape: boxShape,
-              borderRadius: borderRadius,
-              image: DecorationImage(
-                fit: fit,
-                image: imageProvider,
-              ),
-            ),
-          ),
-          errorWidget: (context, url, error) => Container(
-            decoration: BoxDecoration(
-              shape: boxShape,
-              borderRadius: borderRadius,
-              image: DecorationImage(
-                fit: fit,
-                image: AssetImage(errorImagePath),
-              ),
-            ),
-          ),
-        ),
+        child: image,
       ),
     );
   }
