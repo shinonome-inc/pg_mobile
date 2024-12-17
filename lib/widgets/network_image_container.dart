@@ -37,6 +37,7 @@ class NetworkImageContainer extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
+          shape: boxShape,
           color: backgroundColor,
         ),
         child: CachedNetworkImage(
