@@ -9,6 +9,23 @@ import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 
+enum _TabMenu {
+  post,
+  reply,
+  media;
+
+  String get _text {
+    switch (this) {
+      case _TabMenu.post:
+        return '投稿';
+      case _TabMenu.reply:
+        return '返信';
+      case _TabMenu.media:
+        return 'メディア';
+    }
+  }
+}
+
 class MyPage extends ConsumerStatefulWidget {
   const MyPage({super.key});
 
@@ -25,99 +42,109 @@ class _MyPageState extends ConsumerState<MyPage> {
         child: CircularProgressIndicator(),
       );
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Page'),
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NetworkImageContainer(
-                  imageUrl: user.header,
-                  aspectRatio: 375 / 200,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(height: 56.h),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user.displayName,
-                        style: context.textTheme.titleLargeBold,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        '@${user.username}',
-                        style: context.textTheme.bodyMediumNormal?.copyWith(
-                          color: AppColors.gray4,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('My Page'),
+        ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  NetworkImageContainer(
+                    imageUrl: user.header,
+                    aspectRatio: 375 / 200,
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(height: 56.h),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user.displayName,
+                          style: context.textTheme.titleLargeBold,
                         ),
-                      ),
-                      SizedBox(height: 16.h),
-                      LinkableText(
-                        user.note,
-                        onTapMention: (value) {},
-                        onTapHashtag: (value) {},
-                      ),
-                      SizedBox(width: 16.h),
-                      Row(
-                        children: [
-                          _UserActivityCountItem(
-                            onTap: () {
-                              context.push(AppPage.timeline.path);
-                            },
-                            count: user.statusesCount,
-                            label: '投稿',
+                        SizedBox(height: 8.h),
+                        Text(
+                          '@${user.username}',
+                          style: context.textTheme.bodyMediumNormal?.copyWith(
+                            color: AppColors.gray4,
                           ),
-                          SizedBox(width: 16.w),
-                          _UserActivityCountItem(
-                            onTap: () {
-                              context.push(AppPage.followingList.path);
-                            },
-                            count: user.statusesCount,
-                            label: 'フォロー',
-                          ),
-                          SizedBox(width: 16.w),
-                          _UserActivityCountItem(
-                            onTap: () {
-                              context.push(AppPage.followerList.path);
-                            },
-                            count: user.statusesCount,
-                            label: 'フォロワー',
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: 16.h),
+                        LinkableText(
+                          user.note,
+                          onTapMention: (value) {},
+                          onTapHashtag: (value) {},
+                        ),
+                        SizedBox(width: 16.h),
+                        Row(
+                          children: [
+                            _UserActivityCountItem(
+                              onTap: () {
+                                context.push(AppPage.timeline.path);
+                              },
+                              count: user.statusesCount,
+                              label: '投稿',
+                            ),
+                            SizedBox(width: 16.w),
+                            _UserActivityCountItem(
+                              onTap: () {
+                                context.push(AppPage.followingList.path);
+                              },
+                              count: user.statusesCount,
+                              label: 'フォロー',
+                            ),
+                            SizedBox(width: 16.w),
+                            _UserActivityCountItem(
+                              onTap: () {
+                                context.push(AppPage.followerList.path);
+                              },
+                              count: user.statusesCount,
+                              label: 'フォロワー',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  TabBar(
+                    labelStyle: context.textTheme.bodyMediumBold,
+                    unselectedLabelStyle: context.textTheme.bodyMediumNormal,
+                    tabs: <Widget>[
+                      for (final menu in _TabMenu.values) Tab(text: menu._text),
                     ],
                   ),
-                ),
-                SizedBox(height: 16.h),
-              ],
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            top: 160.h,
-            left: 16.0,
-            child: NetworkImageContainer(
-              imageUrl: user.avatar,
-              padding: EdgeInsets.all(4.h),
-              backgroundColor: AppColors.gray2,
-              width: 88.h,
-              height: 88.h,
-              boxShape: BoxShape.circle,
+            Positioned(
+              top: 160.h,
+              left: 16.0,
+              child: NetworkImageContainer(
+                imageUrl: user.avatar,
+                padding: EdgeInsets.all(4.h),
+                backgroundColor: AppColors.gray2,
+                width: 88.h,
+                height: 88.h,
+                boxShape: BoxShape.circle,
+              ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          context.push(AppPage.createStatus.path);
-        },
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            context.push(AppPage.createStatus.path);
+          },
+        ),
       ),
     );
   }
