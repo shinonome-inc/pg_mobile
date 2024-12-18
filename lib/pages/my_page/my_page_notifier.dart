@@ -22,8 +22,10 @@ class MyPageNotifier extends _$MyPageNotifier {
     if (accountId == null) return;
     _setLoading(true);
     try {
-      final statuses =
-          await MastodonRepository.instance.fetchAccountStatuses(accountId);
+      final statuses = await MastodonRepository.instance.fetchAccountStatuses(
+        accountId,
+        excludeReplies: true,
+      );
       state = state.copyWith(statuses: statuses);
     } catch (e) {
       throw Exception('Failed to fetch statuses: $e');
