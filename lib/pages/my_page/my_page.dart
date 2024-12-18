@@ -100,11 +100,11 @@ class _MyPageState extends ConsumerState<MyPage> {
             children: <Widget>[
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.statuses.length,
+                itemCount: state.statusesWithoutReply.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return StatusItem(
-                    status: state.statuses.elementAt(index),
+                    status: state.statusesWithoutReply.elementAt(index),
                     onTapItem: () {},
                     onTapAccount: () {},
                     onTapHashtag: () {},
@@ -126,11 +126,11 @@ class _MyPageState extends ConsumerState<MyPage> {
               ),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.statuses.length,
+                itemCount: state.statusesWithReply.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return StatusItem(
-                    status: state.statuses.elementAt(index),
+                    status: state.statusesWithReply.elementAt(index),
                     onTapItem: () {},
                     onTapAccount: () {},
                     onTapHashtag: () {},
@@ -152,11 +152,11 @@ class _MyPageState extends ConsumerState<MyPage> {
               ),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.statuses.length,
+                itemCount: state.mediaStatuses.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return StatusItem(
-                    status: state.statuses.elementAt(index),
+                    status: state.mediaStatuses.elementAt(index),
                     onTapItem: () {},
                     onTapAccount: () {},
                     onTapHashtag: () {},

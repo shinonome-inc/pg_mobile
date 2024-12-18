@@ -7,11 +7,15 @@ part 'my_page_state.freezed.dart';
 class MyPageState with _$MyPageState {
   const factory MyPageState({
     required bool isLoading,
-    required List<Status> statuses,
+    required List<Status> statusesWithoutReply,
+    required List<Status> statusesWithReply,
+    required List<Status> mediaStatuses,
   }) = _MyPageState;
 }
 
 const MyPageState initialMyPageState = MyPageState(
   isLoading: false,
-  statuses: [],
+  statusesWithoutReply: [],
+  statusesWithReply: [],
+  mediaStatuses: [],
 );
