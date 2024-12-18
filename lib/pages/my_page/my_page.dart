@@ -63,30 +63,92 @@ class _MyPageState extends ConsumerState<MyPage> {
         child: CircularProgressIndicator(),
       );
     }
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('My Page'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              UserProfileView(
-                user: user,
-                onTapStatusCount: _onTapStatusCount,
-                onTapFollowingCount: _onTapFollowingCount,
-                onTapFollowerCount: _onTapFollowerCount,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Page'),
+      ),
+      body: DefaultTabController(
+        length: _TabMenu.values.length,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return <Widget>[
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    UserProfileView(
+                      user: user,
+                      onTapStatusCount: _onTapStatusCount,
+                      onTapFollowingCount: _onTapFollowingCount,
+                      onTapFollowerCount: _onTapFollowerCount,
+                    ),
+                    SizedBox(height: 16.h),
+                    TabBar(
+                      labelStyle: context.textTheme.bodyMediumBold,
+                      unselectedLabelStyle: context.textTheme.bodyMediumNormal,
+                      tabs: <Widget>[
+                        for (final menu in _TabMenu.values)
+                          Tab(text: menu._text),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 16.h),
-              TabBar(
-                labelStyle: context.textTheme.bodyMediumBold,
-                unselectedLabelStyle: context.textTheme.bodyMediumNormal,
-                tabs: <Widget>[
-                  for (final menu in _TabMenu.values) Tab(text: menu._text),
-                ],
+            ];
+          },
+          body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.statuses.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return StatusItem(
+                    status: state.statuses.elementAt(index),
+                    onTapItem: () {},
+                    onTapAccount: () {},
+                    onTapHashtag: () {},
+                    onTapMention: () {},
+                    onTapReply: () {},
+                    onTapBoost: () {},
+                    onTapFavorite: () {},
+                    onTapMenu: () {},
+                    onCopyLink: () {},
+                    onPinToProfile: () {},
+                    onUnpinToProfile: () {},
+                    onDeleteAndReturnToDraft: () {},
+                    onDelete: () {},
+                    onMute: () {},
+                    onBlock: () {},
+                    onCancel: () {},
+                  );
+                },
+              ),
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.statuses.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return StatusItem(
+                    status: state.statuses.elementAt(index),
+                    onTapItem: () {},
+                    onTapAccount: () {},
+                    onTapHashtag: () {},
+                    onTapMention: () {},
+                    onTapReply: () {},
+                    onTapBoost: () {},
+                    onTapFavorite: () {},
+                    onTapMenu: () {},
+                    onCopyLink: () {},
+                    onPinToProfile: () {},
+                    onUnpinToProfile: () {},
+                    onDeleteAndReturnToDraft: () {},
+                    onDelete: () {},
+                    onMute: () {},
+                    onBlock: () {},
+                    onCancel: () {},
+                  );
+                },
               ),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -117,12 +179,12 @@ class _MyPageState extends ConsumerState<MyPage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            context.push(AppPage.createStatus.path);
-          },
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          context.push(AppPage.createStatus.path);
+        },
       ),
     );
   }
