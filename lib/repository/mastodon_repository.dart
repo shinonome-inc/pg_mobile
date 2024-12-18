@@ -181,8 +181,18 @@ class MastodonRepository {
     }
   }
 
-  Future<List<Status>> fetchAccountStatuses(String accountId) async {
-    final response = await _dio.get('/api/v1/accounts/$accountId/statuses');
+  Future<List<Status>> fetchAccountStatuses(
+    String accountId, {
+    bool excludeReplies = false,
+    bool onlyMedia = false,
+  }) async {
+    final response = await _dio.get(
+      '/api/v1/accounts/$accountId/statuses',
+      queryParameters: {
+        'exclude_replies': excludeReplies,
+        'only_media': onlyMedia,
+      },
+    );
     if (response.statusCode == 200) {
       final statuses = List<dynamic>.from(response.data);
       return statuses.map((status) => Status.fromJson(status)).toList();
