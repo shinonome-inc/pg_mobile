@@ -182,7 +182,6 @@ class MastodonRepository {
   }
 
   Future<List<Status>> fetchAccountStatuses(String accountId) async {
-    print('accountId: $accountId');
     final response = await _dio.get('/api/v1/accounts/$accountId/statuses');
     if (response.statusCode == 200) {
       final statuses = List<dynamic>.from(response.data);
