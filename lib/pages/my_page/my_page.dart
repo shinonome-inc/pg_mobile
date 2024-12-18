@@ -6,6 +6,7 @@ import 'package:pg_mobile/extensions/build_context_extension.dart';
 import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/pages/my_page/my_page_notifier.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
+import 'package:pg_mobile/widgets/media_grid_view_item.dart';
 import 'package:pg_mobile/widgets/status/status.dart';
 import 'package:pg_mobile/widgets/user/user_profile_view.dart';
 
@@ -150,29 +151,19 @@ class _MyPageState extends ConsumerState<MyPage> {
                   );
                 },
               ),
-              ListView.builder(
+              GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 8.h),
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: state.mediaStatuses.length,
                 shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 4.h,
+                  crossAxisSpacing: 4.h,
+                ),
                 itemBuilder: (context, index) {
-                  return StatusItem(
+                  return MediaGridViewItem(
                     status: state.mediaStatuses.elementAt(index),
-                    onTapItem: () {},
-                    onTapAccount: () {},
-                    onTapHashtag: () {},
-                    onTapMention: () {},
-                    onTapReply: () {},
-                    onTapBoost: () {},
-                    onTapFavorite: () {},
-                    onTapMenu: () {},
-                    onCopyLink: () {},
-                    onPinToProfile: () {},
-                    onUnpinToProfile: () {},
-                    onDeleteAndReturnToDraft: () {},
-                    onDelete: () {},
-                    onMute: () {},
-                    onBlock: () {},
-                    onCancel: () {},
                   );
                 },
               ),
