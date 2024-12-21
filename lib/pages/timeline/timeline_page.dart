@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/pages/timeline/timeline_notifier.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
@@ -19,10 +17,6 @@ class TimelinePage extends ConsumerStatefulWidget {
 
 class _StatusListPageState extends ConsumerState<TimelinePage> {
   final ScrollController _controller = ScrollController();
-
-  void _onTapItem(Status status) {
-    context.push(AppPage.statusDetail.path);
-  }
 
   void _onTapReply(Status tappedStatus) {
     NavigatorUtil.showNewPostCreateView(
@@ -81,10 +75,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
 
   void _block() {
     // TODO: ブロック
-    NavigatorUtil.popScreen(context);
-  }
-
-  void _cancel() {
     NavigatorUtil.popScreen(context);
   }
 
