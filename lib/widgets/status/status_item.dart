@@ -6,6 +6,8 @@ import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
+import 'package:pg_mobile/util/status_menu_action_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status/status.dart';
@@ -14,13 +16,13 @@ class StatusItem extends StatelessWidget {
   const StatusItem({
     Key? key,
     required this.status,
+    required this.isSignedInUser,
     this.reblogAccount,
     this.showDetails = false,
     required this.onTapItem,
     required this.onTapReply,
     required this.onTapBoost,
     required this.onTapFavorite,
-    required this.onTapMenu,
     required this.onCopyLink,
     required this.onPinToProfile,
     required this.onUnpinToProfile,
@@ -32,14 +34,13 @@ class StatusItem extends StatelessWidget {
   }) : super(key: key);
 
   final Status status;
+  final bool isSignedInUser;
   final Account? reblogAccount;
   final bool showDetails;
-
   final void Function() onTapItem;
   final void Function() onTapReply;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
-  final void Function() onTapMenu;
   final void Function() onCopyLink;
   final void Function() onPinToProfile;
   final void Function() onUnpinToProfile;
@@ -59,6 +60,33 @@ class StatusItem extends StatelessWidget {
 
   void _onTapEngagementFavorite(BuildContext context) {
     context.push(AppPage.favoriteUserList.path);
+  }
+
+  void _copyLink() {
+    // TODO: リンクをコピーする処理を追加する。
+  }
+
+  void _onPinToProfile(Status status) {
+    // TODO: プロフィールにピン留めする処理を追加する。
+  }
+
+  void _deleteAndReturnToDraft() {
+    // TODO: 下書きに戻す処理を追加する。
+  }
+
+  void _onTapMenu(BuildContext context) {
+    final actions = StatusMenuActionUtil.getStatusMenuActions(
+      status: status,
+      isSignedInUser: isSignedInUser,
+      onCopyLink: _copyLink,
+      onPinToProfile: () => _onPinToProfile(status),
+      onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
+      onDelete: onDelete,
+      onMute: onMute,
+      onBlock: onBlock,
+      onCancel: onCancel,
+    );
+    NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
   }
 
   @override
@@ -173,7 +201,7 @@ class StatusItem extends StatelessWidget {
                         onTapReply: onTapReply,
                         onTapBoost: onTapBoost,
                         onTapFavorite: onTapFavorite,
-                        onTapMenu: onTapMenu,
+                        onTapMenu: () => _onTapMenu(context),
                       ),
                     ],
                   ),

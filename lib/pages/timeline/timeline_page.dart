@@ -3,14 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
-import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
-import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 import 'package:pg_mobile/pages/timeline/timeline_notifier.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
 import 'package:pg_mobile/util/navigator_util.dart';
-import 'package:pg_mobile/util/status_menu_action_util.dart';
 import 'package:pg_mobile/widgets/status/status_item.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
@@ -91,10 +88,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
     NavigatorUtil.popScreen(context);
   }
 
-  void _onTapMenu(List<StatusMenuAction> actions) {
-    NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -142,29 +135,15 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                     final status = state.statuses[index];
                     final isSignedInUser = signedInUser != null &&
                         status.account.id == signedInUser.id;
-                    final statusMenuActions =
-                        StatusMenuActionUtil.getStatusMenuActions(
-                      status: status,
-                      isSignedInUser: isSignedInUser,
-                      onCopyLink: _copyLink,
-                      onPinToProfile: () => status.isPinnedToProfile
-                          ? _unpinToProfile(status)
-                          : _pinToProfile(status),
-                      onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
-                      onDelete: () => _delete(status),
-                      onMute: () => _mute(status),
-                      onBlock: () => _block(),
-                      onCancel: _cancel,
-                    );
                     return StatusItem(
                       status: status,
+                      isSignedInUser: isSignedInUser,
                       reblogAccount:
                           status.reblog == null ? null : status.account,
                       onTapItem: () => _onTapItem(status),
                       onTapReply: () => _onTapReply(status),
                       onTapBoost: () => _onTapBoost(status),
                       onTapFavorite: () => _onTapFavorite(status),
-                      onTapMenu: () => _onTapMenu(statusMenuActions),
                       onCopyLink: _copyLink,
                       onPinToProfile: () =>
                           isSignedInUser ? _pinToProfile : null,

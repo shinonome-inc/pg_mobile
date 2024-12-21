@@ -106,13 +106,15 @@ class _MyPageState extends ConsumerState<MyPage> {
                   itemCount: state.statusesWithoutReply.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    final isSignedInUser = user.id ==
+                        state.statusesWithoutReply.elementAt(index).account.id;
                     return StatusItem(
                       status: state.statusesWithoutReply.elementAt(index),
+                      isSignedInUser: isSignedInUser,
                       onTapItem: () {},
                       onTapReply: () {},
                       onTapBoost: () {},
                       onTapFavorite: () {},
-                      onTapMenu: () {},
                       onCopyLink: () {},
                       onPinToProfile: () {},
                       onUnpinToProfile: () {},
@@ -132,13 +134,15 @@ class _MyPageState extends ConsumerState<MyPage> {
                   itemCount: state.statusesWithReply.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    final isSignedInUser = user.id ==
+                        state.statusesWithReply.elementAt(index).account.id;
                     return StatusItem(
                       status: state.statusesWithReply.elementAt(index),
+                      isSignedInUser: isSignedInUser,
                       onTapItem: () {},
                       onTapReply: () {},
                       onTapBoost: () {},
                       onTapFavorite: () {},
-                      onTapMenu: () {},
                       onCopyLink: () {},
                       onPinToProfile: () {},
                       onUnpinToProfile: () {},
