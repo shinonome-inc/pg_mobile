@@ -111,7 +111,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: state.statusesWithoutReply.elementAt(index),
                       isSignedInUser: isSignedInUser,
-                      onTapItem: () {},
                       onTapReply: () {},
                       onTapBoost: () {},
                       onTapFavorite: () {},
@@ -138,7 +137,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: state.statusesWithReply.elementAt(index),
                       isSignedInUser: isSignedInUser,
-                      onTapItem: () {},
                       onTapReply: () {},
                       onTapBoost: () {},
                       onTapFavorite: () {},

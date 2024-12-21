@@ -19,7 +19,6 @@ class StatusItem extends StatelessWidget {
     required this.isSignedInUser,
     this.reblogAccount,
     this.showDetails = false,
-    required this.onTapItem,
     required this.onTapReply,
     required this.onTapBoost,
     required this.onTapFavorite,
@@ -36,7 +35,6 @@ class StatusItem extends StatelessWidget {
   final bool isSignedInUser;
   final Account? reblogAccount;
   final bool showDetails;
-  final void Function() onTapItem;
   final void Function() onTapReply;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
@@ -47,6 +45,10 @@ class StatusItem extends StatelessWidget {
   final void Function() onDelete;
   final void Function() onMute;
   final void Function() onBlock;
+
+  void _onTapItem(BuildContext context) {
+    context.push(AppPage.statusDetail.path);
+  }
 
   void _onTapAccount(BuildContext context) {
     context.push(AppPage.user.path);
@@ -95,7 +97,7 @@ class StatusItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return GestureDetector(
-      onTap: onTapItem,
+      onTap: () => _onTapItem(context),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
         decoration: BoxDecoration(
