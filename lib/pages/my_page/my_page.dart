@@ -35,15 +35,15 @@ class MyPage extends ConsumerStatefulWidget {
 
 class _MyPageState extends ConsumerState<MyPage> {
   void _onTapStatusCount() {
-    context.go(AppPage.timeline.path);
+    context.push(AppPage.timeline.path);
   }
 
   void _onTapFollowingCount() {
-    context.go(AppPage.followingList.path);
+    context.push(AppPage.followingList.path);
   }
 
   void _onTapFollowerCount() {
-    context.go(AppPage.followerList.path);
+    context.push(AppPage.followerList.path);
   }
 
   Future<void> _onRefresh() async {
