@@ -35,11 +35,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
     await notifier.onTapFavorite(status);
   }
 
-  void _copyLink() {
-    // TODO: リンクをコピー
-    NavigatorUtil.popScreen(context);
-  }
-
   Future<void> _pinToProfile(Status status) async {
     final notifier = ref.read(timelineNotifierProvider.notifier);
     await notifier.pinStatusToProfile(status);
@@ -133,7 +128,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                       onTapReply: () => _onTapReply(status),
                       onTapBoost: () => _onTapBoost(status),
                       onTapFavorite: () => _onTapFavorite(status),
-                      onCopyLink: _copyLink,
                       onPinToProfile: () =>
                           isSignedInUser ? _pinToProfile : null,
                       onUnpinToProfile: () =>

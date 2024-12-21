@@ -22,7 +22,6 @@ class StatusItem extends StatelessWidget {
     required this.onTapReply,
     required this.onTapBoost,
     required this.onTapFavorite,
-    required this.onCopyLink,
     required this.onPinToProfile,
     required this.onUnpinToProfile,
     required this.onDeleteAndReturnToDraft,
@@ -38,7 +37,6 @@ class StatusItem extends StatelessWidget {
   final void Function() onTapReply;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
-  final void Function() onCopyLink;
   final void Function() onPinToProfile;
   final void Function() onUnpinToProfile;
   final void Function() onDeleteAndReturnToDraft;
