@@ -18,13 +18,6 @@ class TimelinePage extends ConsumerStatefulWidget {
 class _StatusListPageState extends ConsumerState<TimelinePage> {
   final ScrollController _controller = ScrollController();
 
-  void _onTapReply(Status tappedStatus) {
-    NavigatorUtil.showNewPostCreateView(
-      context,
-      replyToStatus: tappedStatus,
-    );
-  }
-
   Future<void> _onTapBoost(Status status) async {
     final notifier = ref.read(timelineNotifierProvider.notifier);
     await notifier.onTapBoost(status);
