@@ -179,8 +179,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                           status.reblog == null ? null : status.account,
                       onTapItem: () => _onTapItem(status),
                       onTapAccount: () => _onTapAccount(status.account),
-                      onTapHashtag: () => _onTapHashtag,
-                      onTapMention: () => _onTapMention,
                       onTapReply: () => _onTapReply(status),
                       onTapBoost: () => _onTapBoost(status),
                       onTapFavorite: () => _onTapFavorite(status),

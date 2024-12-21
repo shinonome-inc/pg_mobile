@@ -16,8 +16,6 @@ class StatusItem extends StatelessWidget {
     this.showDetails = false,
     required this.onTapItem,
     required this.onTapAccount,
-    required this.onTapHashtag,
-    required this.onTapMention,
     required this.onTapReply,
     required this.onTapBoost,
     required this.onTapFavorite,
@@ -40,8 +38,6 @@ class StatusItem extends StatelessWidget {
 
   final void Function() onTapItem;
   final void Function() onTapAccount;
-  final void Function() onTapHashtag;
-  final void Function() onTapMention;
   final void Function() onTapReply;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
