@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
+import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
@@ -15,7 +17,6 @@ class StatusItem extends StatelessWidget {
     this.reblogAccount,
     this.showDetails = false,
     required this.onTapItem,
-    required this.onTapAccount,
     required this.onTapReply,
     required this.onTapBoost,
     required this.onTapFavorite,
@@ -28,8 +29,6 @@ class StatusItem extends StatelessWidget {
     required this.onMute,
     required this.onBlock,
     required this.onCancel,
-    this.onTapEngagementReblog,
-    this.onTapEngagementFavorite,
   }) : super(key: key);
 
   final Status status;
@@ -37,7 +36,6 @@ class StatusItem extends StatelessWidget {
   final bool showDetails;
 
   final void Function() onTapItem;
-  final void Function() onTapAccount;
   final void Function() onTapReply;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
@@ -50,8 +48,18 @@ class StatusItem extends StatelessWidget {
   final void Function() onMute;
   final void Function() onBlock;
   final void Function() onCancel;
-  final void Function()? onTapEngagementReblog;
-  final void Function()? onTapEngagementFavorite;
+
+  void _onTapAccount(BuildContext context) {
+    context.push(AppPage.user.path);
+  }
+
+  void _onTapEngagementReblog(BuildContext context) {
+    context.push(AppPage.boostUserList.path);
+  }
+
+  void _onTapEngagementFavorite(BuildContext context) {
+    context.push(AppPage.favoriteUserList.path);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +89,7 @@ class StatusItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: onTapAccount,
+                  onTap: () => _onTapAccount(context),
                   child: NetworkImageContainer(
                     imageUrl: status.account.avatar,
                     width: 56.w,
@@ -154,8 +162,9 @@ class StatusItem extends StatelessWidget {
                           margin: EdgeInsets.only(bottom: 8.h),
                           child: StatusDetailsEngagementView(
                             status: status,
-                            onTapReblog: onTapEngagementReblog,
-                            onTapFavorite: onTapEngagementFavorite,
+                            onTapReblog: () => _onTapEngagementReblog(context),
+                            onTapFavorite: () =>
+                                _onTapEngagementFavorite(context),
                           ),
                         ),
                       StatusFooter(

@@ -109,7 +109,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: state.statusesWithoutReply.elementAt(index),
                       onTapItem: () {},
-                      onTapAccount: () {},
                       onTapReply: () {},
                       onTapBoost: () {},
                       onTapFavorite: () {},
@@ -136,7 +135,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: state.statusesWithReply.elementAt(index),
                       onTapItem: () {},
-                      onTapAccount: () {},
                       onTapReply: () {},
                       onTapBoost: () {},
                       onTapFavorite: () {},
