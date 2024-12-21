@@ -123,8 +123,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                     return StatusItem(
                       status: status,
                       isSignedInUser: isSignedInUser,
-                      reblogAccount:
-                          status.reblog == null ? null : status.account,
                       onTapBoost: () => _onTapBoost(status),
                       onTapFavorite: () => _onTapFavorite(status),
                       onPinToProfile: () =>

@@ -18,7 +18,6 @@ class StatusItem extends StatelessWidget {
     Key? key,
     required this.status,
     required this.isSignedInUser,
-    this.reblogAccount,
     this.showDetails = false,
     required this.onTapBoost,
     required this.onTapFavorite,
@@ -32,7 +31,6 @@ class StatusItem extends StatelessWidget {
 
   final Status status;
   final bool isSignedInUser;
-  final Account? reblogAccount;
   final bool showDetails;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
@@ -42,6 +40,8 @@ class StatusItem extends StatelessWidget {
   final void Function() onDelete;
   final void Function() onMute;
   final void Function() onBlock;
+
+  Account? get reblogAccount => status.reblog == null ? null : status.account;
 
   void _onTapItem(BuildContext context) {
     context.push(AppPage.statusDetail.path);
