@@ -7,7 +7,7 @@ import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// テキストのURL、メンション、ハッシュタグをタップ可能にするWidgetです。
-class LinkableText extends StatefulWidget {
+class LinkableText extends StatelessWidget {
   const LinkableText(
     this.text, {
     super.key,
@@ -15,11 +15,6 @@ class LinkableText extends StatefulWidget {
 
   final String text;
 
-  @override
-  State<LinkableText> createState() => _LinkableTextState();
-}
-
-class _LinkableTextState extends State<LinkableText> {
   Future<void> _launchUrl(String url) async {
     final uri = Uri.parse(url);
     if (!await launchUrl(uri)) {
@@ -27,20 +22,20 @@ class _LinkableTextState extends State<LinkableText> {
     }
   }
 
-  Future<void> _onTapMention(String mention) async {
+  void _onTapMention(BuildContext context, String mention) {
     context.push(AppPage.user.path);
   }
 
-  Future<void> _onTapHashtag(String hashtag) async {
+  void _onTapHashtag(BuildContext context, String hashtag) {
     context.push(AppPage.hashTag.path);
   }
 
   List<Match> _matchList() {
     final List<Match> matches = [];
 
-    final urlMatches = Patterns.statusUrl.allMatches(widget.text);
-    final mentionMatches = Patterns.mention.allMatches(widget.text);
-    final hashtagMatches = Patterns.hashtag.allMatches(widget.text);
+    final urlMatches = Patterns.statusUrl.allMatches(text);
+    final mentionMatches = Patterns.mention.allMatches(text);
+    final hashtagMatches = Patterns.hashtag.allMatches(text);
 
     matches.addAll(urlMatches);
     matches.addAll(mentionMatches);
@@ -50,19 +45,19 @@ class _LinkableTextState extends State<LinkableText> {
     return matches;
   }
 
-  List<TextSpan> textSpanList(List<Match> allMatches) {
+  List<TextSpan> textSpanList(BuildContext context, List<Match> allMatches) {
     final textSpans = <TextSpan>[];
     int currentPosition = 0;
 
     for (var match in allMatches) {
       if (currentPosition < match.start) {
-        final textPart = widget.text.substring(currentPosition, match.start);
+        final textPart = text.substring(currentPosition, match.start);
         textSpans.add(
           TextSpan(text: textPart),
         );
       }
 
-      final matchedText = widget.text.substring(match.start, match.end);
+      final matchedText = text.substring(match.start, match.end);
       if (Patterns.statusUrl.hasMatch(matchedText)) {
         final url = matchedText.replaceAll(' ', '').replaceAll('\n', '');
         textSpans.add(
@@ -79,7 +74,7 @@ class _LinkableTextState extends State<LinkableText> {
             text: matchedText,
             style: const TextStyle(color: AppColors.blue),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => _onTapMention(mention),
+              ..onTap = () => _onTapMention(context, mention),
           ),
         );
       } else if (Patterns.hashtag.hasMatch(matchedText)) {
@@ -88,15 +83,15 @@ class _LinkableTextState extends State<LinkableText> {
             text: matchedText,
             style: const TextStyle(color: AppColors.blue),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => _onTapHashtag(matchedText),
+              ..onTap = () => _onTapHashtag(context, matchedText),
           ),
         );
       }
 
       currentPosition = match.end;
     }
-    if (currentPosition < widget.text.length) {
-      final remainingText = widget.text.substring(currentPosition);
+    if (currentPosition < text.length) {
+      final remainingText = text.substring(currentPosition);
       textSpans.add(
         TextSpan(text: remainingText),
       );
@@ -107,11 +102,9 @@ class _LinkableTextState extends State<LinkableText> {
   @override
   Widget build(BuildContext context) {
     final allMatches = _matchList();
-    final textSpans = textSpanList(allMatches);
+    final textSpans = textSpanList(context, allMatches);
     return SelectableText.rich(
-      allMatches.isEmpty
-          ? TextSpan(text: widget.text)
-          : TextSpan(children: textSpans),
+      allMatches.isEmpty ? TextSpan(text: text) : TextSpan(children: textSpans),
     );
   }
 }
