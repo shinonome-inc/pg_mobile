@@ -63,7 +63,6 @@ class _MyPageState extends ConsumerState<MyPage> {
   Widget build(BuildContext context) {
     final user = ref.watch(signedInUserNotifierProvider);
     final state = ref.watch(myPageNotifierProvider);
-    final notifier = ref.read(myPageNotifierProvider.notifier);
     if (user == null) {
       return const Center(
         child: CircularProgressIndicator(),
