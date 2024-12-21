@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
@@ -60,8 +61,17 @@ class StatusItem extends StatelessWidget {
     context.push(AppPage.favoriteUserList.path);
   }
 
-  void _copyLink() {
-    // TODO: リンクをコピーする処理を追加する。
+  Future<void> _copyLink(BuildContext context) async {
+    if (status.url == null) return;
+
+    final uri = Uri.tryParse(status.url!);
+    if (uri == null) return;
+
+    final data = ClipboardData(text: uri.toString());
+    await Clipboard.setData(data);
+
+    if (!context.mounted) return;
+    context.pop();
   }
 
   void _onPinToProfile(Status status) {
@@ -73,14 +83,14 @@ class StatusItem extends StatelessWidget {
   }
 
   void _onCancel(BuildContext context) {
-    NavigatorUtil.popScreen(context);
+    context.pop();
   }
 
   void _onTapMenu(BuildContext context) {
     final actions = StatusMenuActionUtil.getStatusMenuActions(
       status: status,
       isSignedInUser: isSignedInUser,
-      onCopyLink: _copyLink,
+      onCopyLink: () => _copyLink(context),
       onPinToProfile: () => _onPinToProfile(status),
       onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
       onDelete: onDelete,
