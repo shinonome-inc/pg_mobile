@@ -70,5 +70,23 @@ ThemeData appTheme() {
         borderRadius: BorderRadius.circular(8.r),
       ),
     ),
+    tabBarTheme: TabBarTheme(
+      labelStyle: const TextStyle(
+        fontWeight: FontWeight.bold,
+        color: AppColors.white,
+      ),
+      unselectedLabelStyle: const TextStyle(
+        color: AppColors.white,
+      ),
+      indicator: UnderlineTabIndicator(
+        borderRadius: BorderRadius.circular(8.r),
+        borderSide: const BorderSide(
+          width: 4.0,
+          color: AppColors.accent,
+        ),
+      ),
+      indicatorSize: TabBarIndicatorSize.tab,
+      overlayColor: WidgetStateProperty.all(AppColors.gray2),
+    ),
   );
 }

@@ -1,0 +1,67 @@
+import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/pages/my_page/my_page_state.dart';
+import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
+import 'package:pg_mobile/repository/mastodon_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'my_page_notifier.g.dart';
+
+@riverpod
+class MyPageNotifier extends _$MyPageNotifier {
+  @override
+  MyPageState build() {
+    return initialMyPageState;
+  }
+
+  void _setLoading(bool isLoading) {
+    state = state.copyWith(isLoading: isLoading);
+  }
+
+  void _setStatusesWithoutReply(List<Status> statuses) {
+    state = state.copyWith(statusesWithoutReply: statuses);
+  }
+
+  void _setStatusesWithReply(List<Status> statuses) {
+    state = state.copyWith(statusesWithReply: statuses);
+  }
+
+  void _setMediaStatuses(List<Status> statuses) {
+    state = state.copyWith(mediaStatuses: statuses);
+  }
+
+  Future<void> fetchMyPageInfo() async {
+    if (state.isLoading) return;
+
+    final accountId = ref.read(signedInUserNotifierProvider)?.id;
+    if (accountId == null) return;
+
+    _setLoading(true);
+    List<Status> statusesWithoutReply = [];
+    List<Status> statusesWithReply = [];
+    List<Status> mediaStatuses = [];
+    final repository = MastodonRepository.instance;
+    try {
+      statusesWithoutReply = await repository.fetchAccountStatuses(
+        accountId,
+        excludeReplies: true,
+      );
+      statusesWithReply = await repository.fetchAccountStatuses(
+        accountId,
+      );
+      mediaStatuses = await repository.fetchAccountStatuses(
+        accountId,
+        onlyMedia: true,
+      );
+      await ref
+          .read(signedInUserNotifierProvider.notifier)
+          .updateSignedInUser();
+    } catch (e) {
+      throw Exception('Failed to fetch statuses: $e');
+    } finally {
+      _setLoading(false);
+    }
+    _setStatusesWithoutReply(statusesWithoutReply);
+    _setStatusesWithReply(statusesWithReply);
+    _setMediaStatuses(mediaStatuses);
+  }
+}

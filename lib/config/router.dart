@@ -6,7 +6,7 @@ import 'package:pg_mobile/widgets/layout_scaffold.dart';
 final _bottomNavigationPages = <AppPage>[
   AppPage.timeline,
   AppPage.notification,
-  AppPage.user,
+  AppPage.myPage,
   AppPage.settings,
 ];
 
