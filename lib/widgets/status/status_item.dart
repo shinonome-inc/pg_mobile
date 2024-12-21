@@ -20,7 +20,6 @@ class StatusItem extends StatelessWidget {
     required this.isSignedInUser,
     this.reblogAccount,
     this.showDetails = false,
-    required this.onTapReply,
     required this.onTapBoost,
     required this.onTapFavorite,
     required this.onPinToProfile,
@@ -35,7 +34,6 @@ class StatusItem extends StatelessWidget {
   final bool isSignedInUser;
   final Account? reblogAccount;
   final bool showDetails;
-  final void Function() onTapReply;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
   final void Function() onPinToProfile;
@@ -51,6 +49,10 @@ class StatusItem extends StatelessWidget {
 
   void _onTapAccount(BuildContext context) {
     context.push(AppPage.user.path);
+  }
+
+  void _onTapReply(BuildContext context) {
+    context.push(AppPage.createStatus.path);
   }
 
   void _onTapEngagementReblog(BuildContext context) {
@@ -210,7 +212,7 @@ class StatusItem extends StatelessWidget {
                       StatusFooter(
                         status: status,
                         showDetails: showDetails,
-                        onTapReply: onTapReply,
+                        onTapReply: () => _onTapReply(context),
                         onTapBoost: onTapBoost,
                         onTapFavorite: onTapFavorite,
                         onTapMenu: () => _onTapMenu(context),
