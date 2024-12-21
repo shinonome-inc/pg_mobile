@@ -29,10 +29,12 @@ class MyPageNotifier extends _$MyPageNotifier {
     state = state.copyWith(mediaStatuses: statuses);
   }
 
-  Future<void> fetchStatuses() async {
+  Future<void> fetchMyPageInfo() async {
     if (state.isLoading) return;
+
     final accountId = ref.read(signedInUserNotifierProvider)?.id;
     if (accountId == null) return;
+
     _setLoading(true);
     List<Status> statusesWithoutReply = [];
     List<Status> statusesWithReply = [];
@@ -50,6 +52,9 @@ class MyPageNotifier extends _$MyPageNotifier {
         accountId,
         onlyMedia: true,
       );
+      await ref
+          .read(signedInUserNotifierProvider.notifier)
+          .updateSignedInUser();
     } catch (e) {
       throw Exception('Failed to fetch statuses: $e');
     } finally {

@@ -31,4 +31,9 @@ class SignedInUserNotifier extends _$SignedInUserNotifier {
     MastodonRepository.instance.reset();
     await SecureStorageRepository.deleteToken();
   }
+
+  Future<void> updateSignedInUser() async {
+    final user = await MastodonRepository.instance.fetchCredentialAccount();
+    _setSignedInUser(user);
+  }
 }

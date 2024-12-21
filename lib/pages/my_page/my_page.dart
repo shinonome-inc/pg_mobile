@@ -47,11 +47,15 @@ class _MyPageState extends ConsumerState<MyPage> {
     context.go(AppPage.followerList.path);
   }
 
+  Future<void> _onRefresh() async {
+    await ref.read(myPageNotifierProvider.notifier).fetchMyPageInfo();
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(myPageNotifierProvider.notifier).fetchStatuses();
+      await ref.read(myPageNotifierProvider.notifier).fetchMyPageInfo();
     });
   }
 
@@ -59,6 +63,7 @@ class _MyPageState extends ConsumerState<MyPage> {
   Widget build(BuildContext context) {
     final user = ref.watch(signedInUserNotifierProvider);
     final state = ref.watch(myPageNotifierProvider);
+    final notifier = ref.read(myPageNotifierProvider.notifier);
     if (user == null) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -97,75 +102,83 @@ class _MyPageState extends ConsumerState<MyPage> {
             ];
           },
           body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
             children: <Widget>[
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.statusesWithoutReply.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return StatusItem(
-                    status: state.statusesWithoutReply.elementAt(index),
-                    onTapItem: () {},
-                    onTapAccount: () {},
-                    onTapHashtag: () {},
-                    onTapMention: () {},
-                    onTapReply: () {},
-                    onTapBoost: () {},
-                    onTapFavorite: () {},
-                    onTapMenu: () {},
-                    onCopyLink: () {},
-                    onPinToProfile: () {},
-                    onUnpinToProfile: () {},
-                    onDeleteAndReturnToDraft: () {},
-                    onDelete: () {},
-                    onMute: () {},
-                    onBlock: () {},
-                    onCancel: () {},
-                  );
-                },
-              ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.statusesWithReply.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return StatusItem(
-                    status: state.statusesWithReply.elementAt(index),
-                    onTapItem: () {},
-                    onTapAccount: () {},
-                    onTapHashtag: () {},
-                    onTapMention: () {},
-                    onTapReply: () {},
-                    onTapBoost: () {},
-                    onTapFavorite: () {},
-                    onTapMenu: () {},
-                    onCopyLink: () {},
-                    onPinToProfile: () {},
-                    onUnpinToProfile: () {},
-                    onDeleteAndReturnToDraft: () {},
-                    onDelete: () {},
-                    onMute: () {},
-                    onBlock: () {},
-                    onCancel: () {},
-                  );
-                },
-              ),
-              GridView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 8.h),
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.mediaStatuses.length,
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 4.h,
-                  crossAxisSpacing: 4.h,
+              RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.statusesWithoutReply.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return StatusItem(
+                      status: state.statusesWithoutReply.elementAt(index),
+                      onTapItem: () {},
+                      onTapAccount: () {},
+                      onTapHashtag: () {},
+                      onTapMention: () {},
+                      onTapReply: () {},
+                      onTapBoost: () {},
+                      onTapFavorite: () {},
+                      onTapMenu: () {},
+                      onCopyLink: () {},
+                      onPinToProfile: () {},
+                      onUnpinToProfile: () {},
+                      onDeleteAndReturnToDraft: () {},
+                      onDelete: () {},
+                      onMute: () {},
+                      onBlock: () {},
+                      onCancel: () {},
+                    );
+                  },
                 ),
-                itemBuilder: (context, index) {
-                  return MediaGridViewItem(
-                    status: state.mediaStatuses.elementAt(index),
-                  );
-                },
+              ),
+              RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.statusesWithReply.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return StatusItem(
+                      status: state.statusesWithReply.elementAt(index),
+                      onTapItem: () {},
+                      onTapAccount: () {},
+                      onTapHashtag: () {},
+                      onTapMention: () {},
+                      onTapReply: () {},
+                      onTapBoost: () {},
+                      onTapFavorite: () {},
+                      onTapMenu: () {},
+                      onCopyLink: () {},
+                      onPinToProfile: () {},
+                      onUnpinToProfile: () {},
+                      onDeleteAndReturnToDraft: () {},
+                      onDelete: () {},
+                      onMute: () {},
+                      onBlock: () {},
+                      onCancel: () {},
+                    );
+                  },
+                ),
+              ),
+              RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: GridView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 8.h),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.mediaStatuses.length,
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 4.h,
+                    crossAxisSpacing: 4.h,
+                  ),
+                  itemBuilder: (context, index) {
+                    return MediaGridViewItem(
+                      status: state.mediaStatuses.elementAt(index),
+                    );
+                  },
+                ),
               ),
             ],
           ),
