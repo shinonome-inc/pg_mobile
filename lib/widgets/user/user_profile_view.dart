@@ -67,13 +67,13 @@ class UserProfileView extends StatelessWidget {
                           SizedBox(width: 16.w),
                           _UserActivityCountItem(
                             onTap: onTapFollowingCount,
-                            count: user.statusesCount,
+                            count: user.followingCount,
                             label: 'フォロー',
                           ),
                           SizedBox(width: 16.w),
                           _UserActivityCountItem(
                             onTap: onTapFollowerCount,
-                            count: user.statusesCount,
+                            count: user.followersCount,
                             label: 'フォロワー',
                           ),
                         ],
