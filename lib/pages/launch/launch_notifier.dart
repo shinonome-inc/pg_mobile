@@ -7,6 +7,7 @@ part 'launch_notifier.g.dart';
 
 @riverpod
 class LaunchNotifier extends _$LaunchNotifier {
+  @override
   Future<LaunchState> build() async {
     final isSignedIn = await checkSignedIn();
     return initialLaunchState.copyWith(isSignedIn: isSignedIn);
