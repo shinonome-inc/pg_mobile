@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
+import 'package:pg_mobile/extensions/account_extension.dart';
 import 'package:pg_mobile/extensions/build_context_extension.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
@@ -51,11 +52,7 @@ class UserProfileView extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      LinkableText(
-                        user.note,
-                        onTapMention: (value) {},
-                        onTapHashtag: (value) {},
-                      ),
+                      LinkableText(user.noteText),
                       SizedBox(height: 16.h),
                       Row(
                         children: [
