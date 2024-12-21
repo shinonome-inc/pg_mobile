@@ -5,10 +5,10 @@ part 'launch_state.freezed.dart';
 @freezed
 class LaunchState with _$LaunchState {
   const factory LaunchState({
-    required bool isLoading,
+    required bool isSignedIn,
   }) = _LaunchState;
 }
 
 const LaunchState initialLaunchState = LaunchState(
-  isLoading: false,
+  isSignedIn: false,
 );
