@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pg_mobile/extensions/build_context_extension.dart';
 import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/pages/my_page/my_page_notifier.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
@@ -88,8 +87,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                     ),
                     SizedBox(height: 16.h),
                     TabBar(
-                      labelStyle: context.textTheme.bodyMediumBold,
-                      unselectedLabelStyle: context.textTheme.bodyMediumNormal,
                       tabs: <Widget>[
                         for (final menu in _TabMenu.values)
                           Tab(text: menu._text),
