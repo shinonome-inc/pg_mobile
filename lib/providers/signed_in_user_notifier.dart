@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'signed_in_user_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SignedInUserNotifier extends _$SignedInUserNotifier {
   @override
   Account? build() {
@@ -32,8 +32,8 @@ class SignedInUserNotifier extends _$SignedInUserNotifier {
     await SecureStorageRepository.deleteToken();
   }
 
-  Future<void> fetchUser() async {
+  Future<void> updateSignedInUser() async {
     final user = await MastodonRepository.instance.fetchCredentialAccount();
-    state = user;
+    _setSignedInUser(user);
   }
 }
