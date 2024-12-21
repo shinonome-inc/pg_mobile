@@ -122,7 +122,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                       onDelete: () {},
                       onMute: () {},
                       onBlock: () {},
-                      onCancel: () {},
                     );
                   },
                 ),
@@ -150,7 +149,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                       onDelete: () {},
                       onMute: () {},
                       onBlock: () {},
-                      onCancel: () {},
                     );
                   },
                 ),

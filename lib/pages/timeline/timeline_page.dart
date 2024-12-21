@@ -154,7 +154,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                       onDelete: () => isSignedInUser ? _delete : null,
                       onMute: () => _mute,
                       onBlock: _block,
-                      onCancel: _cancel,
                     );
                   },
                 ),

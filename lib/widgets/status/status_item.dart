@@ -30,7 +30,6 @@ class StatusItem extends StatelessWidget {
     required this.onDelete,
     required this.onMute,
     required this.onBlock,
-    required this.onCancel,
   }) : super(key: key);
 
   final Status status;
@@ -48,7 +47,6 @@ class StatusItem extends StatelessWidget {
   final void Function() onDelete;
   final void Function() onMute;
   final void Function() onBlock;
-  final void Function() onCancel;
 
   void _onTapAccount(BuildContext context) {
     context.push(AppPage.user.path);
@@ -74,6 +72,10 @@ class StatusItem extends StatelessWidget {
     // TODO: 下書きに戻す処理を追加する。
   }
 
+  void _onCancel(BuildContext context) {
+    NavigatorUtil.popScreen(context);
+  }
+
   void _onTapMenu(BuildContext context) {
     final actions = StatusMenuActionUtil.getStatusMenuActions(
       status: status,
@@ -84,7 +86,7 @@ class StatusItem extends StatelessWidget {
       onDelete: onDelete,
       onMute: onMute,
       onBlock: onBlock,
-      onCancel: onCancel,
+      onCancel: () => _onCancel(context),
     );
     NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
   }
