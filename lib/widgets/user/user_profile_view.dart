@@ -56,7 +56,7 @@ class UserProfileView extends StatelessWidget {
                         onTapMention: (value) {},
                         onTapHashtag: (value) {},
                       ),
-                      SizedBox(width: 16.h),
+                      SizedBox(height: 16.h),
                       Row(
                         children: [
                           _UserActivityCountItem(
