@@ -136,11 +136,7 @@ class StatusItem extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 8.h),
-                      LinkableText(
-                        status.contentText,
-                        onTapMention: (value) => onTapMention,
-                        onTapHashtag: (value) => onTapHashtag,
-                      ),
+                      LinkableText(status.contentText),
                       SizedBox(height: 8.h),
                       if (status.mediaAttachments.isNotEmpty)
                         Container(
