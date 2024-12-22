@@ -17,7 +17,7 @@ class StatusItem extends StatelessWidget {
   const StatusItem({
     Key? key,
     required this.status,
-    required this.isSignedInUser,
+    required this.signedInUser,
     this.showDetails = false,
     required this.onTapBoost,
     required this.onTapFavorite,
@@ -30,7 +30,7 @@ class StatusItem extends StatelessWidget {
   }) : super(key: key);
 
   final Status status;
-  final bool isSignedInUser;
+  final Account? signedInUser;
   final bool showDetails;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
@@ -91,7 +91,7 @@ class StatusItem extends StatelessWidget {
   void _onTapMenu(BuildContext context) {
     final actions = StatusMenuActionUtil.getStatusMenuActions(
       status: status,
-      isSignedInUser: isSignedInUser,
+      signedInUser: signedInUser,
       onCopyLink: () => _copyLink(context),
       onPinToProfile: () => _onPinToProfile(status),
       onDeleteAndReturnToDraft: _deleteAndReturnToDraft,

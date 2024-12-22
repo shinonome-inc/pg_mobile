@@ -115,13 +115,11 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                         status.account.id == signedInUser.id;
                     return StatusItem(
                       status: status,
-                      isSignedInUser: isSignedInUser,
+                      signedInUser: signedInUser,
                       onTapBoost: () => _onTapBoost(status),
                       onTapFavorite: () => _onTapFavorite(status),
-                      onPinToProfile: () =>
-                          isSignedInUser ? _pinToProfile : null,
-                      onUnpinToProfile: () =>
-                          isSignedInUser ? _unpinToProfile : null,
+                      onPinToProfile: () => _pinToProfile,
+                      onUnpinToProfile: () => _unpinToProfile,
                       onDeleteAndReturnToDraft: () =>
                           isSignedInUser ? _deleteAndReturnToDraft : null,
                       onDelete: () => isSignedInUser ? _delete : null,

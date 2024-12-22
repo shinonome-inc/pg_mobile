@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/extensions/status_menu_action_extension.dart';
+import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/models/mastodon/status_menu_action.dart';
 
@@ -79,7 +80,7 @@ class StatusMenuActionUtil {
   /// ユーザーに応じてフィルタリングされたStatusMenuActionsのリストを取得する
   static List<StatusMenuAction> getStatusMenuActions({
     required Status status,
-    required bool isSignedInUser,
+    required Account? signedInUser,
     required void Function() onCopyLink,
     required void Function() onPinToProfile,
     required void Function() onDeleteAndReturnToDraft,
@@ -88,22 +89,26 @@ class StatusMenuActionUtil {
     required void Function() onBlock,
     required void Function() onCancel,
   }) {
+    final isSignedInUser =
+        signedInUser != null && status.account.id == signedInUser.id;
     // アクションリスト生成
     final actions = _createStatusMenuActions(
       status: status,
       onCopyLink: onCopyLink,
-      onPinToProfile: onPinToProfile,
-      onDeleteAndReturnToDraft: onDeleteAndReturnToDraft,
-      onDelete: onDelete,
-      onMute: onMute,
-      onBlock: onBlock,
+      onPinToProfile: () => isSignedInUser ? onPinToProfile : null,
+      onDeleteAndReturnToDraft: () =>
+          isSignedInUser ? onDeleteAndReturnToDraft : null,
+      onDelete: () => isSignedInUser ? onDelete : null,
+      onMute: () => isSignedInUser ? null : onMute,
+      onBlock: () => isSignedInUser ? null : onBlock,
       onCancel: onCancel,
     );
 
     // ユーザーに基づいてフィルタリング
-    return _filterActionsByUser(
+    final filledActions = _filterActionsByUser(
       actions: actions,
       isSignedInUser: isSignedInUser,
     );
+    return filledActions;
   }
 }
