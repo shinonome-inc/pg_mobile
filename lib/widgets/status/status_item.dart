@@ -41,7 +41,7 @@ class StatusItem extends StatelessWidget {
   final void Function() onMute;
   final void Function() onBlock;
 
-  Account? get reblogAccount => status.reblog == null ? null : status.account;
+  Account? get _reblogAccount => status.reblog == null ? null : status.account;
 
   void _onTapItem(BuildContext context) {
     context.push(AppPage.statusDetail.path);
@@ -117,8 +117,8 @@ class StatusItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (reblogAccount != null)
-              StatusBoostLabel(name: reblogAccount?.displayName ?? ''),
+            if (_reblogAccount != null)
+              StatusBoostLabel(name: _reblogAccount?.displayName ?? ''),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
