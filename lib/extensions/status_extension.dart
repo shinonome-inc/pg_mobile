@@ -21,6 +21,27 @@ extension StatusExtension on Status {
 
   Uri get _uri => Uri.parse(url ?? '');
   String get uriText => _uri.toString();
+
+  /// 返信の数を増やす。
+  Status get addedReplyCount {
+    return copyWith(repliesCount: repliesCount + 1);
+  }
+
+  /// rebloggedを切り替える。
+  Status get toggleReblogged {
+    return copyWith(
+      reblogged: !(reblogged ?? false),
+      reblogsCount: reblogsCount + (reblogged == true ? -1 : 1),
+    );
+  }
+
+  /// favouritedを切り替える。
+  Status get toggleFavourited {
+    return copyWith(
+      favourited: !(favourited ?? false),
+      favouritesCount: favouritesCount + (favourited == true ? -1 : 1),
+    );
+  }
 }
 
 extension StatusListExtension on List<Status> {

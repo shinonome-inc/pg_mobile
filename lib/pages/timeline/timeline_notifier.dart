@@ -74,11 +74,9 @@ class TimelineNotifier extends _$TimelineNotifier {
       setLoading(false);
     }
     if (inReplyToId != null) {
-      final repliedPreviousStatus =
-          state.statuses.findStatusFromId(inReplyToId);
-      final repliedAfterStatus = repliedPreviousStatus.copyWith(
-          repliesCount: repliedPreviousStatus.repliesCount + 1);
-      _setStatus(repliedAfterStatus);
+      final repliedStatus =
+          state.statuses.findStatusFromId(inReplyToId).addedReplyCount;
+      _setStatus(repliedStatus);
     }
     _addStatus(postedStatus);
   }
@@ -87,11 +85,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     if (state.isLoading) return;
     final reblogged = status.reblogged ?? false;
     setLoading(true);
-    final updatedStatus = status.copyWith(
-      reblogged: !reblogged,
-      reblogsCount: status.reblogsCount + (reblogged ? -1 : 1),
-    );
-    _setStatus(updatedStatus);
+    _setStatus(status.toggleReblogged);
     if (reblogged) {
       await _repository.undoBoostStatus(status.id);
     } else {
@@ -104,11 +98,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     if (state.isLoading) return;
     final favourited = status.favourited ?? false;
     setLoading(true);
-    final updatedStatus = status.copyWith(
-      favourited: !favourited,
-      favouritesCount: status.favouritesCount + (favourited ? -1 : 1),
-    );
-    _setStatus(updatedStatus);
+    _setStatus(status.toggleFavourited);
     if (favourited) {
       await _repository.undoFavoriteStatus(status.id);
     } else {
