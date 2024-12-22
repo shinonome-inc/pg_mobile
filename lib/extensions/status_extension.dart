@@ -1,6 +1,6 @@
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/util/date_formatter.dart';
-import 'package:pg_mobile/util/status_util.dart';
+import 'package:pg_mobile/util/mastodon_content_parser.dart';
 
 extension StatusExtension on Status {
   DateTime get _createdAt => DateTime.parse(createdAt).toLocal();
@@ -8,9 +8,11 @@ extension StatusExtension on Status {
   String get createdAtTimeAgoText =>
       DateFormatter.formatTimeAgoDate(_createdAt);
 
-  String get contentText => StatusUtil.convertHtmlToPlainText(content);
-  List<String> get urls => StatusUtil.extractUrls(contentText);
-  String get mentionsText => StatusUtil.extractMentionsText(mentions);
+  String get contentText =>
+      MastodonContentParser.convertHtmlToPlainText(content);
+  List<String> get urls => MastodonContentParser.extractUrls(contentText);
+  String get mentionsText =>
+      MastodonContentParser.extractMentionsText(mentions);
 
   bool get containsUrl => urls.isNotEmpty;
   bool get showLinkPreview => containsUrl && mediaAttachments.isEmpty;

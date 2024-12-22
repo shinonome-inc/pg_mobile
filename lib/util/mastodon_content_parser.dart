@@ -2,9 +2,9 @@ import 'package:html/parser.dart';
 import 'package:pg_mobile/constants/patterns.dart';
 import 'package:pg_mobile/models/mastodon/status_mention.dart';
 
-/// ステータスに関するユーティリティクラスです。
-class StatusUtil {
-  StatusUtil._();
+/// MastodonのContentに関するユーティリティクラス。
+class MastodonContentParser {
+  MastodonContentParser._();
 
   /// HTMLテキストを解析してテキストに変換する。
   static String convertHtmlToPlainText(String htmlText) {
