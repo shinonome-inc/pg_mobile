@@ -27,18 +27,15 @@ class TimelineNotifier extends _$TimelineNotifier {
   }
 
   void _setStatus(Status status) {
-    final statuses = state.statuses.map((element) {
-      return element.id == status.id ? status : element;
-    }).toList();
-    _setStatuses(statuses);
+    _setStatuses(state.statuses.updateStatus(status));
   }
 
   void _addStatuses(List<Status> statuses) {
-    _setStatuses([...statuses, ...state.statuses]);
+    _setStatuses(state.statuses.addStatuses(statuses));
   }
 
   void _addStatus(Status status) {
-    _setStatuses([status, ...state.statuses]);
+    _setStatuses(state.statuses.addStatus(status));
   }
 
   Future<void> onRefresh() async {
@@ -137,9 +134,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     if (state.isLoading) return;
     setLoading(true);
     await MastodonRepository.instance.deleteStatus(status.id);
-    final deletedStatuses = state.statuses.where((element) {
-      return element.id != status.id;
-    }).toList();
+    final deletedStatuses = state.statuses.removeStatusById(status.id);
     _setStatuses(deletedStatuses);
     setLoading(false);
   }
@@ -155,8 +150,7 @@ class TimelineNotifier extends _$TimelineNotifier {
   }
 
   Future<void> unpinStatusToProfile(Status status) async {
-    if (state.isLoading) return;
-    if (!status.isPinnedToProfile) return;
+    if (state.isLoading || !status.isPinnedToProfile) return;
     setLoading(true);
     final unpinnedStatus =
         await MastodonRepository.instance.unpinStatusToProfile(status.id);
@@ -168,9 +162,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     if (state.isLoading) return;
     setLoading(true);
     await MastodonRepository.instance.muteAccount(account.id);
-    final filteredStatuses = state.statuses.where((status) {
-      return status.account.id != account.id;
-    }).toList();
+    final filteredStatuses = state.statuses.filterOutByAccountId(account.id);
     _setStatuses(filteredStatuses);
     setLoading(false);
   }
