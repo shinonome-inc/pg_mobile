@@ -17,3 +17,8 @@ extension StatusExtension on Status {
 
   bool get isPinnedToProfile => pinned ?? false;
 }
+
+extension StatusListExtension on List<Status> {
+  Status findStatusFromId(String id) =>
+      firstWhere((element) => element.id == id);
+}
