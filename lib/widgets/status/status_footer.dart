@@ -36,14 +36,14 @@ class StatusFooter extends StatelessWidget {
           onTap: onTapBoost,
           iconData: Icons.repeat,
           count: showDetails ? null : status.reblogsCount,
-          color: status.reblogged! ? AppColors.blue : AppColors.gray3,
+          color: status.reblogged ? AppColors.blue : AppColors.gray3,
         ),
         const Spacer(),
         StatusFooterItem(
           onTap: onTapFavorite,
-          iconData: status.favourited! ? Icons.star : Icons.star_border,
+          iconData: status.favourited ? Icons.star : Icons.star_border,
           count: showDetails ? null : status.favouritesCount,
-          color: status.favourited! ? AppColors.yellow : AppColors.gray3,
+          color: status.favourited ? AppColors.yellow : AppColors.gray3,
         ),
         const Spacer(),
         GestureDetector(
