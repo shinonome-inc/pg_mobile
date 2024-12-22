@@ -1,3 +1,4 @@
+import 'package:pg_mobile/extensions/status_extension.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/pages/my_page/my_page_state.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
@@ -64,5 +65,11 @@ class MyPageNotifier extends _$MyPageNotifier {
     _setStatusesWithoutReply(statusesWithoutReply);
     _setStatusesWithReply(statusesWithReply);
     _setMediaStatuses(mediaStatuses);
+  }
+
+  void _updateStatus(Status status) {
+    _setStatusesWithoutReply(state.statusesWithoutReply.updateStatus(status));
+    _setStatusesWithReply(state.statusesWithReply.updateStatus(status));
+    _setMediaStatuses(state.mediaStatuses.updateStatus(status));
   }
 }
