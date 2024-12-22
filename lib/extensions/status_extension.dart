@@ -17,10 +17,7 @@ extension StatusExtension on Status {
   bool get containsUrl => urls.isNotEmpty;
   bool get showLinkPreview => containsUrl && mediaAttachments.isEmpty;
 
-  bool get isPinnedToProfile => pinned ?? false;
-
-  Uri get _uri => Uri.parse(url ?? '');
-  String get uriText => _uri.toString();
+  String get uriText => Uri.parse(url).toString();
 
   /// 返信の数を増やす。
   Status get addedReplyCount {
@@ -30,16 +27,16 @@ extension StatusExtension on Status {
   /// rebloggedを切り替える。
   Status get toggleReblogged {
     return copyWith(
-      reblogged: !(reblogged ?? false),
-      reblogsCount: reblogsCount + (reblogged == true ? -1 : 1),
+      reblogged: !reblogged,
+      reblogsCount: reblogged ? reblogsCount - 1 : reblogsCount + 1,
     );
   }
 
   /// favouritedを切り替える。
   Status get toggleFavourited {
     return copyWith(
-      favourited: !(favourited ?? false),
-      favouritesCount: favouritesCount + (favourited == true ? -1 : 1),
+      favourited: !favourited,
+      favouritesCount: favourited ? favouritesCount - 1 : favouritesCount + 1,
     );
   }
 }

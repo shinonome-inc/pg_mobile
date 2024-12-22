@@ -32,7 +32,7 @@ class Status with _$Status {
     required int reblogsCount,
     required int favouritesCount,
     required int repliesCount,
-    String? url,
+    @Default('') String url,
     String? inReplyToId,
     String? inReplyToAccountId,
     Status? reblog,
@@ -41,12 +41,12 @@ class Status with _$Status {
     String? language,
     String? text,
     String? editedAt,
-    bool? favourited,
-    bool? reblogged,
-    bool? muted,
-    bool? bookmarked,
-    bool? pinned,
-    List<FilterResult>? filtered,
+    @Default(false) bool favourited,
+    @Default(false) bool reblogged,
+    @Default(false) bool muted,
+    @Default(false) bool bookmarked,
+    @Default(false) bool pinned,
+    @Default([]) List<FilterResult> filtered,
   }) = _Status;
 
   factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);

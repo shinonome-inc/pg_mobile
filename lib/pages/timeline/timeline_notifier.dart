@@ -83,10 +83,9 @@ class TimelineNotifier extends _$TimelineNotifier {
 
   Future<void> onTapBoost(Status status) async {
     if (state.isLoading) return;
-    final reblogged = status.reblogged ?? false;
     setLoading(true);
     _setStatus(status.toggleReblogged);
-    if (reblogged) {
+    if (status.reblogged) {
       await _repository.undoBoostStatus(status.id);
     } else {
       await _repository.boostStatus(status.id);
@@ -96,10 +95,9 @@ class TimelineNotifier extends _$TimelineNotifier {
 
   Future<void> onTapFavorite(Status status) async {
     if (state.isLoading) return;
-    final favourited = status.favourited ?? false;
     setLoading(true);
     _setStatus(status.toggleFavourited);
-    if (favourited) {
+    if (status.favourited) {
       await _repository.undoFavoriteStatus(status.id);
     } else {
       await _repository.favoriteStatus(status.id);
@@ -117,7 +115,7 @@ class TimelineNotifier extends _$TimelineNotifier {
   }
 
   Future<void> pinStatusToProfile(Status status) async {
-    if (state.isLoading || status.isPinnedToProfile) return;
+    if (state.isLoading || status.pinned) return;
     setLoading(true);
     final pinnedStatus = await _repository.pinStatusToProfile(status.id);
     _setStatus(pinnedStatus);
@@ -125,7 +123,7 @@ class TimelineNotifier extends _$TimelineNotifier {
   }
 
   Future<void> unpinStatusToProfile(Status status) async {
-    if (state.isLoading || !status.isPinnedToProfile) return;
+    if (state.isLoading || !status.pinned) return;
     setLoading(true);
     final unpinnedStatus = await _repository.unpinStatusToProfile(status.id);
     _setStatus(unpinnedStatus);
