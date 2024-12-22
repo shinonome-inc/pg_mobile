@@ -74,60 +74,45 @@ class TimelineNotifier extends _$TimelineNotifier {
       setLoading(false);
     }
     if (inReplyToId != null) {
-      final repliedStatus = state.statuses.findStatusFromId(inReplyToId);
-      _setStatus(
-        repliedStatus.copyWith(repliesCount: repliedStatus.favouritesCount + 1),
-      );
+      final repliedPreviousStatus =
+          state.statuses.findStatusFromId(inReplyToId);
+      final repliedAfterStatus = repliedPreviousStatus.copyWith(
+          repliesCount: repliedPreviousStatus.repliesCount + 1);
+      _setStatus(repliedAfterStatus);
     }
     _addStatus(postedStatus);
   }
 
   Future<void> onTapBoost(Status status) async {
-    if (status.reblogged == null || state.isLoading) return;
+    if (state.isLoading) return;
+    final reblogged = status.reblogged ?? false;
     setLoading(true);
-    if (status.reblogged!) {
-      final unboostedStatus = status.copyWith(
-        reblogged: false,
-        reblogsCount: status.reblogsCount - 1,
-      );
-      _setStatus(unboostedStatus);
-      await _repository.undoBoostStatus(
-        status.id,
-      );
+    final updatedStatus = status.copyWith(
+      reblogged: !reblogged,
+      reblogsCount: status.reblogsCount + (reblogged ? -1 : 1),
+    );
+    _setStatus(updatedStatus);
+    if (reblogged) {
+      await _repository.undoBoostStatus(status.id);
     } else {
-      final boostedStatus = status.copyWith(
-        reblogged: true,
-        reblogsCount: status.reblogsCount + 1,
-      );
-      _setStatus(boostedStatus);
-      await _repository.boostStatus(
-        status.id,
-      );
+      await _repository.boostStatus(status.id);
     }
     setLoading(false);
   }
 
   Future<void> onTapFavorite(Status status) async {
-    if (status.favourited == null || state.isLoading) return;
+    if (state.isLoading) return;
+    final favourited = status.favourited ?? false;
     setLoading(true);
-    if (status.favourited!) {
-      final unfavouritedStatus = status.copyWith(
-        favourited: false,
-        favouritesCount: status.favouritesCount - 1,
-      );
-      _setStatus(unfavouritedStatus);
-      await _repository.undoFavoriteStatus(
-        status.id,
-      );
+    final updatedStatus = status.copyWith(
+      favourited: !favourited,
+      favouritesCount: status.favouritesCount + (favourited ? -1 : 1),
+    );
+    _setStatus(updatedStatus);
+    if (favourited) {
+      await _repository.undoFavoriteStatus(status.id);
     } else {
-      final favouritedStatus = status.copyWith(
-        favourited: true,
-        favouritesCount: status.favouritesCount + 1,
-      );
-      _setStatus(favouritedStatus);
-      await _repository.favoriteStatus(
-        status.id,
-      );
+      await _repository.favoriteStatus(status.id);
     }
     setLoading(false);
   }
@@ -142,8 +127,7 @@ class TimelineNotifier extends _$TimelineNotifier {
   }
 
   Future<void> pinStatusToProfile(Status status) async {
-    if (state.isLoading) return;
-    if (status.isPinnedToProfile) return;
+    if (state.isLoading || status.isPinnedToProfile) return;
     setLoading(true);
     final pinnedStatus = await _repository.pinStatusToProfile(status.id);
     _setStatus(pinnedStatus);
