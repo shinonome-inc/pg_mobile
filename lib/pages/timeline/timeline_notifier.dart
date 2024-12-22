@@ -9,6 +9,8 @@ part 'timeline_notifier.g.dart';
 
 @riverpod
 class TimelineNotifier extends _$TimelineNotifier {
+  final _repository = MastodonRepository.instance;
+
   @override
   TimelineState build() {
     return initialTimelineState;
@@ -27,18 +29,15 @@ class TimelineNotifier extends _$TimelineNotifier {
   }
 
   void _setStatus(Status status) {
-    final statuses = state.statuses.map((element) {
-      return element.id == status.id ? status : element;
-    }).toList();
-    _setStatuses(statuses);
+    _setStatuses(state.statuses.updateStatus(status));
   }
 
   void _addStatuses(List<Status> statuses) {
-    _setStatuses([...statuses, ...state.statuses]);
+    _setStatuses(state.statuses.addStatuses(statuses));
   }
 
   void _addStatus(Status status) {
-    _setStatuses([status, ...state.statuses]);
+    _setStatuses(state.statuses.addStatus(status));
   }
 
   Future<void> onRefresh() async {
@@ -50,7 +49,7 @@ class TimelineNotifier extends _$TimelineNotifier {
   Future<void> fetchTimeline() async {
     if (state.isLoading) return;
     setLoading(true);
-    final fetchedStatuses = await MastodonRepository.instance.fetchStatus();
+    final fetchedStatuses = await _repository.fetchStatus();
     setLoading(false);
     _addStatuses(fetchedStatuses);
   }
@@ -63,7 +62,7 @@ class TimelineNotifier extends _$TimelineNotifier {
     setLoading(true);
     Status postedStatus;
     try {
-      postedStatus = await MastodonRepository.instance.postNewStatus(
+      postedStatus = await _repository.postNewStatus(
         text: text,
         mediaIds: [],
         poll: [],
@@ -75,60 +74,33 @@ class TimelineNotifier extends _$TimelineNotifier {
       setLoading(false);
     }
     if (inReplyToId != null) {
-      final repliedStatus = state.statuses.findStatusFromId(inReplyToId);
-      _setStatus(
-        repliedStatus.copyWith(repliesCount: repliedStatus.favouritesCount + 1),
-      );
+      final repliedStatus =
+          state.statuses.findStatusFromId(inReplyToId).addedReplyCount;
+      _setStatus(repliedStatus);
     }
     _addStatus(postedStatus);
   }
 
   Future<void> onTapBoost(Status status) async {
-    if (status.reblogged == null || state.isLoading) return;
+    if (state.isLoading) return;
     setLoading(true);
-    if (status.reblogged!) {
-      final unboostedStatus = status.copyWith(
-        reblogged: false,
-        reblogsCount: status.reblogsCount - 1,
-      );
-      _setStatus(unboostedStatus);
-      await MastodonRepository.instance.undoBoostStatus(
-        status.id,
-      );
+    _setStatus(status.toggleReblogged);
+    if (status.reblogged) {
+      await _repository.undoBoostStatus(status.id);
     } else {
-      final boostedStatus = status.copyWith(
-        reblogged: true,
-        reblogsCount: status.reblogsCount + 1,
-      );
-      _setStatus(boostedStatus);
-      await MastodonRepository.instance.boostStatus(
-        status.id,
-      );
+      await _repository.boostStatus(status.id);
     }
     setLoading(false);
   }
 
   Future<void> onTapFavorite(Status status) async {
-    if (status.favourited == null || state.isLoading) return;
+    if (state.isLoading) return;
     setLoading(true);
-    if (status.favourited!) {
-      final unfavouritedStatus = status.copyWith(
-        favourited: false,
-        favouritesCount: status.favouritesCount - 1,
-      );
-      _setStatus(unfavouritedStatus);
-      await MastodonRepository.instance.undoFavoriteStatus(
-        status.id,
-      );
+    _setStatus(status.toggleFavourited);
+    if (status.favourited) {
+      await _repository.undoFavoriteStatus(status.id);
     } else {
-      final favouritedStatus = status.copyWith(
-        favourited: true,
-        favouritesCount: status.favouritesCount + 1,
-      );
-      _setStatus(favouritedStatus);
-      await MastodonRepository.instance.favoriteStatus(
-        status.id,
-      );
+      await _repository.favoriteStatus(status.id);
     }
     setLoading(false);
   }
@@ -136,30 +108,24 @@ class TimelineNotifier extends _$TimelineNotifier {
   Future<void> deleteStatus(Status status) async {
     if (state.isLoading) return;
     setLoading(true);
-    await MastodonRepository.instance.deleteStatus(status.id);
-    final deletedStatuses = state.statuses.where((element) {
-      return element.id != status.id;
-    }).toList();
+    await _repository.deleteStatus(status.id);
+    final deletedStatuses = state.statuses.removeStatusById(status.id);
     _setStatuses(deletedStatuses);
     setLoading(false);
   }
 
   Future<void> pinStatusToProfile(Status status) async {
-    if (state.isLoading) return;
-    if (status.isPinnedToProfile) return;
+    if (state.isLoading || status.pinned) return;
     setLoading(true);
-    final pinnedStatus =
-        await MastodonRepository.instance.pinStatusToProfile(status.id);
+    final pinnedStatus = await _repository.pinStatusToProfile(status.id);
     _setStatus(pinnedStatus);
     setLoading(false);
   }
 
   Future<void> unpinStatusToProfile(Status status) async {
-    if (state.isLoading) return;
-    if (!status.isPinnedToProfile) return;
+    if (state.isLoading || !status.pinned) return;
     setLoading(true);
-    final unpinnedStatus =
-        await MastodonRepository.instance.unpinStatusToProfile(status.id);
+    final unpinnedStatus = await _repository.unpinStatusToProfile(status.id);
     _setStatus(unpinnedStatus);
     setLoading(false);
   }
@@ -167,10 +133,8 @@ class TimelineNotifier extends _$TimelineNotifier {
   Future<void> muteAccount(Account account) async {
     if (state.isLoading) return;
     setLoading(true);
-    await MastodonRepository.instance.muteAccount(account.id);
-    final filteredStatuses = state.statuses.where((status) {
-      return status.account.id != account.id;
-    }).toList();
+    await _repository.muteAccount(account.id);
+    final filteredStatuses = state.statuses.filterOutByAccountId(account.id);
     _setStatuses(filteredStatuses);
     setLoading(false);
   }
