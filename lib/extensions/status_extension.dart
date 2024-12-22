@@ -18,6 +18,9 @@ extension StatusExtension on Status {
   bool get showLinkPreview => containsUrl && mediaAttachments.isEmpty;
 
   bool get isPinnedToProfile => pinned ?? false;
+
+  Uri get _uri => Uri.parse(url ?? '');
+  String get uriText => _uri.toString();
 }
 
 extension StatusListExtension on List<Status> {

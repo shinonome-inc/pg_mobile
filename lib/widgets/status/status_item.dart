@@ -64,14 +64,8 @@ class StatusItem extends StatelessWidget {
   }
 
   Future<void> _copyLink(BuildContext context) async {
-    if (status.url == null) return;
-
-    final uri = Uri.tryParse(status.url!);
-    if (uri == null) return;
-
-    final data = ClipboardData(text: uri.toString());
+    final data = ClipboardData(text: status.uriText);
     await Clipboard.setData(data);
-
     if (!context.mounted) return;
     context.pop();
   }
