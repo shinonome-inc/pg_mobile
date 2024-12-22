@@ -60,9 +60,9 @@ class _MyPageState extends ConsumerState<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(signedInUserNotifierProvider);
+    final signedInUser = ref.watch(signedInUserNotifierProvider);
     final state = ref.watch(myPageNotifierProvider);
-    if (user == null) {
+    if (signedInUser == null) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -80,7 +80,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                 child: Column(
                   children: [
                     UserProfileView(
-                      user: user,
+                      user: signedInUser,
                       onTapStatusCount: _onTapStatusCount,
                       onTapFollowingCount: _onTapFollowingCount,
                       onTapFollowerCount: _onTapFollowerCount,
@@ -106,24 +106,18 @@ class _MyPageState extends ConsumerState<MyPage> {
                   itemCount: state.statusesWithoutReply.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    final status = state.statusesWithoutReply.elementAt(index);
                     return StatusItem(
-                      status: state.statusesWithoutReply.elementAt(index),
-                      onTapItem: () {},
-                      onTapAccount: () {},
-                      onTapHashtag: () {},
-                      onTapMention: () {},
-                      onTapReply: () {},
+                      status: status,
+                      signedInUser: signedInUser,
                       onTapBoost: () {},
                       onTapFavorite: () {},
-                      onTapMenu: () {},
-                      onCopyLink: () {},
                       onPinToProfile: () {},
                       onUnpinToProfile: () {},
                       onDeleteAndReturnToDraft: () {},
                       onDelete: () {},
                       onMute: () {},
                       onBlock: () {},
-                      onCancel: () {},
                     );
                   },
                 ),
@@ -135,24 +129,18 @@ class _MyPageState extends ConsumerState<MyPage> {
                   itemCount: state.statusesWithReply.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+                    final status = state.statusesWithReply.elementAt(index);
                     return StatusItem(
-                      status: state.statusesWithReply.elementAt(index),
-                      onTapItem: () {},
-                      onTapAccount: () {},
-                      onTapHashtag: () {},
-                      onTapMention: () {},
-                      onTapReply: () {},
+                      status: status,
+                      signedInUser: signedInUser,
                       onTapBoost: () {},
                       onTapFavorite: () {},
-                      onTapMenu: () {},
-                      onCopyLink: () {},
                       onPinToProfile: () {},
                       onUnpinToProfile: () {},
                       onDeleteAndReturnToDraft: () {},
                       onDelete: () {},
                       onMute: () {},
                       onBlock: () {},
-                      onCancel: () {},
                     );
                   },
                 ),
@@ -170,8 +158,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                     crossAxisSpacing: 4.h,
                   ),
                   itemBuilder: (context, index) {
+                    final status = state.mediaStatuses.elementAt(index);
                     return MediaGridViewItem(
-                      status: state.mediaStatuses.elementAt(index),
+                      status: status,
                     );
                   },
                 ),

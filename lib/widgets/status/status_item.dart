@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/constants/app_colors.dart';
 import 'package:pg_mobile/extensions/status_extension.dart';
+import 'package:pg_mobile/models/enums/app_page.dart';
 import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
+import 'package:pg_mobile/util/status_menu_action_util.dart';
 import 'package:pg_mobile/widgets/linkable_text.dart';
 import 'package:pg_mobile/widgets/network_image_container.dart';
 import 'package:pg_mobile/widgets/status/status.dart';
@@ -12,56 +17,83 @@ class StatusItem extends StatelessWidget {
   const StatusItem({
     Key? key,
     required this.status,
-    this.reblogAccount,
+    required this.signedInUser,
     this.showDetails = false,
-    required this.onTapItem,
-    required this.onTapAccount,
-    required this.onTapHashtag,
-    required this.onTapMention,
-    required this.onTapReply,
     required this.onTapBoost,
     required this.onTapFavorite,
-    required this.onTapMenu,
-    required this.onCopyLink,
     required this.onPinToProfile,
     required this.onUnpinToProfile,
     required this.onDeleteAndReturnToDraft,
     required this.onDelete,
     required this.onMute,
     required this.onBlock,
-    required this.onCancel,
-    this.onTapEngagementReblog,
-    this.onTapEngagementFavorite,
   }) : super(key: key);
 
   final Status status;
-  final Account? reblogAccount;
+  final Account? signedInUser;
   final bool showDetails;
-
-  final void Function() onTapItem;
-  final void Function() onTapAccount;
-  final void Function() onTapHashtag;
-  final void Function() onTapMention;
-  final void Function() onTapReply;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
-  final void Function() onTapMenu;
-  final void Function() onCopyLink;
   final void Function() onPinToProfile;
   final void Function() onUnpinToProfile;
   final void Function() onDeleteAndReturnToDraft;
   final void Function() onDelete;
   final void Function() onMute;
   final void Function() onBlock;
-  final void Function() onCancel;
-  final void Function()? onTapEngagementReblog;
-  final void Function()? onTapEngagementFavorite;
+
+  Account? get _reblogAccount => status.reblog == null ? null : status.account;
+
+  void _onTapItem(BuildContext context) {
+    context.push(AppPage.statusDetail.path);
+  }
+
+  void _onTapAccount(BuildContext context) {
+    context.push(AppPage.user.path);
+  }
+
+  void _onTapReply(BuildContext context) {
+    context.push(AppPage.createStatus.path);
+  }
+
+  void _onTapEngagementReblog(BuildContext context) {
+    context.push(AppPage.boostUserList.path);
+  }
+
+  void _onTapEngagementFavorite(BuildContext context) {
+    context.push(AppPage.favoriteUserList.path);
+  }
+
+  Future<void> _copyLink(BuildContext context) async {
+    final data = ClipboardData(text: status.uriText);
+    await Clipboard.setData(data);
+    if (!context.mounted) return;
+    context.pop();
+  }
+
+  void _onCancel(BuildContext context) {
+    context.pop();
+  }
+
+  void _onTapMenu(BuildContext context) {
+    final actions = StatusMenuActionUtil.getStatusMenuActions(
+      status: status,
+      signedInUser: signedInUser,
+      onCopyLink: () => _copyLink(context),
+      onPinToProfile: () => onPinToProfile,
+      onDeleteAndReturnToDraft: () => onDeleteAndReturnToDraft,
+      onDelete: onDelete,
+      onMute: onMute,
+      onBlock: onBlock,
+      onCancel: () => _onCancel(context),
+    );
+    NavigatorUtil.showStatusMenuActionSheet(context, actions: actions);
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return GestureDetector(
-      onTap: onTapItem,
+      onTap: () => _onTapItem(context),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
         decoration: BoxDecoration(
@@ -79,13 +111,13 @@ class StatusItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (reblogAccount != null)
-              StatusBoostLabel(name: reblogAccount?.displayName ?? ''),
+            if (_reblogAccount != null)
+              StatusBoostLabel(name: _reblogAccount?.displayName ?? ''),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: onTapAccount,
+                  onTap: () => _onTapAccount(context),
                   child: NetworkImageContainer(
                     imageUrl: status.account.avatar,
                     width: 56.w,
@@ -136,11 +168,7 @@ class StatusItem extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 8.h),
-                      LinkableText(
-                        status.contentText,
-                        onTapMention: (value) => onTapMention,
-                        onTapHashtag: (value) => onTapHashtag,
-                      ),
+                      LinkableText(status.contentText),
                       SizedBox(height: 8.h),
                       if (status.mediaAttachments.isNotEmpty)
                         Container(
@@ -162,17 +190,18 @@ class StatusItem extends StatelessWidget {
                           margin: EdgeInsets.only(bottom: 8.h),
                           child: StatusDetailsEngagementView(
                             status: status,
-                            onTapReblog: onTapEngagementReblog,
-                            onTapFavorite: onTapEngagementFavorite,
+                            onTapReblog: () => _onTapEngagementReblog(context),
+                            onTapFavorite: () =>
+                                _onTapEngagementFavorite(context),
                           ),
                         ),
                       StatusFooter(
                         status: status,
                         showDetails: showDetails,
-                        onTapReply: onTapReply,
+                        onTapReply: () => _onTapReply(context),
                         onTapBoost: onTapBoost,
                         onTapFavorite: onTapFavorite,
-                        onTapMenu: onTapMenu,
+                        onTapMenu: () => _onTapMenu(context),
                       ),
                     ],
                   ),

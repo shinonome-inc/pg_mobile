@@ -3,7 +3,6 @@ import 'package:pg_mobile/models/mastodon/account.dart';
 import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/pages/timeline/timeline_state.dart';
 import 'package:pg_mobile/repository/mastodon_repository.dart';
-import 'package:pg_mobile/util/status_util.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'timeline_notifier.g.dart';
@@ -76,10 +75,7 @@ class TimelineNotifier extends _$TimelineNotifier {
       setLoading(false);
     }
     if (inReplyToId != null) {
-      final repliedStatus = StatusUtil.findStatusFromId(
-        state.statuses,
-        inReplyToId,
-      );
+      final repliedStatus = state.statuses.findStatusFromId(inReplyToId);
       _setStatus(
         repliedStatus.copyWith(repliesCount: repliedStatus.favouritesCount + 1),
       );
