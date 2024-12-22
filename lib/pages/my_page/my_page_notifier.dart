@@ -102,9 +102,9 @@ class MyPageNotifier extends _$MyPageNotifier {
     _setLoading(true);
     _updateStatus(status.togglePinned);
     if (status.pinned) {
-      await _repository.pinStatusToProfile(status.id);
-    } else {
       await _repository.unpinStatusToProfile(status.id);
+    } else {
+      await _repository.pinStatusToProfile(status.id);
     }
     _setLoading(false);
   }
