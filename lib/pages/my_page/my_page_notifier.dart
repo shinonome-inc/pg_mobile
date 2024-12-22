@@ -84,4 +84,16 @@ class MyPageNotifier extends _$MyPageNotifier {
     }
     _setLoading(false);
   }
+
+  Future<void> favoriteStatus(Status status) async {
+    if (state.isLoading) return;
+    _setLoading(true);
+    _updateStatus(status.toggleFavourited);
+    if (status.favourited) {
+      await _repository.undoFavoriteStatus(status.id);
+    } else {
+      await _repository.favoriteStatus(status.id);
+    }
+    _setLoading(false);
+  }
 }
