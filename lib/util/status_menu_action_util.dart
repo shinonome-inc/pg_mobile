@@ -94,7 +94,7 @@ class StatusMenuActionUtil {
     final actions = _createStatusMenuActions(
       status: status,
       onCopyLink: onCopyLink,
-      onPinToProfile: () => isSignedInUser ? onPinStatus : null,
+      onPinToProfile: isSignedInUser ? onPinStatus : () {},
       onDeleteAndReturnToDraft: () =>
           isSignedInUser ? onDeleteAndReturnToDraft : null,
       onDelete: isSignedInUser ? onDelete : () {},

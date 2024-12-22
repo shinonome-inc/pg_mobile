@@ -77,7 +77,7 @@ class StatusItem extends StatelessWidget {
       status: status,
       signedInUser: signedInUser,
       onCopyLink: () => _copyLink(context),
-      onPinStatus: () => onPinStatus,
+      onPinStatus: onPinStatus,
       onDeleteAndReturnToDraft: () => onDeleteAndReturnToDraft,
       onDelete: onDelete,
       onMute: onMute,
