@@ -97,7 +97,7 @@ class StatusMenuActionUtil {
       onPinToProfile: () => isSignedInUser ? onPinStatus : null,
       onDeleteAndReturnToDraft: () =>
           isSignedInUser ? onDeleteAndReturnToDraft : null,
-      onDelete: () => isSignedInUser ? onDelete : null,
+      onDelete: isSignedInUser ? onDelete : () {},
       onMute: () => isSignedInUser ? null : onMute,
       onBlock: () => isSignedInUser ? null : onBlock,
       onCancel: onCancel,

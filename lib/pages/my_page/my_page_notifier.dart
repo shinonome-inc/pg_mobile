@@ -108,4 +108,24 @@ class MyPageNotifier extends _$MyPageNotifier {
     }
     _setLoading(false);
   }
+
+  void _deleteStatusByStatusId(String statusId) {
+    _setStatusesWithoutReply(
+      state.statusesWithoutReply.removeStatusById(statusId),
+    );
+    _setStatusesWithReply(
+      state.statusesWithReply.removeStatusById(statusId),
+    );
+    _setMediaStatuses(
+      state.mediaStatuses.removeStatusById(statusId),
+    );
+  }
+
+  Future<void> deleteStatus(Status status) async {
+    if (state.isLoading) return;
+    _setLoading(true);
+    await _repository.deleteStatus(status.id);
+    _deleteStatusByStatusId(status.id);
+    _setLoading(false);
+  }
 }

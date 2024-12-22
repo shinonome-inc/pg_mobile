@@ -59,6 +59,13 @@ class _MyPageState extends ConsumerState<MyPage> {
     NavigatorUtil.popScreen(context);
   }
 
+  Future<void> _onTapDeleteStatus(Status status) async {
+    final notifier = ref.read(myPageNotifierProvider.notifier);
+    await notifier.deleteStatus(status);
+    if (!mounted) return;
+    NavigatorUtil.popScreen(context);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -124,7 +131,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                       onTapFavorite: () => notifier.favoriteStatus(status),
                       onPinStatus: () => _onTapPinStatus(status),
                       onDeleteAndReturnToDraft: () {},
-                      onDelete: () {},
+                      onDelete: () => _onTapDeleteStatus(status),
                       onMute: () {},
                       onBlock: () {},
                     );
@@ -146,7 +153,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                       onTapFavorite: () => notifier.favoriteStatus(status),
                       onPinStatus: () => _onTapPinStatus(status),
                       onDeleteAndReturnToDraft: () {},
-                      onDelete: () {},
+                      onDelete: () => _onTapDeleteStatus(status),
                       onMute: () {},
                       onBlock: () {},
                     );
