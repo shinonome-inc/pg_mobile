@@ -39,6 +39,9 @@ extension StatusExtension on Status {
       favouritesCount: favourited ? favouritesCount - 1 : favouritesCount + 1,
     );
   }
+
+  /// pinnedを切り替える。
+  Status get togglePinned => copyWith(pinned: !pinned);
 }
 
 extension StatusListExtension on List<Status> {

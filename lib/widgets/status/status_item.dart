@@ -21,8 +21,7 @@ class StatusItem extends StatelessWidget {
     this.showDetails = false,
     required this.onTapBoost,
     required this.onTapFavorite,
-    required this.onPinToProfile,
-    required this.onUnpinToProfile,
+    required this.onPinStatus,
     required this.onDeleteAndReturnToDraft,
     required this.onDelete,
     required this.onMute,
@@ -34,8 +33,7 @@ class StatusItem extends StatelessWidget {
   final bool showDetails;
   final void Function() onTapBoost;
   final void Function() onTapFavorite;
-  final void Function() onPinToProfile;
-  final void Function() onUnpinToProfile;
+  final void Function() onPinStatus;
   final void Function() onDeleteAndReturnToDraft;
   final void Function() onDelete;
   final void Function() onMute;
@@ -79,7 +77,7 @@ class StatusItem extends StatelessWidget {
       status: status,
       signedInUser: signedInUser,
       onCopyLink: () => _copyLink(context),
-      onPinToProfile: () => onPinToProfile,
+      onPinStatus: onPinStatus,
       onDeleteAndReturnToDraft: () => onDeleteAndReturnToDraft,
       onDelete: onDelete,
       onMute: onMute,

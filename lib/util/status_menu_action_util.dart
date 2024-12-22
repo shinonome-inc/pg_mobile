@@ -81,7 +81,7 @@ class StatusMenuActionUtil {
     required Status status,
     required Account? signedInUser,
     required void Function() onCopyLink,
-    required void Function() onPinToProfile,
+    required void Function() onPinStatus,
     required void Function() onDeleteAndReturnToDraft,
     required void Function() onDelete,
     required void Function() onMute,
@@ -94,10 +94,10 @@ class StatusMenuActionUtil {
     final actions = _createStatusMenuActions(
       status: status,
       onCopyLink: onCopyLink,
-      onPinToProfile: () => isSignedInUser ? onPinToProfile : null,
+      onPinToProfile: isSignedInUser ? onPinStatus : () {},
       onDeleteAndReturnToDraft: () =>
           isSignedInUser ? onDeleteAndReturnToDraft : null,
-      onDelete: () => isSignedInUser ? onDelete : null,
+      onDelete: isSignedInUser ? onDelete : () {},
       onMute: () => isSignedInUser ? null : onMute,
       onBlock: () => isSignedInUser ? null : onBlock,
       onCancel: onCancel,

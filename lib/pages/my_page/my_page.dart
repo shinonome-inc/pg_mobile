@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pg_mobile/models/enums/app_page.dart';
+import 'package:pg_mobile/models/mastodon/status.dart';
 import 'package:pg_mobile/pages/my_page/my_page_notifier.dart';
 import 'package:pg_mobile/providers/signed_in_user_notifier.dart';
+import 'package:pg_mobile/util/navigator_util.dart';
 import 'package:pg_mobile/widgets/media_grid_view_item.dart';
 import 'package:pg_mobile/widgets/status/status.dart';
 import 'package:pg_mobile/widgets/user/user_profile_view.dart';
@@ -50,6 +52,20 @@ class _MyPageState extends ConsumerState<MyPage> {
     await ref.read(myPageNotifierProvider.notifier).fetchMyPageInfo();
   }
 
+  Future<void> _onTapPinStatus(Status status) async {
+    final notifier = ref.read(myPageNotifierProvider.notifier);
+    await notifier.pinStatus(status);
+    if (!mounted) return;
+    NavigatorUtil.popScreen(context);
+  }
+
+  Future<void> _onTapDeleteStatus(Status status) async {
+    final notifier = ref.read(myPageNotifierProvider.notifier);
+    await notifier.deleteStatus(status);
+    if (!mounted) return;
+    NavigatorUtil.popScreen(context);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +78,7 @@ class _MyPageState extends ConsumerState<MyPage> {
   Widget build(BuildContext context) {
     final signedInUser = ref.watch(signedInUserNotifierProvider);
     final state = ref.watch(myPageNotifierProvider);
+    final notifier = ref.read(myPageNotifierProvider.notifier);
     if (signedInUser == null) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -110,12 +127,11 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: status,
                       signedInUser: signedInUser,
-                      onTapBoost: () {},
-                      onTapFavorite: () {},
-                      onPinToProfile: () {},
-                      onUnpinToProfile: () {},
+                      onTapBoost: () => notifier.boost(status),
+                      onTapFavorite: () => notifier.favoriteStatus(status),
+                      onPinStatus: () => _onTapPinStatus(status),
                       onDeleteAndReturnToDraft: () {},
-                      onDelete: () {},
+                      onDelete: () => _onTapDeleteStatus(status),
                       onMute: () {},
                       onBlock: () {},
                     );
@@ -133,12 +149,11 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: status,
                       signedInUser: signedInUser,
-                      onTapBoost: () {},
-                      onTapFavorite: () {},
-                      onPinToProfile: () {},
-                      onUnpinToProfile: () {},
+                      onTapBoost: () => notifier.boost(status),
+                      onTapFavorite: () => notifier.favoriteStatus(status),
+                      onPinStatus: () => _onTapPinStatus(status),
                       onDeleteAndReturnToDraft: () {},
-                      onDelete: () {},
+                      onDelete: () => _onTapDeleteStatus(status),
                       onMute: () {},
                       onBlock: () {},
                     );
