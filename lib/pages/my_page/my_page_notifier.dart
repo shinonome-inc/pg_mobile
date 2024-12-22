@@ -8,6 +8,8 @@ part 'my_page_notifier.g.dart';
 
 @riverpod
 class MyPageNotifier extends _$MyPageNotifier {
+  final _repository = MastodonRepository.instance;
+
   @override
   MyPageState build() {
     return initialMyPageState;
@@ -39,16 +41,15 @@ class MyPageNotifier extends _$MyPageNotifier {
     List<Status> statusesWithoutReply = [];
     List<Status> statusesWithReply = [];
     List<Status> mediaStatuses = [];
-    final repository = MastodonRepository.instance;
     try {
-      statusesWithoutReply = await repository.fetchAccountStatuses(
+      statusesWithoutReply = await _repository.fetchAccountStatuses(
         accountId,
         excludeReplies: true,
       );
-      statusesWithReply = await repository.fetchAccountStatuses(
+      statusesWithReply = await _repository.fetchAccountStatuses(
         accountId,
       );
-      mediaStatuses = await repository.fetchAccountStatuses(
+      mediaStatuses = await _repository.fetchAccountStatuses(
         accountId,
         onlyMedia: true,
       );
