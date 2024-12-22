@@ -35,13 +35,6 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
     NavigatorUtil.popScreen(context);
   }
 
-  Future<void> _unpinToProfile(Status status) async {
-    final notifier = ref.read(timelineNotifierProvider.notifier);
-    await notifier.unpinStatusToProfile(status);
-    if (!mounted) return;
-    NavigatorUtil.popScreen(context);
-  }
-
   void _deleteAndReturnToDraft() {
     // TODO: 削除して下書きに戻す
     NavigatorUtil.popScreen(context);
@@ -116,8 +109,7 @@ class _StatusListPageState extends ConsumerState<TimelinePage> {
                       signedInUser: signedInUser,
                       onTapBoost: () => _onTapBoost(status),
                       onTapFavorite: () => _onTapFavorite(status),
-                      onPinToProfile: () => _pinToProfile,
-                      onUnpinToProfile: () => _unpinToProfile,
+                      onPinStatus: () => _pinToProfile,
                       onDeleteAndReturnToDraft: () => _deleteAndReturnToDraft,
                       onDelete: () => _delete,
                       onMute: () => _mute,
