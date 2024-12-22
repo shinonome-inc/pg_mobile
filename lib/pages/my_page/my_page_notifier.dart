@@ -72,4 +72,16 @@ class MyPageNotifier extends _$MyPageNotifier {
     _setStatusesWithReply(state.statusesWithReply.updateStatus(status));
     _setMediaStatuses(state.mediaStatuses.updateStatus(status));
   }
+
+  Future<void> boost(Status status) async {
+    if (state.isLoading) return;
+    _setLoading(true);
+    _updateStatus(status.toggleReblogged);
+    if (status.reblogged) {
+      await _repository.undoBoostStatus(status.id);
+    } else {
+      await _repository.boostStatus(status.id);
+    }
+    _setLoading(false);
+  }
 }

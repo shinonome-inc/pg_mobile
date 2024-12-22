@@ -62,6 +62,7 @@ class _MyPageState extends ConsumerState<MyPage> {
   Widget build(BuildContext context) {
     final signedInUser = ref.watch(signedInUserNotifierProvider);
     final state = ref.watch(myPageNotifierProvider);
+    final notifier = ref.read(myPageNotifierProvider.notifier);
     if (signedInUser == null) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -110,7 +111,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: status,
                       signedInUser: signedInUser,
-                      onTapBoost: () {},
+                      onTapBoost: () => notifier.boost(status),
                       onTapFavorite: () {},
                       onPinToProfile: () {},
                       onUnpinToProfile: () {},
@@ -133,7 +134,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                     return StatusItem(
                       status: status,
                       signedInUser: signedInUser,
-                      onTapBoost: () {},
+                      onTapBoost: () => notifier.boost(status),
                       onTapFavorite: () {},
                       onPinToProfile: () {},
                       onUnpinToProfile: () {},
