@@ -24,6 +24,33 @@ extension StatusExtension on Status {
 }
 
 extension StatusListExtension on List<Status> {
+  /// 指定したIDに一致するStatusを更新する。
+  List<Status> updateStatus(Status status) {
+    return map((element) => element.id == status.id ? status : element)
+        .toList();
+  }
+
+  /// 新しいStatusをリストの先頭に追加する。
+  List<Status> addStatus(Status status) {
+    return [status, ...this];
+  }
+
+  /// 新しいStatusのリストをリストの先頭に追加する。
+  List<Status> addStatuses(List<Status> statuses) {
+    return [...statuses, ...this];
+  }
+
+  /// 特定のIDに一致するStatusを削除する。
+  List<Status> removeStatusById(String id) {
+    return where((element) => element.id != id).toList();
+  }
+
+  /// 特定のアカウントIDに一致するStatusを削除する。
+  List<Status> filterOutByAccountId(String accountId) {
+    return where((status) => status.account.id != accountId).toList();
+  }
+
+  /// 特定のIDに一致するStatusを取得する。
   Status findStatusFromId(String id) =>
       firstWhere((element) => element.id == id);
 }
