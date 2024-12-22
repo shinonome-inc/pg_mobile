@@ -76,14 +76,6 @@ class StatusItem extends StatelessWidget {
     context.pop();
   }
 
-  void _onPinToProfile(Status status) {
-    // TODO: プロフィールにピン留めする処理を追加する。
-  }
-
-  void _deleteAndReturnToDraft() {
-    // TODO: 下書きに戻す処理を追加する。
-  }
-
   void _onCancel(BuildContext context) {
     context.pop();
   }
@@ -93,8 +85,8 @@ class StatusItem extends StatelessWidget {
       status: status,
       signedInUser: signedInUser,
       onCopyLink: () => _copyLink(context),
-      onPinToProfile: () => _onPinToProfile(status),
-      onDeleteAndReturnToDraft: _deleteAndReturnToDraft,
+      onPinToProfile: () => onPinToProfile,
+      onDeleteAndReturnToDraft: () => onDeleteAndReturnToDraft,
       onDelete: onDelete,
       onMute: onMute,
       onBlock: onBlock,
